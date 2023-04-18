@@ -1,0 +1,27 @@
+.head-text {
+    color: white;
+}
+
+#icon-home:hover {
+    cursor: pointer;
+    color: gray;
+}
+
+#icon-products:hover {
+    cursor: pointer;
+    color: #198754;
+}
+
+#icon-profiles:hover {
+    cursor: pointer;
+    color: #bb2d3b;
+}
+
+.nav-icon {
+    margin-right: 5px;
+    margin-bottom: 2px;
+}
+
+.p-2 {
+    font-size: larger;
+}

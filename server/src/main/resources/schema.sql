@@ -6,11 +6,11 @@ create table if not exists  products(
     price double precision
 );
 
-INSERT INTO public.products (product_id, name, brand, category, price) VALUES ('101', 'iPhone', 'Apple', 'smartphone', 900);
-INSERT INTO public.products (product_id, name, brand, category, price) VALUES ('102', 'Playstation 5', 'Sony', 'console', 500);
-INSERT INTO public.products (product_id, name, brand, category, price) VALUES ('103', '256 G7', 'HP', 'pc', 600);
-INSERT INTO public.products (product_id, name, brand, category, price) VALUES ('104', 'RS66A8101SL', 'Samsung', 'fridge', 700);
-INSERT INTO public.products (product_id, name, brand, category, price) VALUES ('105', '65QNED816QA', 'LG', 'smart tv', 800);
+INSERT INTO public.products (product_id, name, brand, category, price) VALUES ('101', 'iPhone', 'Apple', 'Smartphone', 900);
+INSERT INTO public.products (product_id, name, brand, category, price) VALUES ('102', 'Playstation 5', 'Sony', 'Console', 500);
+INSERT INTO public.products (product_id, name, brand, category, price) VALUES ('103', '256 G7', 'HP', 'PC', 600);
+INSERT INTO public.products (product_id, name, brand, category, price) VALUES ('104', 'RS66A8101SL', 'Samsung', 'Fridge', 700);
+INSERT INTO public.products (product_id, name, brand, category, price) VALUES ('105', '65QNED816QA', 'LG', 'Smart TV', 800);
 
 
 create table if not exists profiles (

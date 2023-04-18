@@ -1,0 +1,11 @@
+.search-bar {
+    padding: 50px;
+}
+
+.d-grid {
+    padding: 50px;
+}
+
+.email:hover {
+    cursor: pointer;
+}
