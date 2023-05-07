@@ -1,17 +1,19 @@
 package it.polito.g26.server.profiles
 
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
+import java.util.UUID
 
 @Entity
-@Table(name = "profiles")
-class Profile {
+@Inheritance(strategy =  InheritanceType.TABLE_PER_CLASS)
+abstract class Profile (
     @Id
-    var email: String = ""
-    var password: String = ""
-    var name: String = ""
-    var surname: String = ""
-    var city: String = ""
-    var address: String = ""
-}
+    @GeneratedValue(strategy = GenerationType.UUID)
+    var profileId: UUID? = null,
+    @Column(nullable = false)
+    var email: String= "",
+    @Column(nullable = false)
+    var password: String = "",
+    var name: String = "",
+    var surname: String = "",
+    var nationality: String = ""
+)

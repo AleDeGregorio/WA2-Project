@@ -5,10 +5,9 @@ data class ProfileDTO(
     val password: String,
     val name: String,
     val surname: String,
-    val city: String,
-    val address: String
+    val nationality: String
 )
 
 fun Profile.toDTO(): ProfileDTO {
-    return ProfileDTO(email, password, name, surname, city, address)
+    return ProfileDTO(email, password, name, surname, nationality)
 }

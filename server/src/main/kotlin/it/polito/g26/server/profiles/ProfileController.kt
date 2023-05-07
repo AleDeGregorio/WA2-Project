@@ -48,9 +48,7 @@ class ProfileController(
         profile.password = profileDTO.password
         profile.name = profileDTO.name
         profile.surname = profileDTO.surname
-        profile.city = profileDTO.city
-        profile.address = profileDTO.address
-
+        profile.nationality = profileDTO.nationality
         return profile
     }
 }
