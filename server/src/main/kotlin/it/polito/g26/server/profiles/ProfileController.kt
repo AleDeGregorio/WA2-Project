@@ -45,7 +45,6 @@ class ProfileController(
         val profile = Profile()
 
         profile.email = email ?: profileDTO.email
-        profile.password = profileDTO.password
         profile.name = profileDTO.name
         profile.surname = profileDTO.surname
         profile.nationality = profileDTO.nationality

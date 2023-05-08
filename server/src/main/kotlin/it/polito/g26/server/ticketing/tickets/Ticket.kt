@@ -28,12 +28,12 @@ class Ticket {
     var priorityLevel: Int? = null
     @ManyToOne
     var product: Product? = null
-    @OneToOne(mappedBy = "expert")
-    var expertAssigned: Expert? = null
+    @ManyToOne
+    var expert: Expert? = null
     @OneToMany
     var status: MutableSet<Status> = mutableSetOf<Status>()
-    @OneToOne(mappedBy = "customer")
+    @ManyToOne
     var customer: Customer? = null
-    @OneToMany(mappedBy = "ticket")
-    var chat = mutableSetOf<Message>()
+    //@OneToMany(mappedBy = "Message")
+    //var chat = mutableSetOf<Message>()
 }

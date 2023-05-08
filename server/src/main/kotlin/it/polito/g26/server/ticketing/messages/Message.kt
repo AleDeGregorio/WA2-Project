@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import java.time.LocalDate
 import java.util.Date
 
 @Entity
@@ -15,13 +16,13 @@ import java.util.Date
 class Message (
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    var MessageId: Long? = null,
+    var messageId: Long? = null,
     @ManyToOne
     var sender: Profile? = null,
     @ManyToOne
     var receiver: Profile? = null,
     @ManyToOne
     var ticket: Ticket? = null,
-    var date: Date? = null,
+    var date: LocalDate? = null,
     var attachment: String? = null
 )

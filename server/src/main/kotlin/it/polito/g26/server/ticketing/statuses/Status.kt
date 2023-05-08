@@ -1,15 +1,10 @@
 package it.polito.g26.server.ticketing.statuses
 
+import it.polito.g26.server.ticketing.Status
 import it.polito.g26.server.ticketing.experts.Expert
 import it.polito.g26.server.ticketing.tickets.Ticket
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.OneToOne
-import jakarta.persistence.Table
-import java.util.Date
+import jakarta.persistence.*
+import java.time.LocalDate
 
 @Entity
 @Table(name = "statuses")
@@ -17,8 +12,9 @@ class Status {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var statusId: Long? = null
-    var date: Date? = null
-    var status: String? = null
+    var date: LocalDate? = null
+    @Enumerated(value = EnumType.ORDINAL)
+    val status: it.polito.g26.server.ticketing.Status? = null
     @ManyToOne
     var ticket: Ticket? = null
     @OneToOne
