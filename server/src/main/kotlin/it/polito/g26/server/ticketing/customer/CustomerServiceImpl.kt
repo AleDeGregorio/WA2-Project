@@ -1,5 +1,7 @@
 package it.polito.g26.server.ticketing.customer
 
+import it.polito.g26.server.ticketing.chat.ChatDTO
+import it.polito.g26.server.ticketing.chat.toDTO
 import it.polito.g26.server.ticketing.ticket.TicketDTO
 import it.polito.g26.server.ticketing.ticket.toDTO
 import org.springframework.stereotype.Service
@@ -34,6 +36,16 @@ class CustomerServiceImpl(
         if (customerRepository.existsById(id)) {
             val tickets = customerRepository.getTickets(id) ?: return null
             return tickets.map { it.toDTO() }.toSet()
+        }
+        else {
+            throw Exception("Customer not found")
+        }
+    }
+
+    override fun getChats(id: Long): Set<ChatDTO>? {
+        if (customerRepository.existsById(id)) {
+            val chats = customerRepository.getChats(id) ?: return null
+            return chats.map { it.toDTO() }.toSet()
         }
         else {
             throw Exception("Customer not found")

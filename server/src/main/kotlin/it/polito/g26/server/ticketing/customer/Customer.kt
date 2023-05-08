@@ -1,5 +1,6 @@
 package it.polito.g26.server.ticketing.customer
 
+import it.polito.g26.server.ticketing.chat.Chat
 import it.polito.g26.server.ticketing.utility.Role
 import it.polito.g26.server.ticketing.ticket.Ticket
 import it.polito.g26.server.ticketing.utility.User
@@ -16,5 +17,7 @@ data class Customer(
     var address: String = "",
 
     @OneToMany(mappedBy = "customer")
-    var tickets: MutableSet<Ticket> = mutableSetOf()
+    var tickets: MutableSet<Ticket> = mutableSetOf(),
+    @OneToMany(mappedBy = "customer")
+    var chats: MutableSet<Chat> = mutableSetOf()
 ) : User(role = Role.CUSTOMER)

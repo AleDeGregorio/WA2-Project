@@ -1,5 +1,6 @@
 package it.polito.g26.server.ticketing.customer
 
+import it.polito.g26.server.ticketing.chat.ChatDTO
 import it.polito.g26.server.ticketing.ticket.TicketDTO
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
@@ -62,5 +63,11 @@ class CustomerController(
     @ResponseStatus(HttpStatus.OK)
     fun getCustomerTickets(@PathVariable id: Long) : Set<TicketDTO>? {
         return customerService.getTickets(id) ?: throw Exception("Customer not found")
+    }
+
+    @GetMapping("/API/customer/chats/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    fun getCustomerChats(@PathVariable id: Long) : Set<ChatDTO>? {
+        return customerService.getChats(id) ?: throw Exception("Customer not found")
     }
 }

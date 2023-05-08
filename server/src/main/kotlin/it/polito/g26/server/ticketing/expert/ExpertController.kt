@@ -1,5 +1,6 @@
 package it.polito.g26.server.ticketing.expert
 
+import it.polito.g26.server.ticketing.chat.ChatDTO
 import it.polito.g26.server.ticketing.ticket.TicketDTO
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
@@ -64,5 +65,11 @@ class ExpertController(
     @ResponseStatus(HttpStatus.OK)
     fun getExpertTickets(@PathVariable id: Long) : Set<TicketDTO> {
         return expertService.getTickets(id) ?: throw Exception("Expert not found")
+    }
+
+    @GetMapping("/API/expert/chats/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    fun getExpertChats(@PathVariable id: Long) : Set<ChatDTO> {
+        return expertService.getChats(id) ?: throw Exception("Expert not found")
     }
 }

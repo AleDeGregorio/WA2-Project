@@ -1,5 +1,6 @@
 package it.polito.g26.server.ticketing.expert
 
+import it.polito.g26.server.ticketing.chat.ChatDTO
 import it.polito.g26.server.ticketing.ticket.TicketDTO
 
 interface ExpertService {
@@ -10,4 +11,6 @@ interface ExpertService {
     fun updateExpert(expert: Expert)
 
     fun getTickets(id: Long) : Set<TicketDTO>?
+
+    fun getChats(id: Long) : Set<ChatDTO>?
 }

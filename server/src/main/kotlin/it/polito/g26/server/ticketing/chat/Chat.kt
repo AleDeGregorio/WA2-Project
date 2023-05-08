@@ -1,17 +1,20 @@
-package it.polito.g26.server.ticketing.ticket
+package it.polito.g26.server.ticketing.chat
 
 import it.polito.g26.server.ticketing.customer.Customer
 import it.polito.g26.server.ticketing.device.Device
 import it.polito.g26.server.ticketing.expert.Expert
-import it.polito.g26.server.ticketing.statusTicket.StatusTicket
+import it.polito.g26.server.ticketing.message.Message
 import jakarta.persistence.*
 import java.util.*
 
 @Entity
-data class Ticket(
+data class Chat (
     @Id
     @GeneratedValue
     var id: Long? = null,
+
+    @OneToMany(mappedBy = "chat")
+    var messages: MutableSet<Message> = mutableSetOf(),
 
     @ManyToOne
     var customer: Customer? = null,
@@ -20,13 +23,6 @@ data class Ticket(
     @ManyToOne
     var product: Device? = null,
 
-    @OneToMany
-    var status: MutableSet<StatusTicket> = mutableSetOf(),
-
-    var issueType: String = "",
-    @Column(length = 10000)
-    var description: String = "",
-    var priorityLevel: Int? = null,
     @Temporal(TemporalType.TIMESTAMP)
-    var dateOfCreation: Date? = null
+    var creationDate: Date? = null
 )
