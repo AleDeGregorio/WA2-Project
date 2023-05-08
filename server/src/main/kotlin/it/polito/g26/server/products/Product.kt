@@ -8,9 +8,9 @@ import jakarta.persistence.Table
 @Table(name = "products")
 class Product {
     @Id
-    var productId: String = ""
+    var ean: String = ""
     var name: String = ""
     var brand: String = ""
-    var category: String = ""
     var price: Double = 0.0
+    var category: String = ""
 }

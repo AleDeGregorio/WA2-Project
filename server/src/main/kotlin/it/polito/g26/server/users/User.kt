@@ -1,14 +1,16 @@
 package it.polito.g26.server.users
 
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 
 @Entity
-@Table(name = "users")
-class User {
+@Inheritance(strategy =  InheritanceType.TABLE_PER_CLASS)
+open class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(updatable = false, nullable = false)
+    var id: Long? = null
     var email: String = ""
+    var name: String = ""
     var username: String = ""
-    var age: Int = 0
+    open val role: Role? = null
 }
