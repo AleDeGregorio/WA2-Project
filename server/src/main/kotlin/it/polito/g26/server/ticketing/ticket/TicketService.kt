@@ -1,5 +1,7 @@
 package it.polito.g26.server.ticketing.ticket
 
+import it.polito.g26.server.ticketing.chat.ChatDTO
+import it.polito.g26.server.ticketing.expert.Expert
 import it.polito.g26.server.ticketing.statusTicket.StatusTicketDTO
 import java.util.Date
 
@@ -18,7 +20,11 @@ interface TicketService {
 
     fun getStatusTicket(id: Long) : Set<StatusTicketDTO>?
 
+    fun getChats(id: Long) : Set<ChatDTO>?
+
     fun insertTicket(ticket: Ticket)
 
     fun setPriorityLevel(id: Long, priorityLevel: Int)
+
+    fun setExpert(id: Long, expert: Expert)
 }

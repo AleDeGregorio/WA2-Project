@@ -1,5 +1,6 @@
 package it.polito.g26.server.ticketing.ticket
 
+import it.polito.g26.server.ticketing.chat.Chat
 import it.polito.g26.server.ticketing.customer.Customer
 import it.polito.g26.server.ticketing.device.Device
 import it.polito.g26.server.ticketing.expert.Expert
@@ -22,6 +23,8 @@ data class Ticket(
 
     @OneToMany
     var status: MutableSet<StatusTicket> = mutableSetOf(),
+    @OneToMany(mappedBy = "ticket")
+    var chats: MutableSet<Chat> = mutableSetOf(),
 
     var issueType: String = "",
     @Column(length = 10000)

@@ -1,5 +1,6 @@
 package it.polito.g26.server.ticketing.chat
 
+import it.polito.g26.server.ticketing.message.MessageDTO
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -16,9 +17,7 @@ class ChatController(
     private fun chatDTOToEntity(chatDTO: ChatDTO) : Chat {
         val chat = Chat()
 
-        chat.customer = chatDTO.customer
-        chat.expert = chatDTO.expert
-        chat.product = chatDTO.product
+        chat.ticket = chatDTO.ticket
         chat.creationDate = chatDTO.creationDate
 
         return chat
@@ -30,22 +29,10 @@ class ChatController(
         return chatService.getChat(id) ?: throw Exception("Chat not found")
     }
 
-    @GetMapping("/API/chat/customer/{customerId}")
+    @GetMapping("/API/chat/ticket/{ticketId}")
     @ResponseStatus(HttpStatus.OK)
-    fun getChatByCustomer(@PathVariable customerId: Long) : List<ChatDTO>? {
-        return chatService.getChatByCustomer(customerId) ?: throw Exception("Customer not found")
-    }
-
-    @GetMapping("/API/chat/expert/{expertId}")
-    @ResponseStatus(HttpStatus.OK)
-    fun getChatByExpert(@PathVariable expertId: Long) : List<ChatDTO>? {
-        return chatService.getChatByCustomer(expertId) ?: throw Exception("Expert not found")
-    }
-
-    @GetMapping("/API/chat/product/{productId}")
-    @ResponseStatus(HttpStatus.OK)
-    fun getChatByProduct(@PathVariable productId: Long) : List<ChatDTO>? {
-        return chatService.getChatByCustomer(productId) ?: throw Exception("Product not found")
+    fun getChatByTicket(@PathVariable ticketId: Long) : List<ChatDTO>? {
+        return chatService.getChatByTicket(ticketId) ?: throw Exception("Ticket not found")
     }
 
     @GetMapping("/API/chat/date/{date}")
@@ -53,6 +40,12 @@ class ChatController(
     fun getChatByDate(@PathVariable date: String) : List<ChatDTO>? {
         val formattedDate = SimpleDateFormat("yyyy-MM-dd").parse(date)
         return chatService.getChatByDate(formattedDate) ?: throw Exception("Customer not found")
+    }
+
+    @GetMapping("/API/chat/messages/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    fun getChatMessages(@PathVariable id: Long) : Set<MessageDTO> {
+        return chatService.getMessages(id) ?: throw Exception("Chat not found")
     }
 
     @PostMapping("/API/chat")

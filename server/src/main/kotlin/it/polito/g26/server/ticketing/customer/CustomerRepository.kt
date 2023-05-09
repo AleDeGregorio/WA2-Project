@@ -1,6 +1,5 @@
 package it.polito.g26.server.ticketing.customer
 
-import it.polito.g26.server.ticketing.chat.Chat
 import it.polito.g26.server.ticketing.ticket.Ticket
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
@@ -17,7 +16,4 @@ interface CustomerRepository : JpaRepository<Customer, Long> {
 
     @Query("SELECT t FROM Ticket t WHERE t.customer.id = :id")
     fun getTickets(@Param("id") id: Long) : List<Ticket>?
-
-    @Query("SELECT c FROM Chat c WHERE c.customer.id = :id")
-    fun getChats(@Param("id") id: Long) : List<Chat>?
 }

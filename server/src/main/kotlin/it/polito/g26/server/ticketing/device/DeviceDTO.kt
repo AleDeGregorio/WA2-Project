@@ -1,6 +1,5 @@
 package it.polito.g26.server.ticketing.device
 
-import it.polito.g26.server.ticketing.chat.Chat
 import it.polito.g26.server.ticketing.ticket.Ticket
 
 data class DeviceDTO (
@@ -9,10 +8,9 @@ data class DeviceDTO (
     val category: String,
     val brand: String,
     val price: Double,
-    val tickets: MutableSet<Ticket>,
-    val chats: MutableSet<Chat>
+    val tickets: MutableSet<Ticket>
 )
 
 fun Device.toDTO() : DeviceDTO {
-    return DeviceDTO(ean!!, name, category, brand, price, tickets, chats)
+    return DeviceDTO(ean!!, name, category, brand, price, tickets)
 }

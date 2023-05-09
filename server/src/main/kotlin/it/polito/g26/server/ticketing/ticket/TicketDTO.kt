@@ -1,5 +1,6 @@
 package it.polito.g26.server.ticketing.ticket
 
+import it.polito.g26.server.ticketing.chat.Chat
 import it.polito.g26.server.ticketing.customer.Customer
 import it.polito.g26.server.ticketing.device.Device
 import it.polito.g26.server.ticketing.expert.Expert
@@ -12,6 +13,7 @@ data class TicketDTO(
     val expert: Expert?,
     val product: Device?,
     val status: MutableSet<StatusTicket>,
+    val chats: MutableSet<Chat>,
     val issueType: String,
     val description: String,
     val priorityLevel: Int?,
@@ -19,5 +21,5 @@ data class TicketDTO(
 )
 
 fun Ticket.toDTO() : TicketDTO {
-    return TicketDTO(id, customer, expert, product, status, issueType, description, priorityLevel, dateOfCreation)
+    return TicketDTO(id, customer, expert, product, status, chats, issueType, description, priorityLevel, dateOfCreation)
 }

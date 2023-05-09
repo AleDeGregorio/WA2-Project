@@ -1,6 +1,5 @@
 package it.polito.g26.server.ticketing.device
 
-import it.polito.g26.server.ticketing.chat.Chat
 import it.polito.g26.server.ticketing.ticket.Ticket
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -19,7 +18,5 @@ data class Device(
     var price: Double = 0.0,
 
     @OneToMany(mappedBy = "product")
-    var tickets: MutableSet<Ticket> = mutableSetOf(),
-    @OneToMany(mappedBy = "product")
-    var chats: MutableSet<Chat> = mutableSetOf()
+    var tickets: MutableSet<Ticket> = mutableSetOf()
 )

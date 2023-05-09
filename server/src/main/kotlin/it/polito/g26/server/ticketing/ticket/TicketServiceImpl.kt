@@ -1,5 +1,8 @@
 package it.polito.g26.server.ticketing.ticket
 
+import it.polito.g26.server.ticketing.chat.ChatDTO
+import it.polito.g26.server.ticketing.chat.toDTO
+import it.polito.g26.server.ticketing.expert.Expert
 import it.polito.g26.server.ticketing.statusTicket.StatusTicketDTO
 import it.polito.g26.server.ticketing.statusTicket.toDTO
 import org.springframework.data.repository.findByIdOrNull
@@ -44,6 +47,16 @@ class TicketServiceImpl(
         }
     }
 
+    override fun getChats(id: Long): Set<ChatDTO>? {
+        if (ticketRepository.existsById(id)) {
+            val chats = ticketRepository.getChats(id) ?: return null
+            return chats.map { it.toDTO() }.toSet()
+        }
+        else {
+            throw Exception("Ticket not found")
+        }
+    }
+
     override fun insertTicket(ticket: Ticket) {
         if (ticketRepository.existsById(ticket.id!!)) {
             throw Exception("Ticket already inserted")
@@ -56,6 +69,15 @@ class TicketServiceImpl(
     override fun setPriorityLevel(id: Long, priorityLevel: Int) {
         if (ticketRepository.existsById(id)) {
             ticketRepository.setPriorityLevel(id, priorityLevel)
+        }
+        else {
+            throw Exception("Ticket not found")
+        }
+    }
+
+    override fun setExpert(id: Long, expert: Expert) {
+        if (ticketRepository.existsById(id)) {
+            ticketRepository.setExpert(id, expert)
         }
         else {
             throw Exception("Ticket not found")

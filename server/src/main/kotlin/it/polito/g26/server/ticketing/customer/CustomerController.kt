@@ -1,15 +1,8 @@
 package it.polito.g26.server.ticketing.customer
 
-import it.polito.g26.server.ticketing.chat.ChatDTO
 import it.polito.g26.server.ticketing.ticket.TicketDTO
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.ResponseStatus
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class CustomerController(
@@ -63,11 +56,5 @@ class CustomerController(
     @ResponseStatus(HttpStatus.OK)
     fun getCustomerTickets(@PathVariable id: Long) : Set<TicketDTO>? {
         return customerService.getTickets(id) ?: throw Exception("Customer not found")
-    }
-
-    @GetMapping("/API/customer/chats/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    fun getCustomerChats(@PathVariable id: Long) : Set<ChatDTO>? {
-        return customerService.getChats(id) ?: throw Exception("Customer not found")
     }
 }

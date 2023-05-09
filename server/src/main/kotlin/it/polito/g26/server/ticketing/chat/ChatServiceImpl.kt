@@ -1,5 +1,7 @@
 package it.polito.g26.server.ticketing.chat
 
+import it.polito.g26.server.ticketing.message.MessageDTO
+import it.polito.g26.server.ticketing.message.toDTO
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.util.*
@@ -12,20 +14,22 @@ class ChatServiceImpl(
         return chatRepository.findByIdOrNull(id)?.toDTO()
     }
 
-    override fun getChatByCustomer(customerId: Long): List<ChatDTO>? {
-        return chatRepository.findByCustomer(customerId)?.map { it.toDTO() }
-    }
-
-    override fun getChatByExpert(expertId: Long): List<ChatDTO>? {
-        return chatRepository.findByExpert(expertId)?.map { it.toDTO() }
-    }
-
-    override fun getChatByProduct(productId: Long): List<ChatDTO>? {
-        return chatRepository.findByProduct(productId)?.map { it.toDTO() }
+    override fun getChatByTicket(ticketId: Long): List<ChatDTO>? {
+        return chatRepository.findByTicket(ticketId)?.map { it.toDTO() }
     }
 
     override fun getChatByDate(date: Date): List<ChatDTO>? {
         return chatRepository.findByDate(date)?.map { it.toDTO() }
+    }
+
+    override fun getMessages(id: Long): Set<MessageDTO>? {
+        if (chatRepository.existsById(id)) {
+            val messages = chatRepository.getMessages(id) ?: return null
+            return messages.map { it.toDTO() }.toSet()
+        }
+        else {
+            throw Exception("Chat not found")
+        }
     }
 
     override fun insertChat(chat: Chat) {

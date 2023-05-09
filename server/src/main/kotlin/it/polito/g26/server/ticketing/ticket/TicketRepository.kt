@@ -1,5 +1,7 @@
 package it.polito.g26.server.ticketing.ticket
 
+import it.polito.g26.server.ticketing.chat.Chat
+import it.polito.g26.server.ticketing.expert.Expert
 import it.polito.g26.server.ticketing.statusTicket.StatusTicket
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
@@ -25,7 +27,14 @@ interface TicketRepository : JpaRepository<Ticket, Long> {
     @Query("SELECT s FROM StatusTicket s WHERE s.ticketDate.id.id = :id")
     fun getStatusTicket(@Param("id") id: Long) : List<StatusTicket>?
 
+    @Query("SELECT c FROM Chat c WHERE c.ticket.id = :id")
+    fun getChats(@Param("id") id: Long) : List<Chat>?
+
     @Modifying
     @Query("UPDATE Ticket t SET t.priorityLevel = :priorityLevel WHERE t.id = :id")
-    fun setPriorityLevel(id: Long, priorityLevel: Int)
+    fun setPriorityLevel(@Param("id") id: Long, @Param("priorityLevel") priorityLevel: Int)
+
+    @Modifying
+    @Query("UPDATE Ticket t SET t.expert = :expert WHERE t.id = :id")
+    fun setExpert(@Param("id") id: Long, @Param("expert") expert: Expert)
 }

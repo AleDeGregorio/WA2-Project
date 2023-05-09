@@ -1,7 +1,5 @@
 package it.polito.g26.server.ticketing.expert
 
-import it.polito.g26.server.ticketing.chat.ChatDTO
-import it.polito.g26.server.ticketing.chat.toDTO
 import it.polito.g26.server.ticketing.ticket.TicketDTO
 import it.polito.g26.server.ticketing.ticket.toDTO
 import org.springframework.data.repository.findByIdOrNull
@@ -13,6 +11,10 @@ class ExpertServiceImpl(
 ) : ExpertService {
     override fun getExpert(id: Long): ExpertDTO? {
         return expertRepository.findByIdOrNull(id)?.toDTO()
+    }
+
+    override fun getExpertsByField(field: String): List<ExpertDTO>? {
+        return expertRepository.getByField(field)?.map { it.toDTO() }
     }
 
     override fun insertExpert(expert: Expert) {
@@ -37,16 +39,6 @@ class ExpertServiceImpl(
         if (expertRepository.existsById(id)) {
             val tickets = expertRepository.getTickets(id) ?: return null
             return tickets.map { it.toDTO() }.toSet()
-        }
-        else {
-            throw Exception("Expert not found")
-        }
-    }
-
-    override fun getChats(id: Long): Set<ChatDTO>? {
-        if (expertRepository.existsById(id)) {
-            val chats = expertRepository.getChats(id) ?: return null
-            return chats.map { it.toDTO() }.toSet()
         }
         else {
             throw Exception("Expert not found")

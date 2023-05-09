@@ -1,15 +1,8 @@
 package it.polito.g26.server.ticketing.expert
 
-import it.polito.g26.server.ticketing.chat.ChatDTO
 import it.polito.g26.server.ticketing.ticket.TicketDTO
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.ResponseStatus
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class ExpertController(
@@ -33,6 +26,12 @@ class ExpertController(
     @ResponseStatus(HttpStatus.OK)
     fun getExpert(@PathVariable id: Long) : ExpertDTO? {
         return expertService.getExpert(id) ?: throw Exception("Expert not found")
+    }
+
+    @GetMapping("/API/expert/field/{field}")
+    @ResponseStatus(HttpStatus.OK)
+    fun getExpertsByField(@PathVariable field: String) : List<ExpertDTO>? {
+        return expertService.getExpertsByField(field) ?: throw Exception("No expert found")
     }
 
     @PostMapping("/API/expert")
@@ -65,11 +64,5 @@ class ExpertController(
     @ResponseStatus(HttpStatus.OK)
     fun getExpertTickets(@PathVariable id: Long) : Set<TicketDTO> {
         return expertService.getTickets(id) ?: throw Exception("Expert not found")
-    }
-
-    @GetMapping("/API/expert/chats/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    fun getExpertChats(@PathVariable id: Long) : Set<ChatDTO> {
-        return expertService.getChats(id) ?: throw Exception("Expert not found")
     }
 }

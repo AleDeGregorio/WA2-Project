@@ -1,6 +1,5 @@
 package it.polito.g26.server.ticketing.expert
 
-import it.polito.g26.server.ticketing.chat.Chat
 import it.polito.g26.server.ticketing.ticket.Ticket
 
 data class ExpertDTO(
@@ -8,10 +7,9 @@ data class ExpertDTO(
     val name: String?,
     val surname: String?,
     val fields: String,
-    val tickets: MutableSet<Ticket>,
-    val chats: MutableSet<Chat>
+    val tickets: MutableSet<Ticket>
 )
 
 fun Expert.toDTO() : ExpertDTO {
-    return ExpertDTO(id, name, surname, fields, tickets, chats)
+    return ExpertDTO(id, name, surname, fields, tickets)
 }

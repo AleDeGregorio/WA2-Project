@@ -1,8 +1,7 @@
 package it.polito.g26.server.ticketing.customer
 
-import it.polito.g26.server.ticketing.chat.Chat
-import it.polito.g26.server.ticketing.utility.Role
 import it.polito.g26.server.ticketing.ticket.Ticket
+import it.polito.g26.server.ticketing.utility.Role
 import it.polito.g26.server.ticketing.utility.User
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -17,7 +16,5 @@ data class Customer(
     var address: String = "",
 
     @OneToMany(mappedBy = "customer")
-    var tickets: MutableSet<Ticket> = mutableSetOf(),
-    @OneToMany(mappedBy = "customer")
-    var chats: MutableSet<Chat> = mutableSetOf()
+    var tickets: MutableSet<Ticket> = mutableSetOf()
 ) : User(role = Role.CUSTOMER)
