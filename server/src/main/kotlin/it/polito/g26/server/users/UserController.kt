@@ -1,5 +1,5 @@
 package it.polito.g26.server.users
-import it.polito.g26.server.ProfileAlreadyExistsException
+import it.polito.g26.server.EmailAlreadyExistException
 import it.polito.g26.server.ProfileNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -19,7 +19,7 @@ class UserController(private val userService: UserService) {
     fun postUserProfile(@RequestBody u: UserDTO) {
         if (userService.findUserByEmail(u.email) != null) {
             userService.insertUserProfile(u)
-        } else throw ProfileAlreadyExistsException("Email  ${u.email}  already exists in the database!")
+        } else throw EmailAlreadyExistException("Email  ${u.email}  already exists in the database!")
     }
 
     @PutMapping("/API/profiles/{email}")

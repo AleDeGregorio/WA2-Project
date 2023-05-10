@@ -20,5 +20,5 @@ data class StatusTicket(
     @EmbeddedId
     var ticketDate: TicketDate? = null,
     @Enumerated(value = EnumType.STRING)
-    var status: Status? = null
+    var status:Status?  = null
 )
