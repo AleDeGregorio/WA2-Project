@@ -11,12 +11,8 @@ class ManagerServiceImpl(
         return managerRepository.findByIdOrNull(id)?.toDTO()
     }
 
-    override fun getManagerByEmail(email: String): ManagerDTO? {
-        return managerRepository.findByEmail(email)?.toDTO()
-    }
-
     override fun insertManager(manager: Manager) {
-        if (managerRepository.existsById(manager.id!!)) {
+        if (manager.id != null && managerRepository.existsById(manager.id!!)) {
             throw Exception("Manager already exists")
         }
         else {
@@ -26,7 +22,12 @@ class ManagerServiceImpl(
 
     override fun updateManager(manager: Manager) {
         if (managerRepository.existsById(manager.id!!)) {
-            managerRepository.save(manager)
+            val retrievedManager = managerRepository.findById(manager.id!!).get()
+
+            retrievedManager.name = manager.name
+            retrievedManager.surname = manager.surname
+
+            managerRepository.save(retrievedManager)
         }
         else {
             throw Exception("Manager not found")

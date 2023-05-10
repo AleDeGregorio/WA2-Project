@@ -7,6 +7,6 @@ import jakarta.persistence.Entity
 
 @Entity
 data class Manager(
-    @Column(unique = true)
-    var email: String = ""
-) : User(role = Role.MANAGER)
+    override var name: String,
+    override var surname: String
+) : User(name = name, surname = surname, role = Role.MANAGER)

@@ -58,7 +58,7 @@ class TicketServiceImpl(
     }
 
     override fun insertTicket(ticket: Ticket) {
-        if (ticketRepository.existsById(ticket.id!!)) {
+        if (ticket.id != null && ticketRepository.existsById(ticket.id!!)) {
             throw Exception("Ticket already inserted")
         }
         else {

@@ -7,6 +7,4 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface ManagerRepository : JpaRepository<Manager, Long> {
-    @Query("SELECT m FROM Manager m WHERE m.email = :email")
-    fun findByEmail(@Param("email") email: String) : Manager?
 }

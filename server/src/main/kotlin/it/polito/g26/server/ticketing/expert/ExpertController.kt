@@ -9,14 +9,12 @@ class ExpertController(
     private val expertService: ExpertService
 ) {
     private fun expertDTOToEntity(expertDTO: ExpertDTO, id: Long?) : Expert {
-        val expert = Expert()
+        val expert = Expert(name = expertDTO.name!!, surname = expertDTO.surname!!)
 
         if (id != null) {
             expert.id = id
         }
 
-        expert.name = expertDTO.name
-        expert.surname = expertDTO.surname
         expert.fields = expertDTO.fields
 
         return expert

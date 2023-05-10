@@ -18,7 +18,7 @@ class ExpertServiceImpl(
     }
 
     override fun insertExpert(expert: Expert) {
-        if (expertRepository.existsById(expert.id!!)) {
+        if (expert.id != null && expertRepository.existsById(expert.id!!)) {
             throw Exception("Expert already exists")
         }
         else {
@@ -28,7 +28,13 @@ class ExpertServiceImpl(
 
     override fun updateExpert(expert: Expert) {
         if (expertRepository.existsById(expert.id!!)) {
-            expertRepository.save(expert)
+            val retrievedExpert = expertRepository.findById(expert.id!!).get()
+
+            retrievedExpert.name = expert.name
+            retrievedExpert.surname = expert.surname
+            retrievedExpert.fields = expert.fields
+
+            expertRepository.save(retrievedExpert)
         }
         else {
             throw Exception("Expert not found")

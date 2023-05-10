@@ -9,10 +9,8 @@ class CustomerController(
     private val customerService: CustomerService
 ) {
     private fun customerDTOToEntity(customerDTO: CustomerDTO, email: String?) : Customer {
-        val customer = Customer()
+        val customer = Customer(name = customerDTO.name!!, surname = customerDTO.surname!!)
 
-        customer.name = customerDTO.name
-        customer.surname = customerDTO.surname
         customer.email = email ?: customerDTO.email
         customer.city = customerDTO.city
         customer.address = customerDTO.address

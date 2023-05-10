@@ -23,7 +23,14 @@ class CustomerServiceImpl(
 
     override fun updateCustomer(customer: Customer) {
         if (customerRepository.existsByEmail(customer.email)) {
-            customerRepository.save(customer)
+            val retrievedCustomer = customerRepository.findByEmail(customer.email)
+
+            retrievedCustomer?.name = customer.name
+            retrievedCustomer?.surname = customer.surname
+            retrievedCustomer?.city = customer.city
+            retrievedCustomer?.address = customer.address
+
+            customerRepository.save(retrievedCustomer!!)
         }
         else {
             throw Exception("Customer not found")

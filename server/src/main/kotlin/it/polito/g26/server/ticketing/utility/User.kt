@@ -8,8 +8,8 @@ open class User (
     @GeneratedValue
     var id: Long? = null,
 
-    var name: String? = null,
-    var surname: String? = null,
+    open var name: String,
+    open var surname: String,
 
     @Enumerated(value = EnumType.STRING)
     val role: Role

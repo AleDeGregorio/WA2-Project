@@ -25,7 +25,7 @@ class StatusTicketServiceImpl(
     }
 
     override fun insertStatusTicket(statusTicket: StatusTicket) {
-        if (statusTicketRepository.existsById(statusTicket.ticketDate!!)) {
+        if (statusTicket.ticketDate != null && statusTicketRepository.existsById(statusTicket.ticketDate!!)) {
             throw Exception("Status ticket already inserted")
         }
         else {

@@ -10,6 +10,9 @@ import jakarta.persistence.OneToMany
 data class Expert (
     var fields: String = "",
 
+    override var name: String,
+    override var surname: String,
+
     @OneToMany(mappedBy = "expert")
     var tickets: MutableSet<Ticket> = mutableSetOf()
-) : User(role = Role.EXPERT)
+) : User(name = name, surname = surname,role = Role.EXPERT)

@@ -28,7 +28,7 @@ class MessageServiceImpl(
     }
 
     override fun insertMessage(message: Message) {
-        if (messageRepository.existsById(message.id!!)) {
+        if (message.id != null && messageRepository.existsById(message.id!!)) {
             throw Exception("Message already inserted")
         }
         else {

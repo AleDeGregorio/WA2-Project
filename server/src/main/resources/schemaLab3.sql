@@ -16,7 +16,7 @@ INSERT INTO public.expert (id, name, role, surname, fields) VALUES (8, 'Daniele'
 INSERT INTO public.expert (id, name, role, surname, fields) VALUES (9, 'Beatrice', 'EXPERT', 'Romano', 'Fridge, Smart TV');
 INSERT INTO public.expert (id, name, role, surname, fields) VALUES (10, 'Michele', 'EXPERT', 'Ricci', 'PC, Smartphone');
 
-INSERT INTO public.manager (id, name, role, surname, email) VALUES (11, 'Dario', 'MANAGER', 'Greco', 'dario@manager.it');
+INSERT INTO public.manager (id, name, role, surname, email) VALUES (11, 'Dario', 'MANAGER', 'Greco');
 
 INSERT INTO public.ticket (id, date_of_creation, description, issue_type, priority_level, customer_id, expert_id, product_ean) VALUES (1, '2023-05-05 12:00:00.000000', 'Problem with smartphone', 'Problem', 3, 1, 6, 1);
 INSERT INTO public.ticket (id, date_of_creation, description, issue_type, priority_level, customer_id, expert_id, product_ean) VALUES (2, '2023-05-15 16:00:00.000000', 'Configure PC', 'Configuration', 2, 2, 7, 3);

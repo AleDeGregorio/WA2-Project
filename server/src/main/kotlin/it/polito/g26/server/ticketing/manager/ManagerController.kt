@@ -1,23 +1,18 @@
 package it.polito.g26.server.ticketing.manager
 
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.ResponseStatus
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class ManagerController(
     private val managerService: ManagerService
 ) {
-    private fun managerDTOToEntity(managerDTO: ManagerDTO, email: String?) : Manager {
-        val manager = Manager()
+    private fun managerDTOToEntity(managerDTO: ManagerDTO, id: Long?) : Manager {
+        val manager = Manager(name = managerDTO.name!!, surname = managerDTO.surname!!)
 
-        manager.name = managerDTO.name
-        manager.surname = managerDTO.surname
-        manager.email = email ?: managerDTO.email
+        if (id != null) {
+            manager.id = id
+        }
 
         return manager
     }
@@ -28,15 +23,9 @@ class ManagerController(
         return managerService.getManager(id) ?: throw Exception("Manager not found")
     }
 
-    @GetMapping("/API/manager/email/{email}")
-    @ResponseStatus(HttpStatus.OK)
-    fun getManagerByEmail(@PathVariable email: String) : ManagerDTO? {
-        return managerService.getManagerByEmail(email) ?: throw Exception("Manager not found")
-    }
-
     @PostMapping("/API/manager")
     @ResponseStatus(HttpStatus.CREATED)
-    fun insertManager(managerDTO: ManagerDTO?) {
+    fun insertManager(@RequestBody managerDTO: ManagerDTO?) {
         if (managerDTO != null) {
             val insertManager = managerDTOToEntity(managerDTO, null)
 
@@ -47,11 +36,11 @@ class ManagerController(
         }
     }
 
-    @PutMapping("/API/manager/{email}")
+    @PutMapping("/API/manager/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    fun updateManager(managerDTO: ManagerDTO?, @PathVariable email: String) {
+    fun updateManager(@RequestBody managerDTO: ManagerDTO?, @PathVariable id: Long) {
         if (managerDTO != null) {
-            val updateManager = managerDTOToEntity(managerDTO, email)
+            val updateManager = managerDTOToEntity(managerDTO, id)
 
             managerService.updateManager(updateManager)
         }

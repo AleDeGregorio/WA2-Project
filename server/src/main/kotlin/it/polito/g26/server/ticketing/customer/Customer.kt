@@ -12,9 +12,12 @@ data class Customer(
     @Column(unique = true)
     var email: String = "",
 
+    override var name: String,
+    override var surname: String,
+
     var city: String = "",
     var address: String = "",
 
     @OneToMany(mappedBy = "customer")
     var tickets: MutableSet<Ticket> = mutableSetOf()
-) : User(role = Role.CUSTOMER)
+) : User(name = name, surname = surname, role = Role.CUSTOMER)

@@ -33,7 +33,7 @@ class ChatServiceImpl(
     }
 
     override fun insertChat(chat: Chat) {
-        if (chatRepository.existsById(chat.id!!)) {
+        if (chat.id != null && chatRepository.existsById(chat.id!!)) {
             throw Exception("Chat already exists")
         }
         else {

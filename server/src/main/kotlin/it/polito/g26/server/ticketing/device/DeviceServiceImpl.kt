@@ -16,7 +16,7 @@ class DeviceServiceImpl(
     }
 
     override fun insertDevice(device: Device) {
-        if (deviceRepository.existsById(device.ean!!)) {
+        if (device.ean != null && deviceRepository.existsById(device.ean!!)) {
             throw Exception("Product already inserted")
         }
         else {
@@ -26,7 +26,14 @@ class DeviceServiceImpl(
 
     override fun updateDevice(device: Device) {
         if (deviceRepository.existsById(device.ean!!)) {
-            deviceRepository.save(device)
+            val retrievedDevice = deviceRepository.findById(device.ean!!).get()
+
+            retrievedDevice.name = device.name
+            retrievedDevice.brand = device.brand
+            retrievedDevice.category = device.category
+            retrievedDevice.price = device.price
+
+            deviceRepository.save(retrievedDevice)
         }
         else {
             throw Exception("Product not found")
