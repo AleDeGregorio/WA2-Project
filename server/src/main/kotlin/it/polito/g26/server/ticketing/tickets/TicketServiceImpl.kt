@@ -1,10 +1,12 @@
 package it.polito.g26.server.ticketing.tickets
 
+import it.polito.g26.server.ticketing.Status
 import it.polito.g26.server.ticketing.statuses.StatusDTO
 import it.polito.g26.server.ticketing.statuses.toDTO
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDate
+import java.util.*
 
 @Service
 class TicketServiceImpl(
@@ -36,11 +38,16 @@ class TicketServiceImpl(
 
     override fun getStatusTicket(id: Long): Set<StatusDTO>? {
         if (ticketRepository.existsById(id)) {
-            return ticketRepository.getStatusTicket(id)?.map { it.toDTO() }?.toSet()
+            return ticketRepository.getStatusTicket(id)?.map{ it.toDTO() }?.toSet()
         }
         else {
             throw Exception("Ticket not found")
         }
+    }
+
+    override fun getTicketsByStatus(status: Status): List<TicketDTO> {
+        return ticketRepository.getTicketsByStatus(status)?.map { it.toDTO() }
+            ?: throw Exception("none")
     }
 
     override fun insertTicket(ticket: Ticket) {
@@ -49,6 +56,15 @@ class TicketServiceImpl(
         }
         else{
             ticketRepository.save(ticket)
+        }
+    }
+
+    override fun assignExpertTicket(ticketId: Long, expertId: UUID) {
+        if (ticketRepository.existsById(ticketId)){
+           ticketRepository.assignExpert(ticketId, expertId)
+        }
+        else{
+            throw Exception("Ticket not found")
         }
     }
 

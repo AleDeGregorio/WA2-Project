@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 import java.time.LocalDate
+import java.util.UUID
 
 @Repository
 interface TicketRepository: JpaRepository<Ticket, Long> {
@@ -27,5 +28,13 @@ interface TicketRepository: JpaRepository<Ticket, Long> {
 
     @Modifying
     @Query("UPDATE Ticket t SET t.priorityLevel = :priorityLevel WHERE t.id = :id")
-    fun setPriorityLevel(id: Long, priorityLevel: Int)
+    fun setPriorityLevel(@Param("id")id: Long,
+                         @Param("priorityLevel") priorityLevel: Int)
+
+    @Query("UPDATE Ticket t SET t.expert.profileId = :expertId WHERE t.id = :ticketId")
+    fun assignExpert(@Param("ticketId") ticketId: Long,
+                     @Param("expertId") expertId: UUID)
+
+    @Query("SELECT t FROM Ticket t JOIN FETCH t.status s WHERE s.status = :status")
+    fun getTicketsByStatus(status: it.polito.g26.server.ticketing.Status): List<Ticket>?
 }

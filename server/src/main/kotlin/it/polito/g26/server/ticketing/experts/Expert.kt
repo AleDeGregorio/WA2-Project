@@ -8,7 +8,7 @@ import jakarta.persistence.*
 //@Table(name = "experts")
 class Expert(
     @ElementCollection
-    val expertises: MutableList<Int>,
+    var expertises: MutableList<Int> = mutableListOf(),
     @OneToMany(mappedBy = "expert")
     var tickets: MutableSet<Ticket> = mutableSetOf()
 ) : Profile()
