@@ -1,9 +1,9 @@
 package it.polito.g26.server
 
+import it.polito.g26.server.products.Product
+import it.polito.g26.server.products.ProductRepository
 import it.polito.g26.server.profiles.customer.Customer
 import it.polito.g26.server.profiles.customer.CustomerRepository
-import it.polito.g26.server.ticketing.device.Device
-import it.polito.g26.server.ticketing.device.DeviceRepository
 import it.polito.g26.server.profiles.expert.Expert
 import it.polito.g26.server.profiles.expert.ExpertRepository
 import it.polito.g26.server.profiles.manager.Manager
@@ -56,7 +56,7 @@ class DbT1ApplicationTests {
     @Autowired
     lateinit var managerRepository: ManagerRepository
     @Autowired
-    lateinit var deviceRepository: DeviceRepository
+    lateinit var productRepository: ProductRepository
     @Autowired
     lateinit var ticketRepository: TicketRepository
 
@@ -122,7 +122,7 @@ class DbT1ApplicationTests {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun test1ExpertGet() {
-        val expert = Expert("Field1, Field2", "Name","Surname")
+        val expert = Expert("Field1, Field2", "Name","Surname", "Email")
 
         val savedExpert = expertRepository.save(expert)
 
@@ -136,7 +136,7 @@ class DbT1ApplicationTests {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun test2ExpertGetByField() {
-        val expert = Expert("Field1, Field2", "Name","Surname")
+        val expert = Expert("Field1, Field2", "Name","Surname","Email")
         val field = "field1"
 
         val savedExpert = expertRepository.save(expert)
@@ -151,7 +151,7 @@ class DbT1ApplicationTests {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun test3ExpertInsert() {
-        val expert = Expert("Field1, Field2", "Name","Surname")
+        val expert = Expert("Field1, Field2", "Name","Surname","Email")
 
         val url = "http://localhost:$port/API/expert"
         val request = HttpEntity(expert)
@@ -170,7 +170,7 @@ class DbT1ApplicationTests {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun test4ExpertUpdate() {
-        val expert = Expert("Field1, Field2", "Name","Surname")
+        val expert = Expert("Field1, Field2", "Name","Surname","Email")
         val savedExpert = expertRepository.save(expert)
 
         expert.fields = "Field3"
@@ -194,7 +194,7 @@ class DbT1ApplicationTests {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun test1ManagerGet() {
-        val manager = Manager("Name", "Surname")
+        val manager = Manager("Name", "Surname","Email","Dep2")
 
         val savedManager = managerRepository.save(manager)
 
@@ -208,7 +208,7 @@ class DbT1ApplicationTests {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun test2ManagerInsert() {
-        val manager = Manager("Name", "Surname")
+        val manager = Manager("Name", "Surname","Email","Dep1")
 
         val url = "http://localhost:$port/API/manager"
         val request = HttpEntity(manager)
@@ -226,7 +226,7 @@ class DbT1ApplicationTests {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun test3ManagerUpdate() {
-        val manager = Manager("Name", "Surname")
+        val manager = Manager("Name", "Surname", "Email", "Dep1")
         val savedManager = managerRepository.save(manager)
 
         manager.name = "New name"
@@ -247,79 +247,79 @@ class DbT1ApplicationTests {
 
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
-    fun test1DeviceGetAll() {
-        val device = Device(name = "Name", category = "Category", brand = "Brand", price = 10.5)
-        val device2 = Device(name = "Name2", category = "Category2", brand = "Brand2", price = 10.5)
+    fun test1ProductGetAll() {
+        val Product = Product(name = "Name", category = "Category", brand = "Brand", price = 10.5)
+        val Product2 = Product(name = "Name2", category = "Category2", brand = "Brand2", price = 10.5)
 
-        val savedDevice = deviceRepository.save(device)
-        val savedDevice2 = deviceRepository.save(device2)
+        val savedProduct = productRepository.save(Product)
+        val savedProduct2 = productRepository.save(Product2)
 
-        val url = "http://localhost:$port/API/devices"
-        val response = restTemplate.exchange(url, HttpMethod.GET, null, object : ParameterizedTypeReference<List<Device>>() {})
+        val url = "http://localhost:$port/API/Products"
+        val response = restTemplate.exchange(url, HttpMethod.GET, null, object : ParameterizedTypeReference<List<Product>>() {})
 
         assertEquals(HttpStatus.OK, response.statusCode)
-        assertEquals(savedDevice, response.body?.get(0))
-        assertEquals(savedDevice2, response.body?.get(1))
+        assertEquals(savedProduct, response.body?.get(0))
+        assertEquals(savedProduct2, response.body?.get(1))
     }
 
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
-    fun test2DeviceGet() {
-        val device = Device(name = "Name", category = "Category", brand = "Brand", price = 10.5)
+    fun test2ProductGet() {
+        val Product = Product(name = "Name", category = "Category", brand = "Brand", price = 10.5)
 
-        val savedDevice = deviceRepository.save(device)
+        val savedProduct = productRepository.save(Product)
 
-        val url = "http://localhost:$port/API/device/${savedDevice.ean}"
-        val response = restTemplate.getForEntity(url, Device::class.java)
+        val url = "http://localhost:$port/API/Product/${savedProduct.ean}"
+        val response = restTemplate.getForEntity(url, Product::class.java)
 
         assertEquals(HttpStatus.OK, response.statusCode)
-        assertEquals(savedDevice, response.body)
+        assertEquals(savedProduct, response.body)
     }
 
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
-    fun test3DeviceInsert() {
-        val device = Device(name = "Name", category = "Category", brand = "Brand", price = 10.5)
+    fun test3ProductInsert() {
+        val Product = Product(name = "Name", category = "Category", brand = "Brand", price = 10.5)
 
-        val url = "http://localhost:$port/API/device"
-        val request = HttpEntity(device)
+        val url = "http://localhost:$port/API/Product"
+        val request = HttpEntity(Product)
         val response = restTemplate.postForEntity(url, request, Void::class.java)
 
         assertEquals(HttpStatus.CREATED, response.statusCode)
 
-        val savedDevice = deviceRepository.save(device)
+        val savedProduct = productRepository.save(Product)
 
-        assertNotNull(savedDevice)
-        assertEquals(device.name, savedDevice.name)
-        assertEquals(device.category, savedDevice.category)
-        assertEquals(device.brand, savedDevice.brand)
-        assertEquals(device.price, savedDevice.price)
+        assertNotNull(savedProduct)
+        assertEquals(Product.name, savedProduct.name)
+        assertEquals(Product.category, savedProduct.category)
+        assertEquals(Product.brand, savedProduct.brand)
+        assertEquals(Product.price, savedProduct.price)
     }
 
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
-    fun test4DeviceUpdate() {
-        val device = Device(name = "Name", category = "Category", brand = "Brand", price = 10.5)
-        val savedDevice = deviceRepository.save(device)
+    fun test4ProductUpdate() {
+        val Product = Product(name = "Name", category = "Category", brand = "Brand", price = 10.5)
+        val savedProduct = productRepository.save(Product)
 
-        device.name = "New name"
-        device.category = "New category"
-        device.brand = "New brand"
-        device.price = 12.3
+        Product.name = "New name"
+        Product.category = "New category"
+        Product.brand = "New brand"
+        Product.price = 12.3
 
-        val url = "http://localhost:$port/API/device/${savedDevice.ean}"
-        val request = HttpEntity(device)
-        val response = restTemplate.exchange(url, HttpMethod.PUT, request, Void::class.java, savedDevice.ean)
+        val url = "http://localhost:$port/API/Product/${savedProduct.ean}"
+        val request = HttpEntity(Product)
+        val response = restTemplate.exchange(url, HttpMethod.PUT, request, Void::class.java, savedProduct.ean)
 
         assertEquals(HttpStatus.ACCEPTED, response.statusCode)
 
-        val updatedDevice = deviceRepository.findById(savedDevice.ean!!).get()
+        val updatedProduct = productRepository.findById(savedProduct.ean!!).get()
 
-        assertNotNull(updatedDevice)
-        assertEquals(device.name, updatedDevice.name)
-        assertEquals(device.category, updatedDevice.category)
-        assertEquals(device.brand, updatedDevice.brand)
-        assertEquals(device.price, updatedDevice.price)
+        assertNotNull(updatedProduct)
+        assertEquals(Product.name, updatedProduct.name)
+        assertEquals(Product.category, updatedProduct.category)
+        assertEquals(Product.brand, updatedProduct.brand)
+        assertEquals(Product.price, updatedProduct.price)
     }
 
     /*
@@ -330,13 +330,13 @@ class DbT1ApplicationTests {
         val savedCustomer = customerRepository.save(customer)
         val expert = Expert("Field1, Field2", "Name","Surname")
         val savedExpert = expertRepository.save(expert)
-        val device = Device(name = "Name", category = "Category", brand = "Brand", price = 10.5)
-        val savedDevice = deviceRepository.save(device)
+        val Product = Product(name = "Name", category = "Category", brand = "Brand", price = 10.5)
+        val savedProduct = ProductRepository.save(Product)
 
         val ticket = Ticket(
             customer = customer,
             expert = expert,
-            product = device,
+            product = Product,
             issueType = "Issue",
             description = "Description",
             priorityLevel = 1,
@@ -346,7 +346,7 @@ class DbT1ApplicationTests {
         val ticket2 = Ticket(
             customer = customer,
             expert = expert,
-            product = device,
+            product = Product,
             issueType = "Issue2",
             description = "Description2",
             priorityLevel = 1,
