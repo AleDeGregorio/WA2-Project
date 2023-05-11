@@ -1,4 +1,4 @@
-package it.polito.g26.server.ticketing.customer
+package it.polito.g26.server.profiles.customer
 
 import it.polito.g26.server.ticketing.ticket.Ticket
 import it.polito.g26.server.ticketing.utility.Role

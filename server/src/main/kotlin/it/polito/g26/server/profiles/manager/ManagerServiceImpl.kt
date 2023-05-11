@@ -1,4 +1,4 @@
-package it.polito.g26.server.ticketing.manager
+package it.polito.g26.server.profiles.manager
 
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service

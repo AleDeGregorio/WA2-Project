@@ -1,5 +1,5 @@
 package it.polito.g26.server.profiles
-
+/*
 data class ProfileDTO(
     val email: String,
     val password: String,
@@ -12,3 +12,5 @@ data class ProfileDTO(
 fun Profile.toDTO(): ProfileDTO {
     return ProfileDTO(email, password, name, surname, city, address)
 }
+
+*/

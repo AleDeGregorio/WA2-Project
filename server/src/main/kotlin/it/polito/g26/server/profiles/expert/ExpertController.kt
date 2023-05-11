@@ -1,4 +1,4 @@
-package it.polito.g26.server.ticketing.expert
+package it.polito.g26.server.profiles.expert
 
 import it.polito.g26.server.ticketing.ticket.TicketDTO
 import org.springframework.http.HttpStatus
@@ -9,7 +9,7 @@ class ExpertController(
     private val expertService: ExpertService
 ) {
     private fun expertDTOToEntity(expertDTO: ExpertDTO, id: Long?) : Expert {
-        val expert = Expert(name = expertDTO.name!!, surname = expertDTO.surname!!)
+        val expert = Expert(name = expertDTO.name!!, surname = expertDTO.surname!!, email = expertDTO.email!!)
 
         if (id != null) {
             expert.id = id

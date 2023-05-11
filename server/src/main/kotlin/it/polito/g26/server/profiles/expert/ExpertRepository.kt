@@ -1,4 +1,4 @@
-package it.polito.g26.server.ticketing.expert
+package it.polito.g26.server.profiles.expert
 
 import it.polito.g26.server.ticketing.ticket.Ticket
 import org.springframework.data.jpa.repository.JpaRepository

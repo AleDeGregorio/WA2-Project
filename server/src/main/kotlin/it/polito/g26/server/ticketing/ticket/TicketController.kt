@@ -1,10 +1,10 @@
 package it.polito.g26.server.ticketing.ticket
 
 import it.polito.g26.server.ticketing.chat.ChatDTO
-import it.polito.g26.server.ticketing.customer.Customer
-import it.polito.g26.server.ticketing.customer.CustomerDTO
-import it.polito.g26.server.ticketing.expert.Expert
-import it.polito.g26.server.ticketing.expert.ExpertDTO
+import it.polito.g26.server.profiles.customer.Customer
+import it.polito.g26.server.profiles.customer.CustomerDTO
+import it.polito.g26.server.profiles.expert.Expert
+import it.polito.g26.server.profiles.expert.ExpertDTO
 import it.polito.g26.server.ticketing.statusTicket.StatusTicketDTO
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -15,7 +15,7 @@ class TicketController(
     private val ticketService: TicketService
 ) {
     private fun expertDTOToEntity(expertDTO: ExpertDTO, id: Long?) : Expert {
-        val expert = Expert(name = expertDTO.name!!, surname = expertDTO.surname!!)
+        val expert = Expert(name = expertDTO.name!!, surname = expertDTO.surname!!, email = expertDTO.email!!)
 
         if (id != null) {
             expert.id = id

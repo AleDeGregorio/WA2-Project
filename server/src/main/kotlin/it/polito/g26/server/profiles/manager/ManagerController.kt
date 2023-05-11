@@ -1,4 +1,4 @@
-package it.polito.g26.server.ticketing.manager
+package it.polito.g26.server.profiles.manager
 
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -8,7 +8,7 @@ class ManagerController(
     private val managerService: ManagerService
 ) {
     private fun managerDTOToEntity(managerDTO: ManagerDTO, id: Long?) : Manager {
-        val manager = Manager(name = managerDTO.name!!, surname = managerDTO.surname!!)
+        val manager = Manager(name = managerDTO.name!!, surname = managerDTO.surname!!, email = managerDTO.email!!, department = managerDTO.department!!)
 
         if (id != null) {
             manager.id = id

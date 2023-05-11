@@ -1,5 +1,6 @@
 package it.polito.g26.server.ticketing.message
 
+import it.polito.g26.server.profiles.Profile
 import it.polito.g26.server.ticketing.attachment.Attachment
 import it.polito.g26.server.ticketing.chat.Chat
 import it.polito.g26.server.ticketing.utility.Role
@@ -20,6 +21,7 @@ data class Message(
 
     @Enumerated(value = EnumType.STRING)
     var sentBy: Role? = null,
+
     @Column(length = 10000)
     var content: String = "",
     @Temporal(TemporalType.TIMESTAMP)

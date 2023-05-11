@@ -1,4 +1,4 @@
-package it.polito.g26.server.ticketing.expert
+package it.polito.g26.server.profiles.expert
 
 import it.polito.g26.server.ticketing.ticket.TicketDTO
 import it.polito.g26.server.ticketing.ticket.toDTO

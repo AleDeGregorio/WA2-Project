@@ -1,7 +1,7 @@
 package it.polito.g26.server.ticketing.ticket
 
 import it.polito.g26.server.ticketing.chat.Chat
-import it.polito.g26.server.ticketing.expert.Expert
+import it.polito.g26.server.profiles.expert.Expert
 import it.polito.g26.server.ticketing.statusTicket.StatusTicket
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying

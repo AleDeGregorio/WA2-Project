@@ -1,8 +1,8 @@
-package it.polito.g26.server.ticketing.expert
+package it.polito.g26.server.profiles.expert
 
+import it.polito.g26.server.profiles.Profile
 import it.polito.g26.server.ticketing.ticket.Ticket
 import it.polito.g26.server.ticketing.utility.Role
-import it.polito.g26.server.ticketing.utility.User
 import jakarta.persistence.Entity
 import jakarta.persistence.OneToMany
 
@@ -12,7 +12,8 @@ data class Expert (
 
     override var name: String,
     override var surname: String,
+    override var email: String,
 
     @OneToMany(mappedBy = "expert")
     var tickets: MutableSet<Ticket> = mutableSetOf()
-) : User(name = name, surname = surname,role = Role.EXPERT)
+) : Profile(name = name, surname = surname, email = email, role = Role.EXPERT)

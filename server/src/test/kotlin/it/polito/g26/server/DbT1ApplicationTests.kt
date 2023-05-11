@@ -1,13 +1,13 @@
 package it.polito.g26.server
 
-import it.polito.g26.server.ticketing.customer.Customer
-import it.polito.g26.server.ticketing.customer.CustomerRepository
+import it.polito.g26.server.profiles.customer.Customer
+import it.polito.g26.server.profiles.customer.CustomerRepository
 import it.polito.g26.server.ticketing.device.Device
 import it.polito.g26.server.ticketing.device.DeviceRepository
-import it.polito.g26.server.ticketing.expert.Expert
-import it.polito.g26.server.ticketing.expert.ExpertRepository
-import it.polito.g26.server.ticketing.manager.Manager
-import it.polito.g26.server.ticketing.manager.ManagerRepository
+import it.polito.g26.server.profiles.expert.Expert
+import it.polito.g26.server.profiles.expert.ExpertRepository
+import it.polito.g26.server.profiles.manager.Manager
+import it.polito.g26.server.profiles.manager.ManagerRepository
 import it.polito.g26.server.ticketing.ticket.Ticket
 import it.polito.g26.server.ticketing.ticket.TicketRepository
 import org.junit.jupiter.api.Assertions.assertEquals

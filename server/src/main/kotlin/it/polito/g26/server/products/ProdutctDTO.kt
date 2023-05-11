@@ -1,13 +1,16 @@
 package it.polito.g26.server.products
 
+import it.polito.g26.server.ticketing.ticket.Ticket
+
 data class ProductDTO(
-    val productId: String,
+    val ean: Long,
     val name: String,
     val brand: String,
     val category: String,
-    val price: Double
+    val price: Double,
+    val tickets: MutableSet<Ticket>
 )
 
 fun Product.toDTO(): ProductDTO {
-    return ProductDTO(productId, name, brand, category, price)
+    return ProductDTO(ean!!, name, brand, category, price, tickets)
 }
