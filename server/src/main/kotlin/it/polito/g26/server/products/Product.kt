@@ -8,7 +8,7 @@ import jakarta.persistence.OneToMany
 @Entity
 class Product (
     @Id
-    var ean: Long? = null,
+    var ean: Long,
 
     var name: String = "",
     var brand: String = "",

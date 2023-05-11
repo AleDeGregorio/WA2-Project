@@ -16,7 +16,7 @@ class ProductServiceImpl(
     }
 
     override fun insertProduct(product: Product) {
-        if (product.ean != null && productRepository.existsById(product.ean!!)) {
+        if (productRepository.existsById(product.ean)) {
             throw Exception("Product already inserted")
         }
         else {
@@ -25,7 +25,7 @@ class ProductServiceImpl(
     }
 
     override fun updateProduct(product: Product) {
-        if (productRepository.existsById(product.ean!!)) {
+        if (productRepository.existsById(product.ean)) {
             val retrievedProduct = productRepository.findById(product.ean!!).get()
 
             retrievedProduct.name = product.name
