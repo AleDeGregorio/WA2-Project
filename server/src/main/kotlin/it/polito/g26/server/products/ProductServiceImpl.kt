@@ -11,7 +11,33 @@ class ProductServiceImpl(
         return productRepository.findAll().map { it.toDTO() }
     }
 
-    override fun getProduct(productId: String): ProductDTO? {
-        return productRepository.findByIdOrNull(productId)?.toDTO()
+    override fun getProduct(ean: Long): ProductDTO? {
+        return productRepository.findByIdOrNull(ean)?.toDTO()
     }
+
+    override fun insertProduct(product: Product) {
+        if (product.ean != null && productRepository.existsById(product.ean!!)) {
+            throw Exception("Product already inserted")
+        }
+        else {
+            productRepository.save(product)
+        }
+    }
+
+    override fun updateProduct(product: Product) {
+        if (productRepository.existsById(product.ean!!)) {
+            val retrievedProduct = productRepository.findById(product.ean!!).get()
+
+            retrievedProduct.name = product.name
+            retrievedProduct.brand = product.brand
+            retrievedProduct.category = product.category
+            retrievedProduct.price = product.price
+
+            productRepository.save(retrievedProduct)
+        }
+        else {
+            throw Exception("Product not found")
+        }
+    }
+
 }

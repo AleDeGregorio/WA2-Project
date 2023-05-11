@@ -1,19 +1,24 @@
 package it.polito.g26.server.profiles
 
-import jakarta.persistence.*
-import java.util.UUID
+import it.polito.g26.server.ticketing.utility.Role
+import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.Id
+import jakarta.persistence.MappedSuperclass
+import jakarta.persistence.Table
 
-@Entity
-@Inheritance(strategy =  InheritanceType.TABLE_PER_CLASS)
+@MappedSuperclass
 open class Profile (
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    var profileId: UUID? = null,
-    @Column(nullable = false)
-    var email: String= "",
-    //@Column(nullable = false)
-    //var password: String = "",
-    var name: String = "",
-    var surname: String = "",
-    var nationality: String = ""
+    @GeneratedValue
+    var id: Long? = null,
+
+    open var name: String,
+    open var surname: String,
+    open var email: String,
+
+    @Enumerated(value = EnumType.STRING)
+    val role: Role
 )

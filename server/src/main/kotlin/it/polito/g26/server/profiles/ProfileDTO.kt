@@ -1,25 +1,16 @@
 package it.polito.g26.server.profiles
-
-import java.util.*
-
+/*
 data class ProfileDTO(
-    val profileId: UUID,
     val email: String,
+    val password: String,
     val name: String,
     val surname: String,
-    val nationality: String
+    val city: String,
+    val address: String
 )
 
 fun Profile.toDTO(): ProfileDTO {
-    return ProfileDTO(profileId!!, email, name, surname, nationality)
+    return ProfileDTO(email, password, name, surname, city, address)
 }
 
-fun ProfileDTO.toEntity(): Profile {
-    return Profile(
-        profileId,
-        email,
-        name,
-        surname,
-        nationality
-        )
-}
+*/

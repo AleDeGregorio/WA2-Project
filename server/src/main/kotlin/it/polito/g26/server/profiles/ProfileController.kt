@@ -5,6 +5,8 @@ import it.polito.g26.server.ProfileNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
+/*
+
 @RestController
 class ProfileController(
     private val profileService: ProfileService
@@ -47,7 +49,9 @@ class ProfileController(
         profile.email = email ?: profileDTO.email
         profile.name = profileDTO.name
         profile.surname = profileDTO.surname
-        profile.nationality = profileDTO.nationality
+
         return profile
     }
 }
+
+*/
