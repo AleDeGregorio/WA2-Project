@@ -1,28 +1,28 @@
 package it.polito.g26.server.ticketing.messages
 
-import it.polito.g26.server.profiles.Profile
-import it.polito.g26.server.ticketing.tickets.Ticket
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.Table
-import java.time.LocalDate
-import java.util.Date
+import it.polito.g26.server.ticketing.attachment.Attachment
+import it.polito.g26.server.ticketing.chat.Chat
+import it.polito.g26.server.ticketing.utility.Role
+import jakarta.persistence.*
+import java.util.*
 
 @Entity
-@Table(name = "messages")
-class Message (
+data class Message(
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    var messageId: Long? = null,
+    @GeneratedValue
+    var id: Long? = null,
+
     @ManyToOne
-    var sender: Profile? = null,
-    @ManyToOne
-    var receiver: Profile? = null,
-    @ManyToOne
-    var ticket: Ticket? = null,
-    var date: LocalDate? = null,
-    var attachment: String? = null
+    var chat: Chat? = null,
+
+    @OneToMany(mappedBy = "message")
+    var attachments: MutableSet<Attachment> = mutableSetOf(),
+
+    @Enumerated(value = EnumType.STRING)
+    var sentBy: Role? = null,
+
+    @Column(length = 10000)
+    var content: String = "",
+    @Temporal(TemporalType.TIMESTAMP)
+    var sendingDate: Date? = null
 )

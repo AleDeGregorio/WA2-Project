@@ -1,7 +1,7 @@
 package it.polito.g26.server.profiles.customer
 
-import it.polito.g26.server.ticketing.ticket.TicketDTO
-import it.polito.g26.server.ticketing.ticket.toDTO
+import it.polito.g26.server.ticketing.tickets.TicketDTO
+import it.polito.g26.server.ticketing.tickets.toDTO
 import org.springframework.stereotype.Service
 
 @Service

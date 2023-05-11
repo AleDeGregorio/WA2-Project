@@ -1,6 +1,6 @@
 package it.polito.g26.server.profiles.customer
 
-import it.polito.g26.server.ticketing.ticket.Ticket
+import it.polito.g26.server.ticketing.tickets.Ticket
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param

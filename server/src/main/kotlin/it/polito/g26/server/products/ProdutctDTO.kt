@@ -1,6 +1,6 @@
 package it.polito.g26.server.products
 
-import it.polito.g26.server.ticketing.ticket.Ticket
+import it.polito.g26.server.ticketing.tickets.Ticket
 
 data class ProductDTO(
     val ean: Long,

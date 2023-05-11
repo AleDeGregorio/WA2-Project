@@ -1,17 +1,18 @@
 package it.polito.g26.server.ticketing.tickets
 
-import it.polito.g26.server.ticketing.Status
-import it.polito.g26.server.ticketing.statuses.StatusDTO
-import it.polito.g26.server.ticketing.statuses.toDTO
+import it.polito.g26.server.ticketing.chat.ChatDTO
+import it.polito.g26.server.ticketing.chat.toDTO
+import it.polito.g26.server.profiles.expert.Expert
+import it.polito.g26.server.ticketing.statusTicket.StatusTicketDTO
+import it.polito.g26.server.ticketing.statusTicket.toDTO
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import java.time.LocalDate
 import java.util.*
 
 @Service
 class TicketServiceImpl(
     private val ticketRepository: TicketRepository
-): TicketService {
+) : TicketService {
     override fun getAll(): List<TicketDTO> {
         return ticketRepository.findAll().map { it.toDTO() }
     }
@@ -20,11 +21,11 @@ class TicketServiceImpl(
         return ticketRepository.findByIdOrNull(id)?.toDTO()
     }
 
-    override fun getTicketByCustomer(customerId: String): List<TicketDTO>? {
+    override fun getTicketByCustomer(customerId: Long): List<TicketDTO>? {
         return ticketRepository.findByCustomer(customerId)?.map { it.toDTO() }
     }
 
-    override fun getTicketByExpert(expertId: String): List<TicketDTO>? {
+    override fun getTicketByExpert(expertId: Long): List<TicketDTO>? {
         return ticketRepository.findByExpert(expertId)?.map { it.toDTO() }
     }
 
@@ -32,45 +33,51 @@ class TicketServiceImpl(
         return ticketRepository.findByProduct(productId)?.map { it.toDTO() }
     }
 
-    override fun getTicketByDateOfCreation(dateOfCreation: LocalDate): List<TicketDTO>? {
+    override fun getTicketByDateOfCreation(dateOfCreation: Date): List<TicketDTO>? {
         return ticketRepository.findByDateOfCreation(dateOfCreation)?.map { it.toDTO() }
     }
 
-    override fun getStatusTicket(id: Long): Set<StatusDTO>? {
+    override fun getStatusTicket(id: Long): Set<StatusTicketDTO>? {
         if (ticketRepository.existsById(id)) {
-            return ticketRepository.getStatusTicket(id)?.map{ it.toDTO() }?.toSet()
+            val ticketStatus = ticketRepository.getStatusTicket(id) ?: return null
+            return ticketStatus.map { it.toDTO() }.toSet()
         }
         else {
             throw Exception("Ticket not found")
         }
     }
 
-    override fun getTicketsByStatus(status: Status): List<TicketDTO> {
-        return ticketRepository.getTicketsByStatus(status)?.map { it.toDTO() }
-            ?: throw Exception("none")
+    override fun getChats(id: Long): Set<ChatDTO>? {
+        if (ticketRepository.existsById(id)) {
+            val chats = ticketRepository.getChats(id) ?: return null
+            return chats.map { it.toDTO() }.toSet()
+        }
+        else {
+            throw Exception("Ticket not found")
+        }
     }
 
     override fun insertTicket(ticket: Ticket) {
-        if(ticketRepository.existsById(ticket.id!!)) {
+        if (ticket.id != null && ticketRepository.existsById(ticket.id!!)) {
             throw Exception("Ticket already inserted")
         }
-        else{
+        else {
             ticketRepository.save(ticket)
-        }
-    }
-
-    override fun assignExpertTicket(ticketId: Long, expertId: UUID) {
-        if (ticketRepository.existsById(ticketId)){
-           ticketRepository.assignExpert(ticketId, expertId)
-        }
-        else{
-            throw Exception("Ticket not found")
         }
     }
 
     override fun setPriorityLevel(id: Long, priorityLevel: Int) {
         if (ticketRepository.existsById(id)) {
             ticketRepository.setPriorityLevel(id, priorityLevel)
+        }
+        else {
+            throw Exception("Ticket not found")
+        }
+    }
+
+    override fun setExpert(id: Long, expert: Expert) {
+        if (ticketRepository.existsById(id)) {
+            ticketRepository.setExpert(id, expert)
         }
         else {
             throw Exception("Ticket not found")

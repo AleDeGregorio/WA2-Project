@@ -1,36 +1,25 @@
 package it.polito.g26.server.ticketing.tickets
 
-import it.polito.g26.server.products.ProductDTO
-import it.polito.g26.server.products.toDTO
-import it.polito.g26.server.ticketing.customers.CustomerDTO
-import it.polito.g26.server.ticketing.customers.toDTO
-import it.polito.g26.server.ticketing.experts.ExpertDTO
-import it.polito.g26.server.ticketing.experts.toDTO
-import it.polito.g26.server.ticketing.messages.MessageDTO
-import it.polito.g26.server.ticketing.messages.toDTO
-import it.polito.g26.server.ticketing.statuses.StatusDTO
-import it.polito.g26.server.ticketing.statuses.toDTO
+import it.polito.g26.server.products.Product
+import it.polito.g26.server.ticketing.chat.Chat
+import it.polito.g26.server.profiles.customer.Customer
+import it.polito.g26.server.profiles.expert.Expert
+import it.polito.g26.server.ticketing.statusTicket.StatusTicket
+import java.util.Date
 
 data class TicketDTO(
     val id: Long?,
-    val typeOfIssue: String,
+    val customer: Customer?,
+    val expert: Expert?,
+    val product: Product?,
+    val status: MutableSet<StatusTicket>,
+    val chats: MutableSet<Chat>,
+    val issueType: String,
     val description: String,
-    val product: ProductDTO?,
-    val expertAssigned: ExpertDTO?,
-    val status: List<StatusDTO>?,
-    val customer: CustomerDTO?,
-    //val chat: List<MessageDTO>
+    val priorityLevel: Int?,
+    val dateOfCreation: Date?
 )
 
-fun Ticket.toDTO(): TicketDTO {
-    return TicketDTO(
-        id,
-        typeOfIssue,
-        description,
-        product?.toDTO(),
-        expert?.toDTO(),
-        status = this.status.map { it.toDTO() },
-        customer?.toDTO()
-        //chat = this.chat.map { it.toDTO() }
-    )
+fun Ticket.toDTO() : TicketDTO {
+    return TicketDTO(id, customer, expert, product, status, chats, issueType, description, priorityLevel, dateOfCreation)
 }

@@ -1,39 +1,35 @@
 package it.polito.g26.server.ticketing.tickets
 
-import it.polito.g26.server.ticketing.messages.Message
 import it.polito.g26.server.products.Product
-import it.polito.g26.server.profiles.Profile
-import it.polito.g26.server.ticketing.customers.Customer
-import it.polito.g26.server.ticketing.experts.Expert
-import it.polito.g26.server.ticketing.statuses.Status
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.OneToMany
-import jakarta.persistence.OneToOne
-import jakarta.persistence.Table
+import it.polito.g26.server.ticketing.chat.Chat
+import it.polito.g26.server.profiles.customer.Customer
+import it.polito.g26.server.profiles.expert.Expert
+import it.polito.g26.server.ticketing.statusTicket.StatusTicket
+import jakarta.persistence.*
+import java.util.*
 
 @Entity
-@Table(name = "tickets")
-class Ticket {
+data class Ticket(
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(updatable = false, nullable = false)
-    var id: Long? = null
-    var typeOfIssue: String = ""
-    var description: String = ""
-    var priorityLevel: Int? = null
+    @GeneratedValue
+    var id: Long? = null,
+
     @ManyToOne
-    var product: Product? = null
+    var customer: Customer? = null,
     @ManyToOne
-    var expert: Expert? = null
+    var expert: Expert? = null,
+    @ManyToOne
+    var product: Product? = null,
+
     @OneToMany
-    var status: MutableSet<Status> = mutableSetOf<Status>()
-    @ManyToOne
-    var customer: Customer? = null
-    //@OneToMany(mappedBy = "Message")
-    //var chat = mutableSetOf<Message>()
-}
+    var status: MutableSet<StatusTicket> = mutableSetOf(),
+    @OneToMany(mappedBy = "ticket")
+    var chats: MutableSet<Chat> = mutableSetOf(),
+
+    var issueType: String = "",
+    @Column(length = 10000)
+    var description: String = "",
+    var priorityLevel: Int? = null,
+    @Temporal(TemporalType.TIMESTAMP)
+    var dateOfCreation: Date? = null
+)

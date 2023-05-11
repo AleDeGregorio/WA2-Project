@@ -1,7 +1,7 @@
 package it.polito.g26.server.ticketing.statusTicket
 
 import it.polito.g26.server.ticketing.utility.Status
-import it.polito.g26.server.ticketing.ticket.Ticket
+import it.polito.g26.server.ticketing.tickets.Ticket
 import jakarta.persistence.*
 import java.io.Serializable
 import java.util.*

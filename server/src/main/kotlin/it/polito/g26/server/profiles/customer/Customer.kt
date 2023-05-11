@@ -1,10 +1,8 @@
 package it.polito.g26.server.profiles.customer
 
 import it.polito.g26.server.profiles.Profile
-import it.polito.g26.server.ticketing.ticket.Ticket
+import it.polito.g26.server.ticketing.tickets.Ticket
 import it.polito.g26.server.ticketing.utility.Role
-import it.polito.g26.server.ticketing.utility.User
-import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.OneToMany
 

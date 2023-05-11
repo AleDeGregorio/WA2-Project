@@ -8,8 +8,7 @@ import it.polito.g26.server.profiles.expert.Expert
 import it.polito.g26.server.profiles.expert.ExpertRepository
 import it.polito.g26.server.profiles.manager.Manager
 import it.polito.g26.server.profiles.manager.ManagerRepository
-import it.polito.g26.server.ticketing.ticket.Ticket
-import it.polito.g26.server.ticketing.ticket.TicketRepository
+import it.polito.g26.server.ticketing.tickets.TicketRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
@@ -28,7 +27,6 @@ import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
-import java.text.SimpleDateFormat
 
 @Testcontainers
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)

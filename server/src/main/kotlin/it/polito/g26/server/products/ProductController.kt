@@ -18,9 +18,9 @@ class ProductController(
         return productService.getAll()
     }
 
-    @GetMapping("/API/products/{productId}")
+    @GetMapping("/API/products/{ean}")
     @ResponseStatus(HttpStatus.OK)
-    fun getProduct(@PathVariable productId: String): ProductDTO? {
-        return productService.getProduct(productId) ?: throw ProductNotFoundException("Product not found")
+    fun getProduct(@PathVariable ean: Long): ProductDTO? {
+        return productService.getProduct(ean) ?: throw ProductNotFoundException("Product not found")
     }
 }

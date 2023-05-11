@@ -1,7 +1,6 @@
 package it.polito.g26.server.profiles.expert
 
-import it.polito.g26.server.ticketing.ticket.Ticket
-import kotlin.math.exp
+import it.polito.g26.server.ticketing.tickets.Ticket
 
 data class ExpertDTO(
     val id: Long?,
