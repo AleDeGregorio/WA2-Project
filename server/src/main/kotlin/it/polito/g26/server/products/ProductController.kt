@@ -26,19 +26,19 @@ class ProductController(
         return device
     }
 
-    @GetMapping("/API/devices")
+    @GetMapping("/API/products/")
     @ResponseStatus(HttpStatus.OK)
     fun getAll() : List<ProductDTO> {
         return productService.getAll()
     }
 
-    @GetMapping("/API/device/{ean}")
+    @GetMapping("/API/products/{ean}")
     @ResponseStatus(HttpStatus.OK)
     fun getDevice(@PathVariable ean: Long) : ProductDTO? {
         return productService.getProduct(ean) ?: throw Exception("Product not found")
     }
 
-    @PostMapping("/API/device")
+    @PostMapping("/API/products/")
     @ResponseStatus(HttpStatus.CREATED)
     fun insertDevice(@RequestBody deviceDTO: ProductDTO?) {
         if (deviceDTO != null) {
@@ -51,7 +51,7 @@ class ProductController(
         }
     }
 
-    @PutMapping("/API/device/{ean}")
+    @PutMapping("/API/products/{ean}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     fun updateDevice(@RequestBody deviceDTO: ProductDTO?, @PathVariable ean: Long) {
         if (deviceDTO != null) {
