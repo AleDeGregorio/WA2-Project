@@ -179,7 +179,7 @@ class DbT1ApplicationTests {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun test3ExpertInsert() {
-        val expert = Expert("Field1, Field2", "Name","Surname","Email")
+        val expert = ExpertDTO(null, "Name","Surname","Email","Field1, Field2")
 
         val url = "http://localhost:$port/API/expert"
         val request = HttpEntity(expert)
@@ -187,12 +187,15 @@ class DbT1ApplicationTests {
 
         assertEquals(HttpStatus.CREATED, response.statusCode)
 
-        val savedExpert = expertRepository.save(expert)
+        ExpertController(expertService = ExpertServiceImpl(expertRepository)).insertExpert(expert)
 
-        assertNotNull(savedExpert)
-        assertEquals(expert.name, savedExpert.name)
-        assertEquals(expert.surname, savedExpert.surname)
-        assertEquals(expert.fields, savedExpert.fields)
+        val urlGet = "http://localhost:$port/API/expert/${expert.email}"
+        val responseGet = restTemplate.getForEntity(urlGet, ExpertDTO::class.java)
+
+        assertNotNull(responseGet.body)
+        assertEquals(expert.name, responseGet.body?.name)
+        assertEquals(expert.surname, responseGet.body?.surname)
+        assertEquals(expert.fields, responseGet.body?.fields)
     }
 
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
@@ -414,8 +417,26 @@ class DbT1ApplicationTests {
         val response = restTemplate.exchange(url, HttpMethod.GET, null, object : ParameterizedTypeReference<List<TicketDTO>>() {})
 
         assertEquals(HttpStatus.OK, response.statusCode)
-        assertEquals(ticket, response.body?.get(0))
-        assertEquals(ticket2, response.body?.get(1))
+
+        assertEquals(ticket.expert, response.body?.get(0)?.expert)
+        assertEquals(ticket.customer, response.body?.get(0)?.customer)
+        assertEquals(ticket.product, response.body?.get(0)?.product)
+        assertEquals(ticket.dateOfCreation, response.body?.get(0)?.dateOfCreation)
+        assertEquals(ticket.priorityLevel, response.body?.get(0)?.priorityLevel)
+        assertEquals(ticket.status, response.body?.get(0)?.status)
+        assertEquals(ticket.chats, response.body?.get(0)?.chats)
+        assertEquals(ticket.issueType, response.body?.get(0)?.issueType)
+        assertEquals(ticket.description, response.body?.get(0)?.description)
+
+        assertEquals(ticket2.expert, response.body?.get(1)?.expert)
+        assertEquals(ticket2.customer, response.body?.get(1)?.customer)
+        assertEquals(ticket2.product, response.body?.get(1)?.product)
+        assertEquals(ticket2.dateOfCreation, response.body?.get(1)?.dateOfCreation)
+        assertEquals(ticket2.priorityLevel, response.body?.get(1)?.priorityLevel)
+        assertEquals(ticket2.status, response.body?.get(1)?.status)
+        assertEquals(ticket2.chats, response.body?.get(1)?.chats)
+        assertEquals(ticket2.issueType, response.body?.get(1)?.issueType)
+        assertEquals(ticket2.description, response.body?.get(1)?.description)
     }
 
 
