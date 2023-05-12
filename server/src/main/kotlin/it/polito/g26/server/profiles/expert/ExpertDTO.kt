@@ -17,7 +17,7 @@ fun Expert.toDTO() : ExpertDTO {
 }
 
 fun ExpertDTO.toEntity(): Expert {
-    val expert = Expert(name, surname, email, fields)
+    val expert = Expert(name = name, surname = surname, email =  email, fields =  fields)
     expert.id = id
     return expert
 }

@@ -3,8 +3,7 @@ package it.polito.g26.server
 import it.polito.g26.server.products.*
 import it.polito.g26.server.profiles.customer.*
 import it.polito.g26.server.profiles.expert.*
-import it.polito.g26.server.profiles.manager.Manager
-import it.polito.g26.server.profiles.manager.ManagerRepository
+import it.polito.g26.server.profiles.manager.*
 import it.polito.g26.server.ticketing.tickets.*
 import it.polito.g26.server.ticketing.utility.Role
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -187,8 +186,6 @@ class DbT1ApplicationTests {
 
         assertEquals(HttpStatus.CREATED, response.statusCode)
 
-        ExpertController(expertService = ExpertServiceImpl(expertRepository)).insertExpert(expert)
-
         val urlGet = "http://localhost:$port/API/expert/${expert.email}"
         val responseGet = restTemplate.getForEntity(urlGet, ExpertDTO::class.java)
 
@@ -201,79 +198,101 @@ class DbT1ApplicationTests {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun test4ExpertUpdate() {
-        val expert = Expert("Field1, Field2", "Name","Surname","Email")
-        val savedExpert = expertRepository.save(expert)
+        var expert = ExpertDTO(null, "Name","Surname","Email","Field1, Field2")
+        ExpertController(expertService = ExpertServiceImpl(expertRepository)).insertExpert(expert)
 
-        expert.fields = "Field3"
-        expert.name = "New name"
-        expert.surname = "New surname"
+        val url = "http://localhost:$port/API/expert/${expert.email}"
+        val responseGet = restTemplate.getForEntity(url, ExpertDTO::class.java)
 
-        val url = "http://localhost:$port/API/expert/${savedExpert.id}"
+        val getExpert = responseGet.body?.toEntity()
+
+        getExpert?.name = "New name"
+        getExpert?.surname = "New surname"
+        getExpert?.fields = "Field3"
+
+        if (getExpert != null) {
+            expert = getExpert.toDTO()
+        }
+
         val request = HttpEntity(expert)
-        val response = restTemplate.exchange(url, HttpMethod.PUT, request, Void::class.java, savedExpert.id)
+        val responsePut = restTemplate.exchange(url, HttpMethod.PUT, request, Void::class.java)
 
-        assertEquals(HttpStatus.ACCEPTED, response.statusCode)
+        val responseGet2 = restTemplate.getForEntity(url, ExpertDTO::class.java)
 
-        val updatedExpert = expertRepository.findById(savedExpert.id!!).get()
+        assertEquals(HttpStatus.ACCEPTED, responsePut.statusCode)
 
-        assertNotNull(updatedExpert)
-        assertEquals(expert.fields, updatedExpert.fields)
-        assertEquals(expert.name, updatedExpert.name)
-        assertEquals(expert.surname, updatedExpert.surname)
+        assertNotNull(responseGet2.body)
+
+        assertEquals(expert, responseGet2.body)
     }
 
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun test1ManagerGet() {
-        val manager = Manager("Name", "Surname","Email","Dep2")
+        val manager = ManagerDTO(null,"Name", "Surname","Email","Dep2")
+        ManagerController(managerService = ManagerServiceImpl(managerRepository)).insertManager(manager)
 
-        val savedManager = managerRepository.save(manager)
-
-        val url = "http://localhost:$port/API/manager/${savedManager.id}"
-        val response = restTemplate.getForEntity(url, Manager::class.java)
+        val url = "http://localhost:$port/API/manager/${manager.email}"
+        val response = restTemplate.getForEntity(url, ManagerDTO::class.java)
 
         assertEquals(HttpStatus.OK, response.statusCode)
-        assertEquals(savedManager, response.body)
+        assertEquals(manager.email, response.body?.email)
+        assertEquals(manager.name, response.body?.name)
+        assertEquals(manager.surname, response.body?.surname)
+        assertEquals(manager.department, response.body?.department)
     }
 
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun test2ManagerInsert() {
-        val manager = Manager("Name", "Surname","Email","Dep1")
-
+        val manager = ManagerDTO(null,"Name", "Surname","Email","Dep2")
         val url = "http://localhost:$port/API/manager"
         val request = HttpEntity(manager)
         val response = restTemplate.postForEntity(url, request, Void::class.java)
 
         assertEquals(HttpStatus.CREATED, response.statusCode)
 
-        val savedManager = managerRepository.save(manager)
+        val urlGet = "http://localhost:$port/API/manager/${manager.email}"
+        val responseGet = restTemplate.getForEntity(urlGet, ManagerDTO::class.java)
 
-        assertNotNull(savedManager)
-        assertEquals(manager.name, savedManager.name)
-        assertEquals(manager.surname, savedManager.surname)
+        assertNotNull(responseGet.body)
+
+        assertEquals(manager.name, responseGet.body?.name)
+        assertEquals(manager.surname, responseGet.body?.surname)
+        assertEquals(manager.email, responseGet.body?.email)
+        assertEquals(manager.department, responseGet.body?.department)
     }
 
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun test3ManagerUpdate() {
-        val manager = Manager("Name", "Surname", "Email", "Dep1")
-        val savedManager = managerRepository.save(manager)
+        var manager = ManagerDTO(null,"Name", "Surname","Email","Dep2")
+        ManagerController(managerService = ManagerServiceImpl(managerRepository)).insertManager(manager)
 
-        manager.name = "New name"
-        manager.surname = "New surname"
+        val url = "http://localhost:$port/API/manager/${manager.email}"
+        val responseGet = restTemplate.getForEntity(url, ManagerDTO::class.java)
 
-        val url = "http://localhost:$port/API/manager/${savedManager.id}"
+        val getManger = responseGet.body?.toEntity()
+
+        getManger?.name = "New name"
+        getManger?.surname = "New surname"
+        getManger?.department = "New Department"
+
+        if (getManger != null) {
+            manager = getManger.toDTO()
+        }
+
         val request = HttpEntity(manager)
-        val response = restTemplate.exchange(url, HttpMethod.PUT, request, Void::class.java, savedManager.id)
+        val response = restTemplate.exchange(url, HttpMethod.PUT, request, Void::class.java, manager.id)
+        val responseGet2 = restTemplate.getForEntity(url, ManagerDTO::class.java)
 
         assertEquals(HttpStatus.ACCEPTED, response.statusCode)
 
-        val updatedManager = managerRepository.findById(savedManager.id!!).get()
-
-        assertNotNull(updatedManager)
-        assertEquals(manager.name, updatedManager.name)
-        assertEquals(manager.surname, updatedManager.surname)
+        assertNotNull(responseGet2.body)
+        assertEquals(manager.name, responseGet2.body?.name)
+        assertEquals(manager.surname, responseGet2.body?.surname)
+        assertEquals(manager.email, responseGet2.body?.email)
+        assertEquals(manager.department, responseGet2.body?.department)
     }
 
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)

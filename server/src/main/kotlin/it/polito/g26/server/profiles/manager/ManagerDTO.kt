@@ -16,7 +16,10 @@ fun Manager.toDTO() : ManagerDTO {
 }
 
 fun ManagerDTO.toEntity(): Manager {
-    val manager = Manager(name, surname, email, department)
+    val manager = Manager(name = name,
+        surname= surname,
+        email = email,
+        department = department)
     manager.id = id
     return manager
 }
