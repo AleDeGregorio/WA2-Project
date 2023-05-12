@@ -1,7 +1,6 @@
 package it.polito.g26.server.ticketing.statusTicket
 
 
-import it.polito.g26.server.ticketing.expert.Expert
 import it.polito.g26.server.ticketing.utility.Status
 import org.springframework.stereotype.Service
 

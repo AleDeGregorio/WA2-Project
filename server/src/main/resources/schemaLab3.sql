@@ -4,19 +4,19 @@ INSERT INTO public.customer (id, name, role, surname, address, city, email) VALU
 INSERT INTO public.customer (id, name, role, surname, address, city, email) VALUES (4, 'Sofia', 'CUSTOMER', 'Verdi', 'Via Cavour, 91', 'Milano', 'sofia@polito.it');
 INSERT INTO public.customer (id, name, role, surname, address, city, email) VALUES (5, 'Giorgio', 'CUSTOMER', 'Gialli', 'Corso Francia, 1', 'Cagliari', 'giorgio@polito.it');
 
-INSERT INTO public.device (ean, brand, category, name, price) VALUES (1, 'Apple', 'Smartphone', 'iPhone 11', 800);
-INSERT INTO public.device (ean, brand, category, name, price) VALUES (2, 'Sony', 'Console', 'Playstation 5', 500);
-INSERT INTO public.device (ean, brand, category, name, price) VALUES (3, 'HP', 'PC', '256 G7', 600);
-INSERT INTO public.device (ean, brand, category, name, price) VALUES (4, 'Samsung', 'Fridge', 'RS66A8101SL', 700);
-INSERT INTO public.device (ean, brand, category, name, price) VALUES (5, 'LG', 'Smart TV', '65QNED816QA', 900);
+INSERT INTO public.product (ean, brand, category, name, price) VALUES (1, 'Apple', 'Smartphone', 'iPhone 11', 800);
+INSERT INTO public.product (ean, brand, category, name, price) VALUES (2, 'Sony', 'Console', 'Playstation 5', 500);
+INSERT INTO public.product (ean, brand, category, name, price) VALUES (3, 'HP', 'PC', '256 G7', 600);
+INSERT INTO public.product (ean, brand, category, name, price) VALUES (4, 'Samsung', 'Fridge', 'RS66A8101SL', 700);
+INSERT INTO public.product (ean, brand, category, name, price) VALUES (5, 'LG', 'Smart TV', '65QNED816QA', 900);
 
-INSERT INTO public.expert (id, name, role, surname, fields) VALUES (6, 'Paolo', 'EXPERT', 'Russo', 'Smartphone');
-INSERT INTO public.expert (id, name, role, surname, fields) VALUES (7, 'Marta', 'EXPERT', 'Ferrari', 'PC');
-INSERT INTO public.expert (id, name, role, surname, fields) VALUES (8, 'Daniele', 'EXPERT', 'Esposito', 'Console, Smartphone');
-INSERT INTO public.expert (id, name, role, surname, fields) VALUES (9, 'Beatrice', 'EXPERT', 'Romano', 'Fridge, Smart TV');
-INSERT INTO public.expert (id, name, role, surname, fields) VALUES (10, 'Michele', 'EXPERT', 'Ricci', 'PC, Smartphone');
+INSERT INTO public.expert (id, name, role, surname, email, fields) VALUES (6, 'Paolo', 'EXPERT', 'Russo', 'paolorusso@mail.it', 'Smartphone');
+INSERT INTO public.expert (id, name, role, surname, email, fields) VALUES (7, 'Marta', 'EXPERT', 'Ferrari', 'martaferrari@email.it', 'PC');
+INSERT INTO public.expert (id, name, role, surname, email, fields) VALUES (8, 'Daniele', 'EXPERT', 'Esposito', 'danieleesposito@email.it', 'Console, Smartphone');
+INSERT INTO public.expert (id, name, role, surname, email, fields) VALUES (9, 'Beatrice', 'EXPERT', 'Romano', 'beatriceromano@email.it','Fridge, Smart TV');
+INSERT INTO public.expert (id, name, role, surname, email, fields) VALUES (10, 'Michele', 'EXPERT', 'Ricci', 'michelericci@email.it','PC, Smartphone');
 
-INSERT INTO public.manager (id, name, role, surname, email) VALUES (11, 'Dario', 'MANAGER', 'Greco');
+INSERT INTO public.manager (id, name, role, surname, email, department) VALUES (11, 'Dario', 'MANAGER', 'Greco', 'dariogreco@email.dep', 'dep2');
 
 INSERT INTO public.ticket (id, date_of_creation, description, issue_type, priority_level, customer_id, expert_id, product_ean) VALUES (1, '2023-05-05 12:00:00.000000', 'Problem with smartphone', 'Problem', 3, 1, 6, 1);
 INSERT INTO public.ticket (id, date_of_creation, description, issue_type, priority_level, customer_id, expert_id, product_ean) VALUES (2, '2023-05-15 16:00:00.000000', 'Configure PC', 'Configuration', 2, 2, 7, 3);
