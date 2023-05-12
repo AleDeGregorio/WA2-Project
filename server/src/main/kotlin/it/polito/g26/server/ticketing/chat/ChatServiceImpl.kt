@@ -1,7 +1,7 @@
 package it.polito.g26.server.ticketing.chat
 
-import it.polito.g26.server.ticketing.message.MessageDTO
-import it.polito.g26.server.ticketing.message.toDTO
+import it.polito.g26.server.ticketing.messages.MessageDTO
+import it.polito.g26.server.ticketing.messages.toDTO
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.util.*

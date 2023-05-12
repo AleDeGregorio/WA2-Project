@@ -5,6 +5,7 @@ import it.polito.g26.server.ProfileNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
+/*
 @Service
 class ProfileServiceImpl(
     private val profileRepository: ProfileRepository
@@ -31,3 +32,4 @@ class ProfileServiceImpl(
         }
     }
 }
+*/

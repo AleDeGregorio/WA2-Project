@@ -1,6 +1,6 @@
 package it.polito.g26.server.ticketing.chat
 
-import it.polito.g26.server.ticketing.message.Message
+import it.polito.g26.server.ticketing.messages.Message
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param

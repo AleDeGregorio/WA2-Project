@@ -1,17 +1,24 @@
 package it.polito.g26.server.profiles
 
+import it.polito.g26.server.ticketing.utility.Role
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
+import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
+import jakarta.persistence.MappedSuperclass
 import jakarta.persistence.Table
 
-@Entity
-@Table(name = "profiles")
-class Profile {
+@MappedSuperclass
+open class Profile (
     @Id
-    var email: String = ""
-    var password: String = ""
-    var name: String = ""
-    var surname: String = ""
-    var city: String = ""
-    var address: String = ""
-}
+    @GeneratedValue
+    var id: Long? = null,
+
+    open var name: String,
+    open var surname: String,
+    open var email: String,
+
+    @Enumerated(value = EnumType.STRING)
+    val role: Role
+)
