@@ -2,11 +2,14 @@ package it.polito.g26.server.ticketing.tickets
 
 import it.polito.g26.server.products.Product
 import it.polito.g26.server.products.ProductDTO
+import it.polito.g26.server.products.toEntity
 import it.polito.g26.server.profiles.customer.Customer
 import it.polito.g26.server.profiles.customer.CustomerDTO
+import it.polito.g26.server.profiles.customer.toEntity
 import it.polito.g26.server.ticketing.chat.ChatDTO
 import it.polito.g26.server.profiles.expert.Expert
 import it.polito.g26.server.profiles.expert.ExpertDTO
+import it.polito.g26.server.profiles.expert.toEntity
 import it.polito.g26.server.ticketing.statusTicket.StatusTicketDTO
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -29,13 +32,15 @@ class TicketController(
         return expert
     }
 
-    private fun customerDTOToEntity(customerDTO: CustomerDTO, email: String?) : Customer {
-        val customer = Customer(name = customerDTO.name!!, surname = customerDTO.surname!!)
-
-        customer.email = email ?: customerDTO.email
-        customer.city = customerDTO.city
-        customer.address = customerDTO.address
-
+    private fun customerDTOToEntity(customerDTO: CustomerDTO) : Customer {
+        val customer = Customer(name = customerDTO.name,
+            surname = customerDTO.surname,
+            email = customerDTO.email,
+            city = customerDTO.city,
+            address = customerDTO.address)
+        if (customer.id != null) {
+            customer.id = customerDTO.id
+        }
         return customer
     }
 
@@ -52,16 +57,16 @@ class TicketController(
 
     private fun ticketDTOToEntity(ticketDTO: TicketDTO) : Ticket {
         val ticket = Ticket()
-
-        ticket.customer = customerDTOToEntity(ticketDTO.customer!!, null)
-        ticket.expert = expertDTOToEntity(ticketDTO.expert!!, null)
-        ticket.product = productDTOToEntity(ticketDTO.product!!)
+        println(ticketDTO)
+        ticket.customer = ticketDTO.customer?.toEntity()
+        ticket.expert = ticketDTO.expert?.toEntity()
+        ticket.product = ticketDTO.product?.toEntity()
         ticket.status = ticketDTO.status
         ticket.issueType = ticketDTO.issueType
         ticket.description = ticketDTO.description
         ticket.priorityLevel = ticketDTO.priorityLevel
         ticket.dateOfCreation = ticketDTO.dateOfCreation
-
+        println(ticket)
         return ticket
     }
 
@@ -118,6 +123,7 @@ class TicketController(
     @ResponseStatus(HttpStatus.CREATED)
     fun insertTicket(@RequestBody ticketDTO: TicketDTO?) {
         if (ticketDTO != null) {
+            println("STO CONVERTENDO DA DTO A ENTITY")
             val insertTicket = ticketDTOToEntity(ticketDTO)
 
             ticketService.insertTicket(insertTicket)

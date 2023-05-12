@@ -19,7 +19,8 @@ fun Customer.toDTO() : CustomerDTO {
 }
 
 fun CustomerDTO.toEntity(): Customer {
-    val customer = Customer(name, surname, email, city, address)
-    customer.id = id
+    val customer = Customer(
+        name= name, surname, email, city, address)
+    customer.id = this.id
     return customer
 }

@@ -128,14 +128,14 @@ class DbT1ApplicationTests {
 
 
         assertNotNull(responseGet2.body)
-
+        /*
         assertEquals(customer.id, responseGet2.body?.id)
         assertEquals(customer.name, responseGet2.body?.name)
         assertEquals(customer.surname, responseGet2.body?.surname)
         assertEquals(customer.city, responseGet2.body?.city)
         assertEquals(customer.address, responseGet2.body?.address)
         assertEquals(customer.email, responseGet2.body?.email)
-
+        */
         assertEquals(customer, responseGet2.body)
 
     }
@@ -145,28 +145,35 @@ class DbT1ApplicationTests {
     fun test1ExpertGet() {
         val expert = ExpertDTO(null, "Name","Surname", "Email","Field1, Field2")
 
-        ExpertController(expertService = ExpertServiceImpl)
+        ExpertController(expertService = ExpertServiceImpl(expertRepository)).insertExpert(expert)
 
-        val url = "http://localhost:$port/API/expert/${savedExpert.id}"
-        val response = restTemplate.getForEntity(url, Expert::class.java)
+        val url = "http://localhost:$port/API/expert/${expert.email}"
+        val response = restTemplate.getForEntity(url, ExpertDTO::class.java)
 
         assertEquals(HttpStatus.OK, response.statusCode)
-        assertEquals(savedExpert, response.body)
+        assertEquals(expert.name, response.body?.name)
+        assertEquals(expert.surname, response.body?.surname)
+        assertEquals(expert.email, response.body?.email)
+        assertEquals(expert.fields, response.body?.fields)
+
     }
 
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun test2ExpertGetByField() {
-        val expert = Expert("Field1, Field2", "Name","Surname","Email")
+        val expert = ExpertDTO(null, "Name","Surname","Email","Field1, Field2")
         val field = "field1"
 
-        val savedExpert = expertRepository.save(expert)
+        ExpertController(expertService = ExpertServiceImpl(expertRepository)).insertExpert(expert)
+
+        val urlGet = "http://localhost:$port/API/expert/${expert.email}"
+        val responseGet = restTemplate.getForEntity(urlGet, ExpertDTO::class.java)
 
         val url = "http://localhost:$port/API/expert/field/${field}"
-        val response = restTemplate.exchange(url, HttpMethod.GET, null, object : ParameterizedTypeReference<List<Expert>>() {}, field)
+        val response = restTemplate.exchange(url, HttpMethod.GET, null, object : ParameterizedTypeReference<List<ExpertDTO>>() {}, field)
 
         assertEquals(HttpStatus.OK, response.statusCode)
-        assertEquals(savedExpert, response.body?.get(0))
+        assertEquals(responseGet.body, response.body?.get(0))
     }
 
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
@@ -350,37 +357,37 @@ class DbT1ApplicationTests {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun test1TicketGetAll() {
-        val customer = CustomerDTO(null, "Name","Surname",Role.CUSTOMER, "email", "city", "address")
+        var customer = CustomerDTO(null, "Name","Surname",Role.CUSTOMER, "email", "city", "address")
         CustomerController(customerService = CustomerServiceImpl(customerRepository)).insertCustomer(customer)
         val urlCustomer = "http://localhost:$port/API/customer/${customer.email}"
         val responseCustomer = restTemplate.getForEntity(urlCustomer,CustomerDTO::class.java)
         println("!!!!!!CUSTOMER BODY RESPONSE!!!!!!")
         println(responseCustomer.body)
-        val savedCustomer = responseCustomer.body
+        customer = responseCustomer.body!!
 
-        val expert = ExpertDTO(null, "Name","Surname", "Email", "Field1, Field2")
+        var expert = ExpertDTO(null, "Name","Surname", "Email", "Field1, Field2")
         ExpertController(expertService = ExpertServiceImpl(expertRepository)).insertExpert(expert)
         val urlExpert = "http://localhost:$port/API/expert/${expert.email}"
         val responseExpert = restTemplate.getForEntity(urlExpert,ExpertDTO::class.java)
         println("!!!!!!EXPERT BODY RESPONSE!!!!!!")
         println(responseExpert.body)
-        val savedExpert = responseExpert.body
+        expert = responseExpert.body!!
 
-        val product = ProductDTO(ean = 1, name = "Name", category = "Category", brand = "Brand", price = 10.5)
+        var product = ProductDTO(ean = 1, name = "Name", category = "Category", brand = "Brand", price = 10.5)
         ProductController(productService = ProductServiceImpl(productRepository)).insertDevice(product)
         val urlProduct = "http://localhost:$port/API/products/${product.ean}"
         val responseProduct = restTemplate.getForEntity(urlProduct,ProductDTO::class.java)
         println("!!!!!!PRODUCT BODY RESPONSE!!!!!!")
         println(responseProduct.body)
-        val savedProduct = responseProduct.body
+        product = responseProduct.body!!
 
         val ticket = TicketDTO(
             id = null,
             status = mutableSetOf(),
             chats = mutableSetOf(),
-            customer = savedCustomer,
-            expert = savedExpert,
-            product = savedProduct,
+            customer = customer,
+            expert = expert,
+            product = product,
             issueType = "Issue",
             description = "Description",
             priorityLevel = 1,
@@ -392,8 +399,8 @@ class DbT1ApplicationTests {
             status = mutableSetOf(),
             chats = mutableSetOf(),
             customer = customer,
-            expert = savedExpert,
-            product = savedProduct,
+            expert = expert,
+            product = product,
             issueType = "Issue2",
             description = "Description2",
             priorityLevel = 1,

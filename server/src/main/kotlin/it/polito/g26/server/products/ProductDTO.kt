@@ -14,3 +14,7 @@ data class ProductDTO(
 fun Product.toDTO(): ProductDTO{
     return ProductDTO(ean, name, brand, category, price)
 }
+
+fun ProductDTO.toEntity(): Product {
+    return Product(ean, name, brand, category, price)
+}
