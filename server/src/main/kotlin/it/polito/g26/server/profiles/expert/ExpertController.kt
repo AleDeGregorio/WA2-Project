@@ -20,10 +20,10 @@ class ExpertController(
         return expert
     }
 
-    @GetMapping("/API/expert/{id}")
+    @GetMapping("/API/expert/{email}")
     @ResponseStatus(HttpStatus.OK)
-    fun getExpert(@PathVariable id: Long) : ExpertDTO? {
-        return expertService.getExpert(id) ?: throw Exception("Expert not found")
+    fun getExpert(@PathVariable email: String) : ExpertDTO? {
+        return expertService.getExpert(email) ?: throw Exception("Expert not found")
     }
 
     @GetMapping("/API/expert/field/{field}")

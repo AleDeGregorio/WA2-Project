@@ -1,14 +1,12 @@
 package it.polito.g26.server
 
-import it.polito.g26.server.products.Product
-import it.polito.g26.server.products.ProductRepository
-import it.polito.g26.server.profiles.customer.Customer
-import it.polito.g26.server.profiles.customer.CustomerRepository
-import it.polito.g26.server.profiles.expert.Expert
-import it.polito.g26.server.profiles.expert.ExpertRepository
+import it.polito.g26.server.products.*
+import it.polito.g26.server.profiles.customer.*
+import it.polito.g26.server.profiles.expert.*
 import it.polito.g26.server.profiles.manager.Manager
 import it.polito.g26.server.profiles.manager.ManagerRepository
-import it.polito.g26.server.ticketing.tickets.TicketRepository
+import it.polito.g26.server.ticketing.tickets.*
+import it.polito.g26.server.ticketing.utility.Role
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
@@ -16,17 +14,20 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.boot.test.web.client.getForEntity
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
+import java.text.SimpleDateFormat
 
 @Testcontainers
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -248,32 +249,37 @@ class DbT1ApplicationTests {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun test1ProductGetAll() {
-        val product = Product(ean = 1, name = "Name", category = "Category", brand = "Brand", price = 10.5)
-        val product2 = Product(ean = 2, name = "Name2", category = "Category2", brand = "Brand2", price = 10.5)
+        val product = ProductDTO(ean = 1, name = "Name", category = "Category", brand = "Brand", price = 10.5,
+            tickets = mutableSetOf()
+        )
+        val product2 = ProductDTO(ean = 2, name = "Name2", category = "Category2", brand = "Brand2", price = 10.5, tickets = mutableSetOf())
 
-        val savedProduct = productRepository.save(product)
-        val savedProduct2 = productRepository.save(product2)
+        ProductController(productService = ProductServiceImpl(productRepository)).insertDevice(product)
+        ProductController(productService = ProductServiceImpl(productRepository)).insertDevice(product2)
+
 
         val url = "http://localhost:$port/API/products/"
-        val response = restTemplate.exchange(url, HttpMethod.GET, null, object : ParameterizedTypeReference<List<Product>>() {})
-
+        println(url)
+        val response = restTemplate.exchange(url, HttpMethod.GET, null, object : ParameterizedTypeReference<List<ProductDTO>>() {})
         assertEquals(HttpStatus.OK, response.statusCode)
-        assertEquals(savedProduct, response.body?.get(0))
-        assertEquals(savedProduct2, response.body?.get(1))
+        println(response)
+        println(response.body)
+        assertEquals(product, response.body?.get(0))
+        assertEquals(product2, response.body?.get(1))
     }
 
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun test2ProductGet() {
-        val product = Product(ean = 2, name = "Name", category = "Category", brand = "Brand", price = 10.5)
+        val product = ProductDTO(ean = 2, name = "Name", category = "Category", brand = "Brand", price = 10.5, tickets = mutableSetOf())
 
-        val savedProduct = productRepository.save(product)
+        ProductController(productService = ProductServiceImpl(productRepository)).insertDevice(product)
 
-        val url = "http://localhost:$port/API/products/${savedProduct.ean}"
-        val response = restTemplate.getForEntity(url, Product::class.java)
+        val url = "http://localhost:$port/API/products/${product.ean}"
+        val response = restTemplate.getForEntity(url, ProductDTO::class.java)
 
         assertEquals(HttpStatus.OK, response.statusCode)
-        assertEquals(savedProduct, response.body)
+        assertEquals(product, response.body)
     }
 
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
@@ -322,47 +328,70 @@ class DbT1ApplicationTests {
         assertEquals(product.price, updatedProduct.price)
     }
 
-    /*
+
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun test1TicketGetAll() {
-        val customer = Customer("test@test.it", "Name","Surname", "city", "address")
-        val savedCustomer = customerRepository.save(customer)
-        val expert = Expert("Field1, Field2", "Name","Surname")
-        val savedExpert = expertRepository.save(expert)
-        val Product = Product(name = "Name", category = "Category", brand = "Brand", price = 10.5)
-        val savedProduct = ProductRepository.save(Product)
+        val customer = CustomerDTO(null, "Name","Surname",Role.CUSTOMER, "email", "city", "address", mutableSetOf())
+        CustomerController(customerService = CustomerServiceImpl(customerRepository)).insertCustomer(customer)
+        val urlCustomer = "http://localhost:$port/API/customer/${customer.email}"
+        val responseCustomer = restTemplate.getForEntity(urlCustomer,CustomerDTO::class.java)
+        println("!!!!!!CUSTOMER BODY RESPONSE!!!!!!")
+        println(responseCustomer.body)
+        val savedCustomer = responseCustomer.body
 
-        val ticket = Ticket(
-            customer = customer,
-            expert = expert,
-            product = Product,
+        val expert = ExpertDTO(null, "Name","Surname", "Email", "Field1, Field2", mutableSetOf())
+        ExpertController(expertService = ExpertServiceImpl(expertRepository)).insertExpert(expert)
+        val urlExpert = "http://localhost:$port/API/expert/${expert.email}"
+        val responseExpert = restTemplate.getForEntity(urlExpert,ExpertDTO::class.java)
+        println("!!!!!!EXPERT BODY RESPONSE!!!!!!")
+        println(responseExpert.body)
+        val savedExpert = responseExpert.body
+
+        val product = ProductDTO(ean = 1, name = "Name", category = "Category", brand = "Brand", price = 10.5, tickets = mutableSetOf())
+        ProductController(productService = ProductServiceImpl(productRepository)).insertDevice(product)
+        val urlProduct = "http://localhost:$port/API/products/${product.ean}"
+        val responseProduct = restTemplate.getForEntity(urlProduct,ProductDTO::class.java)
+        println("!!!!!!PRODUCT BODY RESPONSE!!!!!!")
+        println(responseProduct.body)
+        val savedProduct = responseProduct.body
+
+        val ticket = TicketDTO(
+            id = null,
+            status = mutableSetOf(),
+            chats = mutableSetOf(),
+            customer = savedCustomer,
+            expert = savedExpert,
+            product = savedProduct,
             issueType = "Issue",
             description = "Description",
             priorityLevel = 1,
             dateOfCreation = SimpleDateFormat("yyyy-MM-dd").parse("2023-05-10")
         )
 
-        val ticket2 = Ticket(
+        val ticket2 = TicketDTO(
+            id = null,
+            status = mutableSetOf(),
+            chats = mutableSetOf(),
             customer = customer,
-            expert = expert,
-            product = Product,
+            expert = savedExpert,
+            product = savedProduct,
             issueType = "Issue2",
             description = "Description2",
             priorityLevel = 1,
-            dateOfCreation = SimpleDateFormat("yyyy-MM-dd").parse("2023-05-10")
+            dateOfCreation = SimpleDateFormat("yyyy-MM-dd").parse("2023-06-10")
         )
 
-        val savedTicket = ticketRepository.save(ticket)
-        val savedTicket2 = ticketRepository.save(ticket2)
+        TicketController(ticketService = TicketServiceImpl(ticketRepository)).insertTicket(ticket)
+        TicketController(ticketService = TicketServiceImpl(ticketRepository)).insertTicket(ticket2)
 
         val url = "http://localhost:$port/API/tickets"
-        val response = restTemplate.exchange(url, HttpMethod.GET, null, object : ParameterizedTypeReference<List<Ticket>>() {})
+        val response = restTemplate.exchange(url, HttpMethod.GET, null, object : ParameterizedTypeReference<List<TicketDTO>>() {})
 
         assertEquals(HttpStatus.OK, response.statusCode)
-        assertEquals(savedTicket, response.body?.get(0))
-        assertEquals(savedTicket2, response.body?.get(1))
+        assertEquals(ticket, response.body?.get(0))
+        assertEquals(ticket2, response.body?.get(1))
     }
 
-     */
+
 }

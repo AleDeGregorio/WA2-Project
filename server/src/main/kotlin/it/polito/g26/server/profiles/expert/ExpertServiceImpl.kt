@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service
 class ExpertServiceImpl(
     private val expertRepository: ExpertRepository
 ) : ExpertService {
-    override fun getExpert(id: Long): ExpertDTO? {
-        return expertRepository.findByIdOrNull(id)?.toDTO()
+    override fun getExpert(email: String): ExpertDTO? {
+        return expertRepository.getByEmail(email)?.toDTO()
     }
 
     override fun getExpertsByField(field: String): List<ExpertDTO>? {

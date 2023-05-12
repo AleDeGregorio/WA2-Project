@@ -40,9 +40,9 @@ class ProductController(
 
     @PostMapping("/API/products/")
     @ResponseStatus(HttpStatus.CREATED)
-    fun insertDevice(@RequestBody deviceDTO: ProductDTO?) {
-        if (deviceDTO != null) {
-            val insertProduct = productDTOToEntity(deviceDTO)
+    fun insertDevice(@RequestBody productDTO: ProductDTO?) {
+        if (productDTO != null) {
+            val insertProduct = productDTOToEntity(productDTO)
 
             productService.insertProduct(insertProduct)
         }
@@ -53,9 +53,9 @@ class ProductController(
 
     @PutMapping("/API/products/{ean}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    fun updateDevice(@RequestBody deviceDTO: ProductDTO?, @PathVariable ean: Long) {
-        if (deviceDTO != null) {
-            val updatedProduct = productDTOToEntity(deviceDTO)
+    fun updateDevice(@RequestBody productDTO: ProductDTO?, @PathVariable ean: Long) {
+        if (productDTO != null) {
+            val updatedProduct = productDTOToEntity(productDTO)
 
             productService.updateProduct(updatedProduct)
         }

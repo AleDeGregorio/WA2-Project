@@ -1,5 +1,9 @@
 package it.polito.g26.server.ticketing.tickets
 
+import it.polito.g26.server.products.Product
+import it.polito.g26.server.products.ProductDTO
+import it.polito.g26.server.profiles.customer.Customer
+import it.polito.g26.server.profiles.customer.CustomerDTO
 import it.polito.g26.server.ticketing.chat.ChatDTO
 import it.polito.g26.server.profiles.expert.Expert
 import it.polito.g26.server.profiles.expert.ExpertDTO
@@ -20,16 +24,38 @@ class TicketController(
         }
 
         expert.fields = expertDTO.fields
+        expert.email = expertDTO.email
 
         return expert
+    }
+
+    private fun customerDTOToEntity(customerDTO: CustomerDTO, email: String?) : Customer {
+        val customer = Customer(name = customerDTO.name!!, surname = customerDTO.surname!!)
+
+        customer.email = email ?: customerDTO.email
+        customer.city = customerDTO.city
+        customer.address = customerDTO.address
+
+        return customer
+    }
+
+    private fun productDTOToEntity(deviceDTO: ProductDTO) : Product {
+        val device = Product(deviceDTO.ean)
+
+        device.name = deviceDTO.name
+        device.category = deviceDTO.category
+        device.brand = deviceDTO.brand
+        device.price = deviceDTO.price
+
+        return device
     }
 
     private fun ticketDTOToEntity(ticketDTO: TicketDTO) : Ticket {
         val ticket = Ticket()
 
-        ticket.customer = ticketDTO.customer
-        ticket.expert = ticketDTO.expert
-        ticket.product = ticketDTO.product
+        ticket.customer = customerDTOToEntity(ticketDTO.customer!!, null)
+        ticket.expert = expertDTOToEntity(ticketDTO.expert!!, null)
+        ticket.product = productDTOToEntity(ticketDTO.product!!)
         ticket.status = ticketDTO.status
         ticket.issueType = ticketDTO.issueType
         ticket.description = ticketDTO.description

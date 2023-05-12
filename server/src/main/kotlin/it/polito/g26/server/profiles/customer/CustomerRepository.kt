@@ -16,4 +16,5 @@ interface CustomerRepository : JpaRepository<Customer, Long> {
 
     @Query("SELECT t FROM Ticket t WHERE t.customer.id = :id")
     fun getTickets(@Param("id") id: Long) : List<Ticket>?
+
 }
