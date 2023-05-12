@@ -25,7 +25,16 @@ class StatusTicketServiceImpl(
             throw Exception("Ticket not found")
         }
     }
-
+/*
+override fun insertStatusTicket(statusTicket: StatusTicket) {
+        if (statusTicket.ticketDate != null && statusTicketRepository.existsById(statusTicket.ticketDate!!)) {
+            throw Exception("Status ticket already inserted")
+        }
+        else {
+            statusTicketRepository.save(statusTicket)
+        }
+    }
+ */
 
     override fun openStatusTicket(statusTicket: StatusTicket) {
         if (statusTicket.ticketDate != null && statusTicketRepository.existsById(statusTicket.ticketDate!!) && !statusTicketRepository.getLatestStatus(
@@ -34,9 +43,11 @@ class StatusTicketServiceImpl(
         ) {
             throw Exception("Status ticket already inserted")
         } else {
-            val tickDate = TicketDate(statusTicket.ticketDate?.id)
+            val tickDate = TicketDate(statusTicket.ticketDate?.id, statusTicket.ticketDate?.lastModifiedDate)
             val statTick = StatusTicket(tickDate, Status.OPEN)
             statusTicketRepository.save(statTick)
+
+
         }
     }
 

@@ -5,7 +5,8 @@ import java.util.Date
 
 data class StatusTicketDTO(
     val id: Long,
-    val lastModifiedDate: Date,
+    val lastModifiedDate: Date?,
+
     val status: Status
 )
 

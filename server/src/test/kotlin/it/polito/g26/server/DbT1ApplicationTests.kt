@@ -5,8 +5,11 @@ import it.polito.g26.server.profiles.customer.*
 import it.polito.g26.server.profiles.expert.*
 import it.polito.g26.server.profiles.manager.Manager
 import it.polito.g26.server.profiles.manager.ManagerRepository
+import it.polito.g26.server.ticketing.chat.Chat
+import it.polito.g26.server.ticketing.statusTicket.*
 import it.polito.g26.server.ticketing.tickets.*
 import it.polito.g26.server.ticketing.utility.Role
+import it.polito.g26.server.ticketing.utility.Status
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
@@ -26,6 +29,7 @@ import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import java.text.SimpleDateFormat
+import java.util.*
 
 @Testcontainers
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -58,6 +62,8 @@ class DbT1ApplicationTests {
     lateinit var productRepository: ProductRepository
     @Autowired
     lateinit var ticketRepository: TicketRepository
+    @Autowired
+    lateinit var statusTicketRepository: StatusTicketRepository
 
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
@@ -438,6 +444,80 @@ class DbT1ApplicationTests {
         assertEquals(ticket2.issueType, response.body?.get(1)?.issueType)
         assertEquals(ticket2.description, response.body?.get(1)?.description)
     }
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    @Test
+    fun get1StatusTicket(){
+        var customer = CustomerDTO(null, "Name","Surname",Role.CUSTOMER, "email", "city", "address")
+        CustomerController(customerService = CustomerServiceImpl(customerRepository)).insertCustomer(customer)
+        val urlCustomer = "http://localhost:$port/API/customer/${customer.email}"
+        val responseCustomer = restTemplate.getForEntity(urlCustomer,CustomerDTO::class.java)
+        println("!!!!!!CUSTOMER BODY RESPONSE!!!!!!")
+        println(responseCustomer.body)
+        customer = responseCustomer.body!!
+
+        var expert = ExpertDTO(null, "Name","Surname", "Email", "Field1, Field2")
+        ExpertController(expertService = ExpertServiceImpl(expertRepository)).insertExpert(expert)
+        val urlExpert = "http://localhost:$port/API/expert/${expert.email}"
+        val responseExpert = restTemplate.getForEntity(urlExpert,ExpertDTO::class.java)
+        println("!!!!!!EXPERT BODY RESPONSE!!!!!!")
+        println(responseExpert.body)
+        expert = responseExpert.body!!
+
+        var product = ProductDTO(ean = 1, name = "Name", category = "Category", brand = "Brand", price = 10.5)
+        ProductController(productService = ProductServiceImpl(productRepository)).insertDevice(product)
+        val urlProduct = "http://localhost:$port/API/products/${product.ean}"
+        val responseProduct = restTemplate.getForEntity(urlProduct,ProductDTO::class.java)
+        println("!!!!!!PRODUCT BODY RESPONSE!!!!!!")
+        println(responseProduct.body)
+        product = responseProduct.body!!
+
+        var ticket = TicketDTO(
+            id = null,
+            status = mutableSetOf(),
+            chats = mutableSetOf(),
+            customer = customer,
+            expert = expert,
+            product = product,
+            issueType = "Issue",
+            description = "Description",
+            priorityLevel = 1,
+            dateOfCreation = SimpleDateFormat("yyyy-MM-dd").parse("2023-05-10")
+        )
+        ticket = ticketRepository.save(ticket.toEntity()).toDTO()
+        TicketController(ticketService = TicketServiceImpl(ticketRepository)).insertTicket(ticket)
+        val urlTicket = "http://localhost:$port/API/ticket/${ticket.id}"
+        val responseTicket = restTemplate.getForEntity(urlTicket,TicketDTO::class.java)
+        println("!!!!!!TICKET BODY RESPONSE!!!!!!")
+        println(responseTicket.body)
+        ticket = responseTicket.body!!
+
+        val status1 = StatusTicketDTO(
+        id = ticket.id!!,
+        lastModifiedDate = ticket.dateOfCreation,// SimpleDateFormat("yyyy-MM-dd").parse("2023-04-10"),
+        status = Status.OPEN
+        )
+        val status2 = StatusTicketDTO(
+            id = ticket.id!!,
+            lastModifiedDate = null,
+            status = Status.CLOSED
+        )
+
+        StatusTicketController(statusTicketService = StatusTicketServiceImpl(statusTicketRepository)).openStatusTicket(status1)
+        StatusTicketController(statusTicketService = StatusTicketServiceImpl(statusTicketRepository)).openStatusTicket(status2)
+
+        val url = "http://localhost:$port\"/API/statusTicket/${ticket.id}"
+        val response = restTemplate.exchange(url, HttpMethod.GET, null, object : ParameterizedTypeReference<List<StatusTicketDTO>>() {})
+
+        assertEquals(HttpStatus.OK, response.statusCode)
+
+        assertEquals(status1.id, response.body?.get(0)?.id)
+        assertEquals(status1.status, response.body?.get(0)?.status)
+        assertEquals(status2.id, response.body?.get(1)?.id)
+        assertEquals(status2.status, response.body?.get(1)?.status)
+    }
 
 
-}
+
+    }
+
+
