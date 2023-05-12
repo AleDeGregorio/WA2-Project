@@ -461,6 +461,482 @@ class DbT1ApplicationTests {
         assertEquals(ticket2.issueType, response.body?.get(1)?.issueType)
         assertEquals(ticket2.description, response.body?.get(1)?.description)
     }
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    @Test
+    fun test2TicketInsert() {
+        var customer = CustomerDTO(null, "Name","Surname",Role.CUSTOMER, "email", "city", "address")
+        CustomerController(customerService = CustomerServiceImpl(customerRepository)).insertCustomer(customer)
+        val urlCustomer = "http://localhost:$port/API/customer/${customer.email}"
+        val responseCustomer = restTemplate.getForEntity(urlCustomer,CustomerDTO::class.java)
+        customer = responseCustomer.body!!
+
+        var expert = ExpertDTO(null, "Name","Surname", "Email", "Field1, Field2")
+        ExpertController(expertService = ExpertServiceImpl(expertRepository)).insertExpert(expert)
+        val urlExpert = "http://localhost:$port/API/expert/${expert.email}"
+        val responseExpert = restTemplate.getForEntity(urlExpert,ExpertDTO::class.java)
+        expert = responseExpert.body!!
+
+        var product = ProductDTO(ean = 1, name = "Name", category = "Category", brand = "Brand", price = 10.5)
+        ProductController(productService = ProductServiceImpl(productRepository)).insertDevice(product)
+        val urlProduct = "http://localhost:$port/API/products/${product.ean}"
+        val responseProduct = restTemplate.getForEntity(urlProduct,ProductDTO::class.java)
+        product = responseProduct.body!!
+
+        val ticket = TicketDTO(
+            id = null,
+            status = mutableSetOf(),
+            chats = mutableSetOf(),
+            customer = customer,
+            expert = expert,
+            product = product,
+            issueType = "Issue",
+            description = "Description",
+            priorityLevel = 1,
+            dateOfCreation = SimpleDateFormat("yyyy-MM-dd").parse("2023-05-10")
+        )
+
+        TicketController(ticketService = TicketServiceImpl(ticketRepository)).insertTicket(ticket)
+
+        val url = "http://localhost:$port/API/ticket"
+        val request = HttpEntity(ticket)
+        val response=restTemplate.postForEntity(url, request, Void::class.java)
+
+        assertEquals(HttpStatus.CREATED, response.statusCode)
+
+        val url2 ="http://localhost:$port/API/tickets"
+        val response2 = restTemplate.exchange(url2, HttpMethod.GET, null, object : ParameterizedTypeReference<List<TicketDTO>>() {})
+
+        val ticket2 = TicketDTO(
+            id = 1,
+            status = mutableSetOf(),
+            chats = mutableSetOf(),
+            customer = customer,
+            expert = expert,
+            product = product,
+            issueType = "Issue",
+            description = "Description",
+            priorityLevel = 1,
+            dateOfCreation = SimpleDateFormat("yyyy-MM-dd").parse("2023-05-10")
+        )
+        assertNotNull(response2.body)
+        assertEquals(ticket2, response2.body?.get(0))
+    }
+
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    @Test
+    fun test3TicketGetById() {
+        var customer = CustomerDTO(null, "Name","Surname",Role.CUSTOMER, "email", "city", "address")
+        CustomerController(customerService = CustomerServiceImpl(customerRepository)).insertCustomer(customer)
+        val urlCustomer = "http://localhost:$port/API/customer/${customer.email}"
+        val responseCustomer = restTemplate.getForEntity(urlCustomer,CustomerDTO::class.java)
+        customer = responseCustomer.body!!
+
+        var expert = ExpertDTO(null, "Name","Surname", "Email", "Field1, Field2")
+        ExpertController(expertService = ExpertServiceImpl(expertRepository)).insertExpert(expert)
+        val urlExpert = "http://localhost:$port/API/expert/${expert.email}"
+        val responseExpert = restTemplate.getForEntity(urlExpert,ExpertDTO::class.java)
+        expert = responseExpert.body!!
+
+        var product = ProductDTO(ean = 1, name = "Name", category = "Category", brand = "Brand", price = 10.5)
+        ProductController(productService = ProductServiceImpl(productRepository)).insertDevice(product)
+        val urlProduct = "http://localhost:$port/API/products/${product.ean}"
+        val responseProduct = restTemplate.getForEntity(urlProduct,ProductDTO::class.java)
+        product = responseProduct.body!!
+
+        val ticket = TicketDTO(
+            id = null,
+            status = mutableSetOf(),
+            chats = mutableSetOf(),
+            customer = customer,
+            expert = expert,
+            product = product,
+            issueType = "Issue",
+            description = "Description",
+            priorityLevel = 1,
+            dateOfCreation = SimpleDateFormat("yyyy-MM-dd").parse("2023-05-10")
+        )
+
+        val ticket2 = TicketDTO(
+            id = 1,
+            status = mutableSetOf(),
+            chats = mutableSetOf(),
+            customer = customer,
+            expert = expert,
+            product = product,
+            issueType = "Issue",
+            description = "Description",
+            priorityLevel = 1,
+            dateOfCreation = SimpleDateFormat("yyyy-MM-dd").parse("2023-05-10")
+        )
+
+        TicketController(ticketService = TicketServiceImpl(ticketRepository)).insertTicket(ticket)
+
+        val id=1
+
+        val url = "http://localhost:$port/API/ticket/${id}"
+        val response = restTemplate.getForEntity(url, TicketDTO::class.java)
+        assertEquals(HttpStatus.OK, response.statusCode)
+        assertEquals(ticket2, response.body)
+    }
+
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    @Test
+    fun test4TicketGetByCustomer() {
+        var customer = CustomerDTO(null, "Name","Surname",Role.CUSTOMER, "email", "city", "address")
+        CustomerController(customerService = CustomerServiceImpl(customerRepository)).insertCustomer(customer)
+        val urlCustomer = "http://localhost:$port/API/customer/${customer.email}"
+        val responseCustomer = restTemplate.getForEntity(urlCustomer,CustomerDTO::class.java)
+        customer = responseCustomer.body!!
+
+        var expert = ExpertDTO(null, "Name","Surname", "Email", "Field1, Field2")
+        ExpertController(expertService = ExpertServiceImpl(expertRepository)).insertExpert(expert)
+        val urlExpert = "http://localhost:$port/API/expert/${expert.email}"
+        val responseExpert = restTemplate.getForEntity(urlExpert,ExpertDTO::class.java)
+        expert = responseExpert.body!!
+
+        var product = ProductDTO(ean = 1, name = "Name", category = "Category", brand = "Brand", price = 10.5)
+        ProductController(productService = ProductServiceImpl(productRepository)).insertDevice(product)
+        val urlProduct = "http://localhost:$port/API/products/${product.ean}"
+        val responseProduct = restTemplate.getForEntity(urlProduct,ProductDTO::class.java)
+        product = responseProduct.body!!
+
+        val ticket = TicketDTO(
+            id = null,
+            status = mutableSetOf(),
+            chats = mutableSetOf(),
+            customer = customer,
+            expert = expert,
+            product = product,
+            issueType = "Issue",
+            description = "Description",
+            priorityLevel = 1,
+            dateOfCreation = SimpleDateFormat("yyyy-MM-dd").parse("2023-05-10")
+        )
+
+        val ticket2 = TicketDTO(
+            id = 1,
+            status = mutableSetOf(),
+            chats = mutableSetOf(),
+            customer = customer,
+            expert = expert,
+            product = product,
+            issueType = "Issue",
+            description = "Description",
+            priorityLevel = 1,
+            dateOfCreation = SimpleDateFormat("yyyy-MM-dd").parse("2023-05-10")
+        )
+
+        TicketController(ticketService = TicketServiceImpl(ticketRepository)).insertTicket(ticket)
+        println(customer.id)
+
+        val url = "http://localhost:$port/API/ticket/customer/${customer.id}"
+        val response = restTemplate.exchange(url, HttpMethod.GET, null, object : ParameterizedTypeReference<List<TicketDTO>>() {})
+
+        assertEquals(HttpStatus.OK, response.statusCode)
+        assertEquals(ticket2, response.body?.get(0))
+    }
+
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    @Test
+    fun test5TicketGetByExpert() {
+        var customer = CustomerDTO(null, "Name","Surname",Role.CUSTOMER, "email", "city", "address")
+        CustomerController(customerService = CustomerServiceImpl(customerRepository)).insertCustomer(customer)
+        val urlCustomer = "http://localhost:$port/API/customer/${customer.email}"
+        val responseCustomer = restTemplate.getForEntity(urlCustomer,CustomerDTO::class.java)
+        customer = responseCustomer.body!!
+
+        var expert = ExpertDTO(null, "Name","Surname", "Email", "Field1, Field2")
+        ExpertController(expertService = ExpertServiceImpl(expertRepository)).insertExpert(expert)
+        val urlExpert = "http://localhost:$port/API/expert/${expert.email}"
+        val responseExpert = restTemplate.getForEntity(urlExpert,ExpertDTO::class.java)
+        expert = responseExpert.body!!
+
+        var product = ProductDTO(ean = 1, name = "Name", category = "Category", brand = "Brand", price = 10.5)
+        ProductController(productService = ProductServiceImpl(productRepository)).insertDevice(product)
+        val urlProduct = "http://localhost:$port/API/products/${product.ean}"
+        val responseProduct = restTemplate.getForEntity(urlProduct,ProductDTO::class.java)
+        product = responseProduct.body!!
+
+        val ticket = TicketDTO(
+            id = null,
+            status = mutableSetOf(),
+            chats = mutableSetOf(),
+            customer = customer,
+            expert = expert,
+            product = product,
+            issueType = "Issue",
+            description = "Description",
+            priorityLevel = 1,
+            dateOfCreation = SimpleDateFormat("yyyy-MM-dd").parse("2023-05-10")
+        )
+
+        val ticket2 = TicketDTO(
+            id = 1,
+            status = mutableSetOf(),
+            chats = mutableSetOf(),
+            customer = customer,
+            expert = expert,
+            product = product,
+            issueType = "Issue",
+            description = "Description",
+            priorityLevel = 1,
+            dateOfCreation = SimpleDateFormat("yyyy-MM-dd").parse("2023-05-10")
+        )
+
+        TicketController(ticketService = TicketServiceImpl(ticketRepository)).insertTicket(ticket)
+
+        val url = "http://localhost:$port/API/ticket/expert/${expert.id}"
+        val response = restTemplate.exchange(url, HttpMethod.GET, null, object : ParameterizedTypeReference<List<TicketDTO>>() {})
+
+        assertEquals(HttpStatus.OK, response.statusCode)
+        assertEquals(ticket2, response.body?.get(0))
+    }
+
+
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    @Test
+    fun test6TicketGetByProduct() {
+        var customer = CustomerDTO(null, "Name","Surname",Role.CUSTOMER, "email", "city", "address")
+        CustomerController(customerService = CustomerServiceImpl(customerRepository)).insertCustomer(customer)
+        val urlCustomer = "http://localhost:$port/API/customer/${customer.email}"
+        val responseCustomer = restTemplate.getForEntity(urlCustomer,CustomerDTO::class.java)
+        customer = responseCustomer.body!!
+
+        var expert = ExpertDTO(null, "Name","Surname", "Email", "Field1, Field2")
+        ExpertController(expertService = ExpertServiceImpl(expertRepository)).insertExpert(expert)
+        val urlExpert = "http://localhost:$port/API/expert/${expert.email}"
+        val responseExpert = restTemplate.getForEntity(urlExpert,ExpertDTO::class.java)
+        expert = responseExpert.body!!
+
+        var product = ProductDTO(ean = 1, name = "Name", category = "Category", brand = "Brand", price = 10.5)
+        ProductController(productService = ProductServiceImpl(productRepository)).insertDevice(product)
+        val urlProduct = "http://localhost:$port/API/products/${product.ean}"
+        val responseProduct = restTemplate.getForEntity(urlProduct,ProductDTO::class.java)
+        product = responseProduct.body!!
+
+        val ticket = TicketDTO(
+            id = null,
+            status = mutableSetOf(),
+            chats = mutableSetOf(),
+            customer = customer,
+            expert = expert,
+            product = product,
+            issueType = "Issue",
+            description = "Description",
+            priorityLevel = 1,
+            dateOfCreation = SimpleDateFormat("yyyy-MM-dd").parse("2023-05-10")
+        )
+
+        val ticket2 = TicketDTO(
+            id = 1,
+            status = mutableSetOf(),
+            chats = mutableSetOf(),
+            customer = customer,
+            expert = expert,
+            product = product,
+            issueType = "Issue",
+            description = "Description",
+            priorityLevel = 1,
+            dateOfCreation = SimpleDateFormat("yyyy-MM-dd").parse("2023-05-10")
+        )
+
+        TicketController(ticketService = TicketServiceImpl(ticketRepository)).insertTicket(ticket)
+
+        val url = "http://localhost:$port/API/ticket/product/${product.ean}"
+        val response = restTemplate.exchange(url, HttpMethod.GET, null, object : ParameterizedTypeReference<List<TicketDTO>>() {})
+
+        assertEquals(HttpStatus.OK, response.statusCode)
+        assertEquals(ticket2, response.body?.get(0))
+    }
+
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    @Test
+    fun test7TicketGetByDate() {
+        var customer = CustomerDTO(null, "Name","Surname",Role.CUSTOMER, "email", "city", "address")
+        CustomerController(customerService = CustomerServiceImpl(customerRepository)).insertCustomer(customer)
+        val urlCustomer = "http://localhost:$port/API/customer/${customer.email}"
+        val responseCustomer = restTemplate.getForEntity(urlCustomer,CustomerDTO::class.java)
+        customer = responseCustomer.body!!
+
+        var expert = ExpertDTO(null, "Name","Surname", "Email", "Field1, Field2")
+        ExpertController(expertService = ExpertServiceImpl(expertRepository)).insertExpert(expert)
+        val urlExpert = "http://localhost:$port/API/expert/${expert.email}"
+        val responseExpert = restTemplate.getForEntity(urlExpert,ExpertDTO::class.java)
+        expert = responseExpert.body!!
+
+        var product = ProductDTO(ean = 1, name = "Name", category = "Category", brand = "Brand", price = 10.5)
+        ProductController(productService = ProductServiceImpl(productRepository)).insertDevice(product)
+        val urlProduct = "http://localhost:$port/API/products/${product.ean}"
+        val responseProduct = restTemplate.getForEntity(urlProduct,ProductDTO::class.java)
+        product = responseProduct.body!!
+
+        val ticket = TicketDTO(
+            id = null,
+            status = mutableSetOf(),
+            chats = mutableSetOf(),
+            customer = customer,
+            expert = expert,
+            product = product,
+            issueType = "Issue",
+            description = "Description",
+            priorityLevel = 1,
+            dateOfCreation = SimpleDateFormat("yyyy-MM-dd").parse("2023-05-10")
+        )
+
+        val ticket2 = TicketDTO(
+            id = 1,
+            status = mutableSetOf(),
+            chats = mutableSetOf(),
+            customer = customer,
+            expert = expert,
+            product = product,
+            issueType = "Issue",
+            description = "Description",
+            priorityLevel = 1,
+            dateOfCreation = SimpleDateFormat("yyyy-MM-dd").parse("2023-05-10")
+        )
+
+        TicketController(ticketService = TicketServiceImpl(ticketRepository)).insertTicket(ticket)
+
+        val url = "http://localhost:$port/API/ticket/date/${"2023-05-10"}"
+        val response = restTemplate.exchange(url, HttpMethod.GET, null, object : ParameterizedTypeReference<List<TicketDTO>>() {})
+
+        assertEquals(HttpStatus.OK, response.statusCode)
+        assertEquals(ticket2, response.body?.get(0))
+    }
+
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    @Test
+    fun test8TicketSetPriority() {
+        var customer = CustomerDTO(null, "Name","Surname",Role.CUSTOMER, "email", "city", "address")
+        CustomerController(customerService = CustomerServiceImpl(customerRepository)).insertCustomer(customer)
+        val urlCustomer = "http://localhost:$port/API/customer/${customer.email}"
+        val responseCustomer = restTemplate.getForEntity(urlCustomer,CustomerDTO::class.java)
+        customer = responseCustomer.body!!
+
+        var expert = ExpertDTO(null, "Name","Surname", "Email", "Field1, Field2")
+        ExpertController(expertService = ExpertServiceImpl(expertRepository)).insertExpert(expert)
+        val urlExpert = "http://localhost:$port/API/expert/${expert.email}"
+        val responseExpert = restTemplate.getForEntity(urlExpert,ExpertDTO::class.java)
+        expert = responseExpert.body!!
+
+        var product = ProductDTO(ean = 1, name = "Name", category = "Category", brand = "Brand", price = 10.5)
+        ProductController(productService = ProductServiceImpl(productRepository)).insertDevice(product)
+        val urlProduct = "http://localhost:$port/API/products/${product.ean}"
+        val responseProduct = restTemplate.getForEntity(urlProduct,ProductDTO::class.java)
+        product = responseProduct.body!!
+
+        val ticket = TicketDTO(
+            id = null,
+            status = mutableSetOf(),
+            chats = mutableSetOf(),
+            customer = customer,
+            expert = expert,
+            product = product,
+            issueType = "Issue",
+            description = "Description",
+            priorityLevel = 1,
+            dateOfCreation = SimpleDateFormat("yyyy-MM-dd").parse("2023-05-10")
+        )
+
+        val ticket2 = TicketDTO(
+            id = 1,
+            status = mutableSetOf(),
+            chats = mutableSetOf(),
+            customer = customer,
+            expert = expert,
+            product = product,
+            issueType = "Issue",
+            description = "Description",
+            priorityLevel = 2,
+            dateOfCreation = SimpleDateFormat("yyyy-MM-dd").parse("2023-05-10")
+        )
+
+        TicketController(ticketService = TicketServiceImpl(ticketRepository)).insertTicket(ticket)
+
+        val url = "http://localhost:$port/API/ticket/${ticket2.id}?priorityLevel=2"
+        val request = HttpEntity(ticket2)
+        val response = restTemplate.exchange(url, HttpMethod.PUT, request,Void::class.java )
+
+        assertEquals(HttpStatus.ACCEPTED, response.statusCode)
+
+        val urlGet = "http://localhost:$port/API/ticket/${ticket2.id}"
+        val responseGet = restTemplate.getForEntity(urlGet, TicketDTO::class.java)
+
+        assertEquals(ticket2.priorityLevel, responseGet.body?.priorityLevel)
+    }
+
+    /* @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+     @Test
+     fun test9TicketSetExpert() {
+         var customer = CustomerDTO(null, "Name","Surname",Role.CUSTOMER, "email", "city", "address")
+         CustomerController(customerService = CustomerServiceImpl(customerRepository)).insertCustomer(customer)
+         val urlCustomer = "http://localhost:$port/API/customer/${customer.email}"
+         val responseCustomer = restTemplate.getForEntity(urlCustomer,CustomerDTO::class.java)
+         customer = responseCustomer.body!!
+
+         var expert = ExpertDTO(null, "Name","Surname", "Email", "Field1, Field2")
+         ExpertController(expertService = ExpertServiceImpl(expertRepository)).insertExpert(expert)
+         val urlExpert = "http://localhost:$port/API/expert/${expert.email}"
+         val responseExpert = restTemplate.getForEntity(urlExpert,ExpertDTO::class.java)
+         expert = responseExpert.body!!
+
+         var product = ProductDTO(ean = 1, name = "Name", category = "Category", brand = "Brand", price = 10.5)
+         ProductController(productService = ProductServiceImpl(productRepository)).insertDevice(product)
+         val urlProduct = "http://localhost:$port/API/products/${product.ean}"
+         val responseProduct = restTemplate.getForEntity(urlProduct,ProductDTO::class.java)
+         product = responseProduct.body!!
+
+         val ticket = TicketDTO(
+             id = null,
+             status = mutableSetOf(),
+             chats = mutableSetOf(),
+             customer = customer,
+             expert = expert,
+             product = product,
+             issueType = "Issue",
+             description = "Description",
+             priorityLevel = 1,
+             dateOfCreation = SimpleDateFormat("yyyy-MM-dd").parse("2023-05-10")
+         )
+
+         val ticket2 = TicketDTO(
+             id = 1,
+             status = mutableSetOf(),
+             chats = mutableSetOf(),
+             customer = customer,
+             expert = expert,
+             product = product,
+             issueType = "Issue",
+             description = "Description",
+             priorityLevel = 1,
+             dateOfCreation = SimpleDateFormat("yyyy-MM-dd").parse("2023-05-10")
+         )
+
+         TicketController(ticketService = TicketServiceImpl(ticketRepository)).insertTicket(ticket)
+
+         val url = "http://localhost:0/API/ticket/expert/{id}"
+         val builder = UriComponentsBuilder.fromPath(url).queryParam("expertDTO", expert)
+
+
+         val url2 = builder.buildAndExpand(1).toUriString()
+             .let { URLEncoder.encode(it, StandardCharsets.UTF_8.toString()) }
+
+
+
+
+         val request = HttpEntity(ticket2)
+         val response = restTemplate.exchange(url2, HttpMethod.PUT, request,Void::class.java )
+
+         assertEquals(HttpStatus.ACCEPTED, response.statusCode)
+
+         //get the updated
+         val urlGet = "http://localhost:$port/API/ticket/${ticket2.id}"
+         val responseGet = restTemplate.getForEntity(urlGet, TicketDTO::class.java)
+
+         assertEquals(ticket2.expert, responseGet.body?.expert)
+     }*/
+
 
 
 }

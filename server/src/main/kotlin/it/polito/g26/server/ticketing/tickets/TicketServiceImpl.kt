@@ -5,6 +5,7 @@ import it.polito.g26.server.ticketing.chat.toDTO
 import it.polito.g26.server.profiles.expert.Expert
 import it.polito.g26.server.ticketing.statusTicket.StatusTicketDTO
 import it.polito.g26.server.ticketing.statusTicket.toDTO
+import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.util.*
@@ -66,6 +67,7 @@ class TicketServiceImpl(
         }
     }
 
+    @Transactional
     override fun setPriorityLevel(id: Long, priorityLevel: Int) {
         if (ticketRepository.existsById(id)) {
             ticketRepository.setPriorityLevel(id, priorityLevel)
@@ -75,6 +77,7 @@ class TicketServiceImpl(
         }
     }
 
+    @Transactional
     override fun setExpert(id: Long, expert: Expert) {
         if (ticketRepository.existsById(id)) {
             ticketRepository.setExpert(id, expert)
