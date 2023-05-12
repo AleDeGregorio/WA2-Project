@@ -1,6 +1,6 @@
 package it.polito.g26.server.ticketing.chat
 
-import it.polito.g26.server.ticketing.message.MessageDTO
+import it.polito.g26.server.ticketing.messages.MessageDTO
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable

@@ -1,6 +1,6 @@
 package it.polito.g26.server.ticketing.attachment
 
-import it.polito.g26.server.ticketing.message.Message
+import it.polito.g26.server.ticketing.messages.Message
 
 data class AttachmentDTO (
     val id: Long?,

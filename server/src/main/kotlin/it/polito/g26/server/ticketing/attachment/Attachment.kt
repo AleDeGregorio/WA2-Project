@@ -1,6 +1,6 @@
 package it.polito.g26.server.ticketing.attachment
 
-import it.polito.g26.server.ticketing.message.Message
+import it.polito.g26.server.ticketing.messages.Message
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
