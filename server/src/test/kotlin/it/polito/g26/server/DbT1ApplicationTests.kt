@@ -319,7 +319,6 @@ class DbT1ApplicationTests {
     @Test
     fun test2ProductGet() {
         val product = ProductDTO(ean = 2, name = "Name", category = "Category", brand = "Brand", price = 10.5)
-
         ProductController(productService = ProductServiceImpl(productRepository)).insertDevice(product)
 
         val url = "http://localhost:$port/API/products/${product.ean}"
@@ -332,7 +331,7 @@ class DbT1ApplicationTests {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun test3ProductInsert() {
-        val product = Product(ean = 3, name = "Name", category = "Category", brand = "Brand", price = 10.5)
+        val product = ProductDTO(ean = 3, name = "Name", category = "Category", brand = "Brand", price = 10.5)
 
         val url = "http://localhost:$port/API/products/"
         val request = HttpEntity(product)
@@ -340,39 +339,44 @@ class DbT1ApplicationTests {
 
         assertEquals(HttpStatus.CREATED, response.statusCode)
 
-        val savedProduct = productRepository.save(product)
+        val urlGet = "http://localhost:$port/API/products/${product.ean}"
+        val responseGet = restTemplate.getForEntity(urlGet, ProductDTO::class.java)
 
-        assertNotNull(savedProduct)
-        assertEquals(product.name, savedProduct.name)
-        assertEquals(product.category, savedProduct.category)
-        assertEquals(product.brand, savedProduct.brand)
-        assertEquals(product.price, savedProduct.price)
+        assertNotNull(responseGet.body)
+        assertEquals(product.ean, responseGet.body?.ean)
+        assertEquals(product.name, responseGet.body?.name)
+        assertEquals(product.category, responseGet.body?.category)
+        assertEquals(product.brand, responseGet.body?.brand)
+        assertEquals(product.price, responseGet.body?.price)
     }
 
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun test4ProductUpdate() {
-        val product = Product(ean = 4, name = "Name", category = "Category", brand = "Brand", price = 10.5)
-        val savedProduct = productRepository.save(product)
+        var product = ProductDTO(ean = 4, name = "Name", category = "Category", brand = "Brand", price = 10.5)
+        ProductController(productService = ProductServiceImpl(productRepository)).insertDevice(product)
 
-        product.name = "New name"
-        product.category = "New category"
-        product.brand = "New brand"
-        product.price = 12.3
+        val url = "http://localhost:$port/API/products/${product.ean}"
+        val responseGet = restTemplate.getForEntity(url, ProductDTO::class.java)
 
-        val url = "http://localhost:$port/API/products/${savedProduct.ean}"
+        val getProduct = responseGet.body?.toEntity()
+
+        getProduct?.name = "New name"
+        getProduct?.category = "New category"
+        getProduct?.brand = "New brand"
+        getProduct?.price = 12.3
+        if (getProduct != null) {
+            product = getProduct.toDTO()
+        }
+
         val request = HttpEntity(product)
-        val response = restTemplate.exchange(url, HttpMethod.PUT, request, Void::class.java, savedProduct.ean)
+        val response = restTemplate.exchange(url, HttpMethod.PUT, request, Void::class.java, product.ean)
+        val responseGet2 = restTemplate.getForEntity(url, ProductDTO::class.java)
 
         assertEquals(HttpStatus.ACCEPTED, response.statusCode)
 
-        val updatedProduct = productRepository.findById(savedProduct.ean).get()
-
-        assertNotNull(updatedProduct)
-        assertEquals(product.name, updatedProduct.name)
-        assertEquals(product.category, updatedProduct.category)
-        assertEquals(product.brand, updatedProduct.brand)
-        assertEquals(product.price, updatedProduct.price)
+        assertNotNull(responseGet2.body)
+        assertEquals(product, responseGet2.body)
     }
 
 
