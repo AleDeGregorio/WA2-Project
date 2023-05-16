@@ -1,39 +1,35 @@
 package it.polito.g26.server.ticketing.tickets
 
-import it.polito.g26.server.ticketing.messages.Message
 import it.polito.g26.server.products.Product
-import it.polito.g26.server.ticketing.customers.Customer
-import it.polito.g26.server.ticketing.status.Status
-import it.polito.g26.server.ticketing.experts.Expert
+import it.polito.g26.server.ticketing.chat.Chat
+import it.polito.g26.server.profiles.customer.Customer
+import it.polito.g26.server.profiles.expert.Expert
+import it.polito.g26.server.ticketing.statusTicket.StatusTicket
 import jakarta.persistence.*
-import org.springframework.data.annotation.CreatedDate
 import java.util.*
 
 @Entity
-@Table(name = "tickets")
-class Ticket {
+data class Ticket(
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-        generator = "ticket_generator")
-    @SequenceGenerator(name = "ticket_generator",
-        sequenceName = "sequence_1",
-        initialValue = 1,
-        allocationSize = 1)
-    @Column(updatable = false, nullable = false)
-    var id: Long? = null
-    var type: String = ""
-    var description: String = ""
-    var priority: Int = 0
-    @CreatedDate
-    lateinit var creationDate: Date
-    @ManyToOne()
-    var customer: Customer? = null
-    @ManyToOne()
-    var expert: Expert? = null
-    @OneToMany(mappedBy = "tickets")
-    var status = mutableSetOf<Status>()
-    @ManyToOne()
-    var product: Product? = null
-    @OneToMany(mappedBy = "tickets")
-    var messages = mutableSetOf<Message>()
-}
+    @GeneratedValue
+    var id: Long? = null,
+
+    @ManyToOne
+    var customer: Customer? = null,
+    @ManyToOne
+    var expert: Expert? = null,
+    @ManyToOne
+    var product: Product? = null,
+
+    @OneToMany
+    var status: MutableSet<StatusTicket> = mutableSetOf(),
+    @OneToMany(mappedBy = "ticket")
+    var chats: MutableSet<Chat> = mutableSetOf(),
+
+    var issueType: String = "",
+    @Column(length = 10000)
+    var description: String = "",
+    var priorityLevel: Int? = null,
+    @Temporal(TemporalType.TIMESTAMP)
+    var dateOfCreation: Date? = null
+)
