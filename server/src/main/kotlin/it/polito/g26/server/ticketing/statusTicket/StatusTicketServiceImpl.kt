@@ -26,68 +26,81 @@ class StatusTicketServiceImpl(
         }
     }
 
-
-    override fun openStatusTicket(statusTicket: StatusTicket) {
-        if (statusTicket.ticketDate != null && statusTicketRepository.existsById(statusTicket.ticketDate!!) && !statusTicketRepository.getLatestStatus(
-                statusTicket.ticketDate?.id?.id!!
-            )!!.equals(Status.RESOLVED)
-        ) {
+/*
+    override fun insertStatusTicket(statusTicket: StatusTicket) {
+        if (statusTicket.ticketDate != null && statusTicketRepository.existsById(statusTicket.ticketDate!!)) {
             throw Exception("Status ticket already inserted")
-        } else {
-            val tickDate = TicketDate(statusTicket.ticketDate?.id)
-            val statTick = StatusTicket(tickDate, Status.OPEN)
-            statusTicketRepository.save(statTick)
+        }
+        else {
+            statusTicketRepository.save(statusTicket)
+        }
+    }
+
+*/
+    override fun openStatusTicket(statusTicket: StatusTicket) {
+    if (statusTicket.ticketDate != null && statusTicketRepository.existsById(statusTicket.ticketDate!!)) {
+        throw Exception("Status ticket already inserted")
+    }
+    else {
+        var ticket = statusTicket.ticketDate?.id!!
+            if(!getLatestStatus(ticket.id!!)?.equals(Status.IN_PROGRESS)!!) {
+                throw Exception("Status ticket already open")
+            }else{
+                statusTicket.status = Status.OPEN
+                statusTicketRepository.save(statusTicket)
+            }
         }
     }
 
     override fun closeStatusTicket(statusTicket: StatusTicket) {
         if (statusTicket.ticketDate != null && statusTicketRepository.existsById(statusTicket.ticketDate!!)) {
-            val tickDate = TicketDate(statusTicket.ticketDate?.id)
-            val statTick = StatusTicket(tickDate, Status.CLOSED)
-            statusTicketRepository.save(statTick)
-        } else {
-            throw Exception("Status ticket cannot be Closed")
+            throw Exception("Status ticket already inserted")
+        }
+        var ticket = statusTicket.ticketDate?.id!!
+        if(getLatestStatus(ticket.id!!)?.equals(Status.CLOSED)!!) {
+            throw Exception("Status ticket already closed")
+        }else{
+            statusTicket.status = Status.CLOSED
+            statusTicketRepository.save(statusTicket)
         }
     }
 
     override fun reopenStatusTicket(statusTicket: StatusTicket) {
-        if (statusTicket.ticketDate != null && statusTicketRepository.existsById(statusTicket.ticketDate!!) && (
-                    !statusTicketRepository.getLatestStatus(statusTicket.ticketDate?.id?.id!!)!!
-                        .equals(Status.CLOSED) ||
-                            !statusTicketRepository.getLatestStatus(statusTicket.ticketDate?.id?.id!!)!!
-                                .equals(Status.RESOLVED))
-        ) {
-            throw Exception("Status ticket cannot be Reopened")
-        } else {
-            val tickDate = TicketDate(statusTicket.ticketDate?.id)
-            val statTick = StatusTicket(tickDate, Status.REOPENED)
-            statusTicketRepository.save(statTick)
+        if (statusTicket.ticketDate != null && statusTicketRepository.existsById(statusTicket.ticketDate!!)) {
+            throw Exception("Status ticket already inserted")
+        }
+        var ticket = statusTicket.ticketDate?.id!!
+        if(!getLatestStatus(ticket.id!!)?.equals(Status.CLOSED)!! || !getLatestStatus(ticket.id!!)?.equals(Status.RESOLVED)!! ) {
+            throw Exception("Status ticket already open")
+        }else{
+            statusTicket.status = Status.REOPENED
+            statusTicketRepository.save(statusTicket)
         }
     }
 
     override fun resolveStatusTicket(statusTicket: StatusTicket) {
-        if (statusTicket.ticketDate != null && statusTicketRepository.existsById(statusTicket.ticketDate!!) &&
-            statusTicketRepository.getLatestStatus(statusTicket.ticketDate?.id?.id!!)!!.equals(Status.CLOSED)
-        ) {
-            throw Exception("Status ticket cannot be Resolved")
-        } else {
-            val tickDate = TicketDate(statusTicket.ticketDate?.id)
-            val statTick = StatusTicket(tickDate, Status.RESOLVED)
-            statusTicketRepository.save(statTick)
+        if (statusTicket.ticketDate != null && statusTicketRepository.existsById(statusTicket.ticketDate!!)) {
+            throw Exception("Status ticket already inserted")
+        }
+        var ticket = statusTicket.ticketDate?.id!!
+        if(getLatestStatus(ticket.id!!)?.equals(Status.CLOSED)!! || getLatestStatus(ticket.id!!)?.equals(Status.RESOLVED)!! ) {
+            throw Exception("Status ticket already closed")
+        }else{
+            statusTicket.status = Status.RESOLVED
+            statusTicketRepository.save(statusTicket)
         }
     }
 
     override fun progressStatusTicket(statusTicket: StatusTicket) {
-        if (statusTicket.ticketDate != null && statusTicketRepository.existsById(statusTicket.ticketDate!!) && (
-                    !statusTicketRepository.getLatestStatus(statusTicket.ticketDate?.id?.id!!)!!.equals(Status.OPEN) ||
-                            !statusTicketRepository.getLatestStatus(statusTicket.ticketDate?.id?.id!!)!!
-                                .equals(Status.REOPENED))
-        ) {
-            throw Exception("Status ticket cannot be updated")
-        } else {
-            val tickDate = TicketDate(statusTicket.ticketDate?.id)
-            val statTick = StatusTicket(tickDate, Status.IN_PROGRESS)
-            statusTicketRepository.save(statTick)
+        if (statusTicket.ticketDate != null && statusTicketRepository.existsById(statusTicket.ticketDate!!)) {
+            throw Exception("Status ticket already inserted")
+        }
+        var ticket = statusTicket.ticketDate?.id!!
+        if(getLatestStatus(ticket.id!!)?.equals(Status.CLOSED)!! || getLatestStatus(ticket.id!!)?.equals(Status.RESOLVED)!! ) {
+            throw Exception("Status ticket already closed")
+        }else{
+            statusTicket.status = Status.IN_PROGRESS
+            statusTicketRepository.save(statusTicket)
         }
     }
 }

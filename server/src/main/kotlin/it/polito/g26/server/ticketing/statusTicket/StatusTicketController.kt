@@ -62,7 +62,7 @@ class StatusTicketController(
     }
     @PostMapping("/API/statusTicket/progress")
     @ResponseStatus(HttpStatus.CREATED)
-    fun updateStatusTicket(statusTicketDTO: StatusTicketDTO?) {
+    fun progressStatusTicket(statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {
             val inProgressStatusTicket = statusTicketDTOToEntity(statusTicketDTO)
 

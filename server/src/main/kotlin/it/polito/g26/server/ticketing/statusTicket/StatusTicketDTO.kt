@@ -1,5 +1,8 @@
 package it.polito.g26.server.ticketing.statusTicket
 
+import it.polito.g26.server.profiles.customer.Customer
+import it.polito.g26.server.profiles.customer.CustomerDTO
+import it.polito.g26.server.profiles.customer.toEntity
 import it.polito.g26.server.ticketing.utility.Status
 import java.util.Date
 
