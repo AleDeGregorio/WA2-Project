@@ -1,5 +1,7 @@
 package it.polito.g26.server.ticketing.statusTicket
 
+import it.polito.g26.server.ticketing.tickets.toEntity
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -9,12 +11,13 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class StatusTicketController(
+    @Autowired
     private val statusTicketService: StatusTicketService
 ) {
     private fun statusTicketDTOToEntity(statusTicketDTO: StatusTicketDTO) : StatusTicket {
         val ticketDate = TicketDate()
 
-        ticketDate.id?.id = statusTicketDTO.id
+        ticketDate.id = statusTicketDTO.id?.toEntity()
         ticketDate.lastModifiedDate = statusTicketDTO.lastModifiedDate
 
         val statusTicket = StatusTicket()

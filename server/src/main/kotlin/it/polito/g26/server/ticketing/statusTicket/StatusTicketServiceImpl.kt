@@ -2,10 +2,12 @@ package it.polito.g26.server.ticketing.statusTicket
 
 
 import it.polito.g26.server.ticketing.utility.Status
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
 class StatusTicketServiceImpl(
+    @Autowired
     private val statusTicketRepository: StatusTicketRepository
 ) : StatusTicketService {
 
@@ -43,11 +45,14 @@ class StatusTicketServiceImpl(
     }
     else {
         var ticket = statusTicket.ticketDate?.id!!
-            if(!getLatestStatus(ticket.id!!)?.equals(Status.IN_PROGRESS)!!) {
-                throw Exception("Status ticket already open")
-            }else{
+            if(getLatestStatus(ticket.id!!)?.status?.equals(Status.IN_PROGRESS)!!) {
                 statusTicket.status = Status.OPEN
                 statusTicketRepository.save(statusTicket)
+            }else if (getLatestStatus(ticket.id!!)?.status?.equals(Status.UNDEFINED)!!){
+                statusTicket.status = Status.OPEN
+                statusTicketRepository.save(statusTicket)
+            } else {
+                throw Exception("Status ticket already open")
             }
         }
     }
