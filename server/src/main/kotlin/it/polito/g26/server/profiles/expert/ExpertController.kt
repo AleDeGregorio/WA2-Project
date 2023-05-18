@@ -8,15 +8,15 @@ import org.springframework.web.bind.annotation.*
 class ExpertController(
     private val expertService: ExpertService
 ) {
-    private fun expertDTOToEntity(expertDTO: ExpertDTO, id: Long?) : Expert {
-        val expert = Expert(name = expertDTO.name!!, surname = expertDTO.surname!!, email = expertDTO.email!!)
-
-        if (id != null) {
-            expert.id = id
+    private fun expertDTOToEntity(expertDTO: ExpertDTO) : Expert {
+        val expert = Expert(name = expertDTO.name,
+            surname = expertDTO.surname,
+            email = expertDTO.email,
+            fields = expertDTO.fields
+        )
+        if (expertDTO.id != null){
+            expert.id = expertDTO.id
         }
-
-        expert.fields = expertDTO.fields
-
         return expert
     }
 
@@ -36,7 +36,7 @@ class ExpertController(
     @ResponseStatus(HttpStatus.CREATED)
     fun insertExpert(@RequestBody expertDTO: ExpertDTO?) {
         if (expertDTO != null) {
-            val insertExpert = expertDTOToEntity(expertDTO, null)
+            val insertExpert = expertDTOToEntity(expertDTO)
 
             expertService.insertExpert(insertExpert)
         }
@@ -45,11 +45,11 @@ class ExpertController(
         }
     }
 
-    @PutMapping("/API/expert/{id}")
+    @PutMapping("/API/expert/{email}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    fun updateExpert(@RequestBody expertDTO: ExpertDTO?, @PathVariable id: Long) {
+    fun updateExpert(@RequestBody expertDTO: ExpertDTO? ) {
         if (expertDTO != null) {
-            val updateExpert = expertDTOToEntity(expertDTO, id)
+            val updateExpert = expertDTOToEntity(expertDTO)
 
             expertService.updateExpert(updateExpert)
         }

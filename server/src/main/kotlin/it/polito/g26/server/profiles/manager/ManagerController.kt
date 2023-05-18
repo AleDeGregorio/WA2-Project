@@ -7,27 +7,24 @@ import org.springframework.web.bind.annotation.*
 class ManagerController(
     private val managerService: ManagerService
 ) {
-    private fun managerDTOToEntity(managerDTO: ManagerDTO, id: Long?) : Manager {
-        val manager = Manager(name = managerDTO.name!!, surname = managerDTO.surname!!, email = managerDTO.email!!, department = managerDTO.department!!)
-
-        if (id != null) {
-            manager.id = id
-        }
+    private fun managerDTOToEntity(managerDTO: ManagerDTO) : Manager {
+        val manager = Manager(name = managerDTO.name, surname = managerDTO.surname, email = managerDTO.email, department = managerDTO.department)
+        manager.id = managerDTO.id
 
         return manager
     }
 
-    @GetMapping("/API/manager/{id}")
+    @GetMapping("/API/manager/{email}")
     @ResponseStatus(HttpStatus.OK)
-    fun getManager(@PathVariable id: Long) : ManagerDTO? {
-        return managerService.getManager(id) ?: throw Exception("Manager not found")
+    fun getManager(@PathVariable email: String) : ManagerDTO? {
+        return managerService.getManager(email) ?: throw Exception("Manager not found")
     }
 
     @PostMapping("/API/manager")
     @ResponseStatus(HttpStatus.CREATED)
     fun insertManager(@RequestBody managerDTO: ManagerDTO?) {
         if (managerDTO != null) {
-            val insertManager = managerDTOToEntity(managerDTO, null)
+            val insertManager = managerDTOToEntity(managerDTO)
 
             managerService.insertManager(insertManager)
         }
@@ -36,11 +33,11 @@ class ManagerController(
         }
     }
 
-    @PutMapping("/API/manager/{id}")
+    @PutMapping("/API/manager/{email}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    fun updateManager(@RequestBody managerDTO: ManagerDTO?, @PathVariable id: Long) {
+    fun updateManager(@RequestBody managerDTO: ManagerDTO?) {
         if (managerDTO != null) {
-            val updateManager = managerDTOToEntity(managerDTO, id)
+            val updateManager = managerDTOToEntity(managerDTO)
 
             managerService.updateManager(updateManager)
         }

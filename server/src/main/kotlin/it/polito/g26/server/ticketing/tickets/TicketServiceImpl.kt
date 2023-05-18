@@ -3,15 +3,18 @@ package it.polito.g26.server.ticketing.tickets
 import it.polito.g26.server.ticketing.chat.ChatDTO
 import it.polito.g26.server.ticketing.chat.toDTO
 import it.polito.g26.server.profiles.expert.Expert
-import it.polito.g26.server.ticketing.statusTicket.StatusTicketDTO
-import it.polito.g26.server.ticketing.statusTicket.toDTO
+import it.polito.g26.server.ticketing.statusTicket.*
+import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.*
 
 @Service
 class TicketServiceImpl(
-    private val ticketRepository: TicketRepository
+    private val ticketRepository: TicketRepository,
+    private val statusTicketRepository: StatusTicketRepository
 ) : TicketService {
     override fun getAll(): List<TicketDTO> {
         return ticketRepository.findAll().map { it.toDTO() }
@@ -63,9 +66,14 @@ class TicketServiceImpl(
         }
         else {
             ticketRepository.save(ticket)
+            val status = ticket.status.first()
+            status.ticketDate?.id = ticket
+            status.ticketDate?.lastModifiedDate = SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString())
+            statusTicketRepository.save(status)
         }
     }
 
+    @Transactional
     override fun setPriorityLevel(id: Long, priorityLevel: Int) {
         if (ticketRepository.existsById(id)) {
             ticketRepository.setPriorityLevel(id, priorityLevel)
@@ -75,6 +83,7 @@ class TicketServiceImpl(
         }
     }
 
+    @Transactional
     override fun setExpert(id: Long, expert: Expert) {
         if (ticketRepository.existsById(id)) {
             ticketRepository.setExpert(id, expert)

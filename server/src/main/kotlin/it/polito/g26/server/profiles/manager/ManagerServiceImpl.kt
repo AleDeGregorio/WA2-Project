@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service
 class ManagerServiceImpl(
     private val managerRepository: ManagerRepository
 ) : ManagerService {
-    override fun getManager(id: Long): ManagerDTO? {
-        return managerRepository.findByIdOrNull(id)?.toDTO()
+    override fun getManager(email: String): ManagerDTO? {
+        return managerRepository.getByEmail(email)?.toDTO()
     }
 
     override fun insertManager(manager: Manager) {
@@ -26,6 +26,7 @@ class ManagerServiceImpl(
 
             retrievedManager.name = manager.name
             retrievedManager.surname = manager.surname
+            retrievedManager.department = manager.department
 
             managerRepository.save(retrievedManager)
         }

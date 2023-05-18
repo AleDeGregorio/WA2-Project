@@ -32,8 +32,10 @@ data class TicketDTO(
 fun Ticket.toDTO() : TicketDTO {
     return TicketDTO(id, customer?.toDTO(), expert?.toDTO(), product?.toDTO(), status, chats, issueType, description, priorityLevel, dateOfCreation)
 }
-fun TicketDTO.toEntity() : Ticket{
-    val ticket = Ticket(id = id, customer = customer?.toEntity(), expert = expert?.toEntity(), product = product?.toEntity(), status = status, chats = chats, issueType = issueType,
-        description = description, priorityLevel = priorityLevel, dateOfCreation = dateOfCreation)
+
+fun TicketDTO.toEntity(): Ticket {
+    val ticket = Ticket( customer =  customer?.toEntity(), expert = expert?.toEntity(), product = product?.toEntity(),
+    status = status, chats = chats, issueType = issueType, description = description, priorityLevel = priorityLevel, dateOfCreation = dateOfCreation)
+    ticket.id = id;
     return ticket
 }
