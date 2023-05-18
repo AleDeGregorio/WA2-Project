@@ -62,8 +62,10 @@ class StatusTicketServiceImpl(
             throw Exception("Status ticket already inserted")
         }
         var ticket = statusTicket.ticketDate?.id!!
-        if(getLatestStatus(ticket.id!!)?.equals(Status.CLOSED)!!) {
+        if(getLatestStatus(ticket.id!!)?.status?.equals(Status.CLOSED)!!) {
             throw Exception("Status ticket already closed")
+        }else if (getLatestStatus(ticket.id!!)?.status?.equals(Status.UNDEFINED)!!) {
+            throw Exception("Status ticket is UNDEFINED")
         }else{
             statusTicket.status = Status.CLOSED
             statusTicketRepository.save(statusTicket)
@@ -75,8 +77,10 @@ class StatusTicketServiceImpl(
             throw Exception("Status ticket already inserted")
         }
         var ticket = statusTicket.ticketDate?.id!!
-        if(!getLatestStatus(ticket.id!!)?.equals(Status.CLOSED)!! || !getLatestStatus(ticket.id!!)?.equals(Status.RESOLVED)!! ) {
+        if(!getLatestStatus(ticket.id!!)?.status?.equals(Status.CLOSED)!! && !getLatestStatus(ticket.id!!)?.status?.equals(Status.RESOLVED)!! ) {
             throw Exception("Status ticket already open")
+        }else if (getLatestStatus(ticket.id!!)?.status?.equals(Status.UNDEFINED)!!) {
+            throw Exception("Status ticket is UNDEFINED")
         }else{
             statusTicket.status = Status.REOPENED
             statusTicketRepository.save(statusTicket)
@@ -88,9 +92,11 @@ class StatusTicketServiceImpl(
             throw Exception("Status ticket already inserted")
         }
         var ticket = statusTicket.ticketDate?.id!!
-        if(getLatestStatus(ticket.id!!)?.equals(Status.CLOSED)!! || getLatestStatus(ticket.id!!)?.equals(Status.RESOLVED)!! ) {
+        if(getLatestStatus(ticket.id!!)?.status?.equals(Status.CLOSED)!! ||  getLatestStatus(ticket.id!!)?.status?.equals(Status.RESOLVED)!! ) {
             throw Exception("Status ticket already closed")
-        }else{
+        }else if (getLatestStatus(ticket.id!!)?.status?.equals(Status.UNDEFINED)!!) {
+        throw Exception("Status ticket is UNDEFINED")
+    }else{
             statusTicket.status = Status.RESOLVED
             statusTicketRepository.save(statusTicket)
         }
@@ -101,8 +107,10 @@ class StatusTicketServiceImpl(
             throw Exception("Status ticket already inserted")
         }
         var ticket = statusTicket.ticketDate?.id!!
-        if(getLatestStatus(ticket.id!!)?.equals(Status.CLOSED)!! || getLatestStatus(ticket.id!!)?.equals(Status.RESOLVED)!! ) {
+        if(getLatestStatus(ticket.id!!)?.status?.equals(Status.CLOSED)!! && getLatestStatus(ticket.id!!)?.status?.equals(Status.RESOLVED)!! ) {
             throw Exception("Status ticket already closed")
+        }else if (getLatestStatus(ticket.id!!)?.status?.equals(Status.UNDEFINED)!!) {
+            throw Exception("Status ticket is UNDEFINED")
         }else{
             statusTicket.status = Status.IN_PROGRESS
             statusTicketRepository.save(statusTicket)

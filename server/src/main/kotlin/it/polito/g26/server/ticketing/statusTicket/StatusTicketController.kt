@@ -1,13 +1,10 @@
 package it.polito.g26.server.ticketing.statusTicket
 
+import it.polito.g26.server.products.ProductDTO
 import it.polito.g26.server.ticketing.tickets.toEntity
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.ResponseStatus
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class StatusTicketController(
@@ -42,7 +39,7 @@ class StatusTicketController(
 
     @PostMapping("/API/statusTicket/open")
     @ResponseStatus(HttpStatus.CREATED)
-    fun openStatusTicket(statusTicketDTO: StatusTicketDTO?) {
+    fun openStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {
             val openedStatusTicket = statusTicketDTOToEntity(statusTicketDTO)
             statusTicketService.openStatusTicket(openedStatusTicket)
@@ -53,7 +50,7 @@ class StatusTicketController(
     }
     @PostMapping("/API/statusTicket/close")
     @ResponseStatus(HttpStatus.CREATED)
-    fun closeStatusTicket(statusTicketDTO: StatusTicketDTO?) {
+    fun closeStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {
             val closedStatusTicket = statusTicketDTOToEntity(statusTicketDTO)
 
@@ -65,7 +62,7 @@ class StatusTicketController(
     }
     @PostMapping("/API/statusTicket/progress")
     @ResponseStatus(HttpStatus.CREATED)
-    fun progressStatusTicket(statusTicketDTO: StatusTicketDTO?) {
+    fun progressStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {
             val inProgressStatusTicket = statusTicketDTOToEntity(statusTicketDTO)
 
@@ -77,7 +74,7 @@ class StatusTicketController(
     }
     @PostMapping("/API/statusTicket/reopen")
     @ResponseStatus(HttpStatus.CREATED)
-    fun reopenStatusTicket(statusTicketDTO: StatusTicketDTO?) {
+    fun reopenStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {
             val reopenedStatusTicket = statusTicketDTOToEntity(statusTicketDTO)
 
@@ -89,7 +86,7 @@ class StatusTicketController(
     }
     @PostMapping("/API/statusTicket/resolve")
     @ResponseStatus(HttpStatus.CREATED)
-    fun resolveStatusTicket(statusTicketDTO: StatusTicketDTO?) {
+    fun resolveStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {
             val resolvedStatusTicket = statusTicketDTOToEntity(statusTicketDTO)
 
