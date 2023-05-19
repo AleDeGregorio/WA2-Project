@@ -34,8 +34,6 @@ class LoginServiceImpl(
         map["username"] = loginRequest.username
         map["password"] = loginRequest.password
 
-        println("GENERATING MAP URLENCODED")
-        println(map)
         //val x : MultiValueMap<String,String> = LinkedMultiValueMap<String,String>()
         //val multimap = CollectionUtils.toMultiValueMap(map)
         val httpEntity = HttpEntity<MultiValueMap<String,String>>(map,headers)
@@ -43,7 +41,7 @@ class LoginServiceImpl(
         println("HTTPENTITY")
         println(httpEntity.body)
         val response: ResponseEntity<LoginResponse> = restTemplate.postForEntity(kcUrl,httpEntity,LoginResponse::class.java)
-        println(response)
+        println(response.body?.access_token)
         return ResponseEntity<LoginResponse>(response.body, HttpStatus.OK)
     }
 
