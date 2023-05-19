@@ -25,7 +25,9 @@ class TestController {
 
     @GetMapping("/user")
     fun getUser(principal: Principal): ResponseEntity<String> {
+        println(principal)
         val token= principal as JwtAuthenticationToken
+        println(token)
         val userName = token.tokenAttributes.get("name") as String
         val userEmail = token.tokenAttributes.get("email") as String
 

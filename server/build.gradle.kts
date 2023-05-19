@@ -23,12 +23,13 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 
 	implementation("org.springframework.boot:spring-boot-configuration-processor")
-
-
+	implementation("com.google.code.gson:gson:2.8.9")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.security:spring-security-oauth2-jose")
+
+	implementation("io.jsonwebtoken:jjwt:0.2")
 
 	implementation("org.keycloak:keycloak-spring-boot-starter:15.0.2")
 	implementation("org.keycloak:keycloak-admin-client:15.0.2")
