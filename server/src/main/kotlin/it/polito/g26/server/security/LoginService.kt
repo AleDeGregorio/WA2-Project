@@ -3,6 +3,8 @@ package it.polito.g26.server.security
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.*
 import org.springframework.stereotype.Service
+import org.springframework.util.CollectionUtils
+import org.springframework.util.MultiValueMap
 import org.springframework.web.client.RestTemplate
 
 
@@ -22,6 +24,25 @@ class LoginServiceImpl(
     val kcUrl = "http://localhost:8080/realms/SpringBoot-Keycloak/protocol/openid-connect/token"
 
     fun login(loginRequest: LoginRequest): ResponseEntity<LoginResponse>{
+        val headers = HttpHeaders()
+        headers.contentType = MediaType.APPLICATION_FORM_URLENCODED
+
+        val map: MutableMap<String, List<String>> = mutableMapOf<String, List<String>>()
+        map["client_id"] = listOf(clientId)
+        map["client_secret"] = listOf(clientSecret)
+        map["grant_type"] = listOf(grantType)
+        map["username"] = listOf(loginRequest.username)
+        map["password"] = listOf(loginRequest.password)
+
+        val multimap = CollectionUtils.toMultiValueMap(map)
+        val httpEntity= HttpEntity<MultiValueMap<String,String>>(multimap,headers)
+        print(httpEntity)
+        val response: ResponseEntity<LoginResponse> = restTemplate.postForEntity(kcUrl,httpEntity,LoginResponse::class.java)
+        println(response)
+        return ResponseEntity<LoginResponse>(response.body, HttpStatus.OK)
+    }
+
+    fun logout(loginRequest: LoginRequest): ResponseEntity<LoginResponse>{
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_FORM_URLENCODED
 
