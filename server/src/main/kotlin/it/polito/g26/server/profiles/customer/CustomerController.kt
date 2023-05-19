@@ -52,7 +52,7 @@ class CustomerController(
 
     @GetMapping("/API/customer/tickets/{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun getCustomerTickets(@PathVariable id: Long) : Set<TicketDTO>? {
+    fun getCustomerTickets(@PathVariable id: String) : Set<TicketDTO>? {
         return customerService.getTickets(id) ?: throw Exception("Customer not found")
     }
 }

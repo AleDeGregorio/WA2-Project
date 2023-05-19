@@ -13,5 +13,5 @@ import org.springframework.validation.annotation.Validated
 class JwtAuthConverterProperties {
 
     val resourceId = "springboot-keycloak-client"
-    val principalAttribute = "email"
+    val principalAttribute = "preferred_username"
 }

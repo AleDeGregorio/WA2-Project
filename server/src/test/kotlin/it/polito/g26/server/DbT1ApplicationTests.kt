@@ -1,5 +1,6 @@
 package it.polito.g26.server
 
+import it.polito.g26.server.authentication.LoginRequest
 import it.polito.g26.server.products.*
 import it.polito.g26.server.profiles.customer.*
 import it.polito.g26.server.profiles.expert.*
@@ -937,6 +938,15 @@ class DbT1ApplicationTests {
          assertEquals(ticket2.expert, responseGet.body?.expert)
      }*/
 
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    @Test
+    fun testLogin() {
+        val loginRequest = LoginRequest(username = "mario@polito.it", password = "password")
 
+        val url = "http://localhost:$port/login"
+        val request = HttpEntity(loginRequest)
+        val response = restTemplate.postForEntity(url, request, String::class.java)
 
+        assertEquals("ciao", response.toString())
+    }
 }

@@ -41,7 +41,7 @@ class ExpertServiceImpl(
         }
     }
 
-    override fun getTickets(id: Long): Set<TicketDTO>? {
+    override fun getTickets(id: String): Set<TicketDTO>? {
         if (expertRepository.existsById(id)) {
             val tickets = expertRepository.getTickets(id) ?: return null
             return tickets.map { it.toDTO() }.toSet()

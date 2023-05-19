@@ -4,7 +4,7 @@ import it.polito.g26.server.profiles.expert.Expert
 import it.polito.g26.server.profiles.expert.ExpertDTO
 
 data class ManagerDTO(
-    val id: Long?,
+    val id: String?,
     val name: String,
     val surname: String,
     val email: String,

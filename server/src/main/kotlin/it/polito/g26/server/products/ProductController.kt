@@ -1,7 +1,9 @@
 package it.polito.g26.server.products
 
 import org.springframework.http.HttpStatus
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken
 import org.springframework.web.bind.annotation.*
+import java.security.Principal
 
 @RestController
 class ProductController(
@@ -21,7 +23,8 @@ class ProductController(
 
     @GetMapping("/API/products/")
     @ResponseStatus(HttpStatus.OK)
-    fun getAll() : List<ProductDTO> {
+    fun getAll(principal: Principal) : List<ProductDTO> {
+        val token = principal as JwtAuthenticationToken
         return productService.getAll()
     }
 

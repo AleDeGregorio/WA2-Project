@@ -13,7 +13,7 @@ import jakarta.persistence.Table
 open class Profile (
     @Id
     @GeneratedValue
-    var id: Long? = null,
+    var id: String? = null,
 
     open var name: String,
     open var surname: String,

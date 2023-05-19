@@ -60,7 +60,7 @@ class ExpertController(
 
     @GetMapping("/API/expert/tickets/{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun getExpertTickets(@PathVariable id: Long) : Set<TicketDTO> {
+    fun getExpertTickets(@PathVariable id: String) : Set<TicketDTO> {
         return expertService.getTickets(id) ?: throw Exception("Expert not found")
     }
 }
