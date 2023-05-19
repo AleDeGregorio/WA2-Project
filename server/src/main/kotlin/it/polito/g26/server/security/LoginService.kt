@@ -3,7 +3,7 @@ package it.polito.g26.server.security
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.*
 import org.springframework.stereotype.Service
-import org.springframework.util.CollectionUtils
+import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 import org.springframework.web.client.RestTemplate
 
@@ -27,16 +27,21 @@ class LoginServiceImpl(
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_FORM_URLENCODED
 
-        val map: MutableMap<String, List<String>> = mutableMapOf<String, List<String>>()
-        map["client_id"] = listOf(clientId)
-        map["client_secret"] = listOf(clientSecret)
-        map["grant_type"] = listOf(grantType)
-        map["username"] = listOf(loginRequest.username)
-        map["password"] = listOf(loginRequest.password)
+        val map: MultiValueMap<String,String> = LinkedMultiValueMap<String,String>()
+        map["client_id"] = clientId
+        //map["client_secret"] = listOf(clientSecret)
+        map["grant_type"] = grantType
+        map["username"] = loginRequest.username
+        map["password"] = loginRequest.password
 
-        val multimap = CollectionUtils.toMultiValueMap(map)
-        val httpEntity= HttpEntity<MultiValueMap<String,String>>(multimap,headers)
-        print(httpEntity)
+        println("GENERATING MAP URLENCODED")
+        println(map)
+        //val x : MultiValueMap<String,String> = LinkedMultiValueMap<String,String>()
+        //val multimap = CollectionUtils.toMultiValueMap(map)
+        val httpEntity = HttpEntity<MultiValueMap<String,String>>(map,headers)
+        //val httpEntity= HttpEntity<MultiValueMap<String,String>>(multimap,headers)
+        println("HTTPENTITY")
+        println(httpEntity.body)
         val response: ResponseEntity<LoginResponse> = restTemplate.postForEntity(kcUrl,httpEntity,LoginResponse::class.java)
         println(response)
         return ResponseEntity<LoginResponse>(response.body, HttpStatus.OK)
