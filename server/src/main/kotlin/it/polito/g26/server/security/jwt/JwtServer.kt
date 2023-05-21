@@ -1,14 +1,9 @@
-package it.polito.g26.server.security
+package it.polito.g26.server.security.jwt
 
-import org.springframework.context.annotation.Bean
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.oauth2.jwt.Jwt
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter
-import org.springframework.stereotype.Component
-
+/*
 @Component
 class JwtServer {
-/*
+
     @Bean
     fun jwtDecoder(): JwtDecoder{
         val key = SecretKeySpec(secretKey.toByteArray(), "RS256")
@@ -18,7 +13,6 @@ class JwtServer {
             .build()
     }
 
- */
 
     @Bean
     fun jwtAuthenticationConverter(): JwtAuthenticationConverter{
@@ -33,7 +27,6 @@ class JwtServer {
         return converter
     }
 
-    /*
     @Bean
     fun jwtEncoder(): JwtEncoder{
         val key = SecretKeySpec(secretKey.toByteArray(), "HMACSHA256")
@@ -54,5 +47,6 @@ class JwtServer {
         return jwtEncoder()
             .encode(JwtEncoderParameters.from(header, claimsSet))
             .tokenValue
-    }*/
+    }
 }
+*/

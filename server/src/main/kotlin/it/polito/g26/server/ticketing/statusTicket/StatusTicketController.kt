@@ -1,13 +1,10 @@
 package it.polito.g26.server.ticketing.statusTicket
 
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.ResponseStatus
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
+@RequestMapping("/status")
 class StatusTicketController(
     private val statusTicketService: StatusTicketService
 ) {
@@ -25,19 +22,19 @@ class StatusTicketController(
         return statusTicket
     }
 
-    @GetMapping("/API/statusTicket/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getStatusTicket(@PathVariable id: Long) : List<StatusTicketDTO>? {
         return statusTicketService.getStatusTicket(id) ?: throw Exception("Ticket not found")
     }
 
-    @GetMapping("/API/statusTicket/latest/{id}")
+    @GetMapping("/latest/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getLatestStatus(@PathVariable id: Long) : StatusTicketDTO? {
         return statusTicketService.getLatestStatus(id) ?: throw Exception("Ticket not found")
     }
 
-    @PostMapping("/API/statusTicket")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     fun insertStatusTicket(statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {

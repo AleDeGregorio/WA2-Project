@@ -4,15 +4,16 @@ import it.polito.g26.server.products.Product
 import it.polito.g26.server.products.ProductDTO
 import it.polito.g26.server.profiles.customer.Customer
 import it.polito.g26.server.profiles.customer.CustomerDTO
-import it.polito.g26.server.ticketing.chat.ChatDTO
 import it.polito.g26.server.profiles.expert.Expert
 import it.polito.g26.server.profiles.expert.ExpertDTO
+import it.polito.g26.server.ticketing.chat.ChatDTO
 import it.polito.g26.server.ticketing.statusTicket.StatusTicketDTO
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import java.text.SimpleDateFormat
 
 @RestController
+@RequestMapping("/ticket")
 class TicketController(
     private val ticketService: TicketService
 ) {
@@ -65,37 +66,37 @@ class TicketController(
         return ticket
     }
 
-    @GetMapping("/API/tickets")
+    @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     fun getAll() : List<TicketDTO> {
         return ticketService.getAll()
     }
 
-    @GetMapping("/API/ticket/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getTicket(@PathVariable id: Long) : TicketDTO? {
         return ticketService.getTicket(id) ?: throw Exception("Ticket not found")
     }
 
-    @GetMapping("/API/ticket/customer/{customerId}")
+    @GetMapping("/customer/{customerId}")
     @ResponseStatus(HttpStatus.OK)
     fun getTicketByCustomer(@PathVariable customerId: Long) : List<TicketDTO>? {
         return ticketService.getTicketByCustomer(customerId) ?: throw Exception("Customer not found")
     }
 
-    @GetMapping("/API/ticket/expert/{expertId}")
+    @GetMapping("/expert/{expertId}")
     @ResponseStatus(HttpStatus.OK)
     fun getTicketByExpert(@PathVariable expertId: Long) : List<TicketDTO>? {
         return ticketService.getTicketByExpert(expertId) ?: throw Exception("Expert not found")
     }
 
-    @GetMapping("/API/ticket/product/{productId}")
+    @GetMapping("/product/{productId}")
     @ResponseStatus(HttpStatus.OK)
     fun getTicketByProduct(@PathVariable productId: Long) : List<TicketDTO>? {
         return ticketService.getTicketByProduct(productId) ?: throw Exception("Product not found")
     }
 
-    @GetMapping("/API/ticket/date/{dateOfCreation}")
+    @GetMapping("/date/{dateOfCreation}")
     @ResponseStatus(HttpStatus.OK)
     fun getTicketByDateOfCreation(@PathVariable dateOfCreation: String) : List<TicketDTO>? {
         val formattedDate = SimpleDateFormat("yyyy-MM-dd").parse(dateOfCreation)
@@ -108,13 +109,13 @@ class TicketController(
         return ticketService.getStatusTicket(id) ?: throw Exception("Ticket not found")
     }
 
-    @GetMapping("/API/ticket/chats/{id}")
+    @GetMapping("/chats/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getChats(@PathVariable id: Long) : Set<ChatDTO>? {
         return ticketService.getChats(id) ?: throw Exception("Ticket not found")
     }
 
-    @PostMapping("/API/ticket")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     fun insertTicket(@RequestBody ticketDTO: TicketDTO?) {
         if (ticketDTO != null) {
@@ -127,7 +128,7 @@ class TicketController(
         }
     }
 
-    @PutMapping("/API/ticket/{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     fun setPriorityLevel(@PathVariable id: Long, @RequestParam priorityLevel: Int?) {
         if (priorityLevel != null) {
@@ -138,7 +139,7 @@ class TicketController(
         }
     }
 
-    @PutMapping("/API/ticket/expert/{id}")
+    @PutMapping("/expert/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     fun setExpert(@PathVariable id: Long, @RequestParam expertDTO: ExpertDTO?) {
         if (expertDTO != null) {

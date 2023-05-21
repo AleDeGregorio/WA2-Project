@@ -1,10 +1,9 @@
-package it.polito.g26.server.security
+package it.polito.g26.server.security.jwt
 
 import org.springframework.core.convert.converter.Converter
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.security.oauth2.jwt.JwtClaimNames
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken

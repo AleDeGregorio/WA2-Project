@@ -1,5 +1,8 @@
-package it.polito.g26.server.security
+package it.polito.g26.server.security.login
 
+import it.polito.g26.server.security.utils.IntrospectResponse
+import it.polito.g26.server.security.utils.Response
+import it.polito.g26.server.security.utils.TokenRequest
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.*
 import org.springframework.stereotype.Service
@@ -10,24 +13,18 @@ import org.springframework.web.client.RestTemplate
 
 @Service
 class LoginServiceImpl(
-    //@Value("\${spring.security.oauth2.client.registration.keycloak.token-uri}")
-    //private val tokenUrl: String,
     @Value("\${spring.security.oauth2.client.registration.keycloak.client-id}")
     private val clientId: String,
     @Value("\${spring.security.oauth2.client.registration.keycloak.authorization-grant-type}")
     private val grantType: String
-    //@Value("\${keycloak.logout-uri}")
-    //private val logoutUrl: String,
-    //@Value("\${keycloak.introspect-uri}")
-    //private val introspectUrl: String
-) {
+): LoginService {
 
     val restTemplate = RestTemplate()
     val tokenUrl = "http://localhost:8080/realms/SpringBoot-Keycloak/protocol/openid-connect/token"
     val logoutUrl = "http://localhost:8080/realms/SpringBoot-Keycloak/protocol/openid-connect/logout"
     val introspectUrl = "http://localhost:8080/realms/SpringBoot-Keycloak/protocol/openid-connect/token/introspect"
 
-    fun login(loginRequest: LoginRequest): ResponseEntity<LoginResponse>{
+    override fun login(loginRequest: LoginRequest): ResponseEntity<LoginResponse>{
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_FORM_URLENCODED
         val map: MultiValueMap<String,String> = LinkedMultiValueMap<String,String>()
@@ -42,7 +39,7 @@ class LoginServiceImpl(
         return ResponseEntity<LoginResponse>(response.body, HttpStatus.OK)
     }
 
-    fun logout(logoutRequest: TokenRequest): ResponseEntity<Response>{
+    override fun logout(logoutRequest: TokenRequest): ResponseEntity<Response>{
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_FORM_URLENCODED
 
@@ -51,14 +48,14 @@ class LoginServiceImpl(
         map["refresh_token"] = logoutRequest.refresh_token
 
         val httpEntity= HttpEntity<MutableMap<String,String>>(map,headers)
-        val response: ResponseEntity<Response> = restTemplate.postForEntity(logoutUrl,httpEntity,Response::class.java)
+        val response: ResponseEntity<Response> = restTemplate.postForEntity(logoutUrl,httpEntity, Response::class.java)
         if (response.statusCode.is2xxSuccessful){
             response.body?.message = "Logged out successfully"
         }
         return ResponseEntity<Response>(response.body, response.statusCode)
     }
 
-    fun introspect(tokenRequest: TokenRequest): ResponseEntity<IntrospectResponse> {
+    override fun introspect(tokenRequest: TokenRequest): ResponseEntity<IntrospectResponse> {
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_FORM_URLENCODED
 
@@ -67,7 +64,8 @@ class LoginServiceImpl(
         map["refresh_token"] = tokenRequest.refresh_token
 
         val httpEntity= HttpEntity<MutableMap<String,String>>(map,headers)
-        val response: ResponseEntity<IntrospectResponse> = restTemplate.postForEntity(introspectUrl,httpEntity,IntrospectResponse::class.java)
+        val response: ResponseEntity<IntrospectResponse> = restTemplate.postForEntity(introspectUrl,httpEntity,
+            IntrospectResponse::class.java)
 
         return ResponseEntity<IntrospectResponse>(response.body, response.statusCode)
 

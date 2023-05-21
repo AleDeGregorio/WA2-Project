@@ -1,6 +1,7 @@
 package it.polito.g26.server.security
 
 
+import it.polito.g26.server.security.jwt.JwtAuthConverter
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -35,11 +36,11 @@ class WebSecurityConfig(
         http.csrf().disable()
             .authorizeHttpRequests()
             .requestMatchers(HttpMethod.POST,"/auth/**").permitAll()
-            .requestMatchers(HttpMethod.GET,"/api/product").permitAll()
-            .requestMatchers(HttpMethod.POST,"/api/product**").hasAnyRole(ADMIN,MANAGER)
-            .requestMatchers(HttpMethod.PUT,"/api/product**").hasAnyRole(ADMIN,MANAGER)
-            .requestMatchers(HttpMethod.PATCH,"/api/product**").hasAnyRole(ADMIN,MANAGER)
-            .requestMatchers("/api/customer**").hasAnyRole(ADMIN,MANAGER,EXPERT,CUSTOMER)
+            .requestMatchers(HttpMethod.GET,"/product**").permitAll()
+            .requestMatchers(HttpMethod.POST,"/product**").hasAnyRole(ADMIN,MANAGER)
+            .requestMatchers(HttpMethod.PUT,"/product**").hasAnyRole(ADMIN,MANAGER)
+            .requestMatchers(HttpMethod.PATCH,"/product**").hasAnyRole(ADMIN,MANAGER)
+            .requestMatchers("/customer**").hasAnyRole(ADMIN,MANAGER,EXPERT,CUSTOMER)
             .requestMatchers("/api/expert**").hasAnyRole(ADMIN,MANAGER,EXPERT)
             .requestMatchers("/api/manager**").hasAnyRole(ADMIN,MANAGER)
             .requestMatchers("/api/ticket**").hasAnyRole(ADMIN,MANAGER, EXPERT, CUSTOMER)

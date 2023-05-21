@@ -1,4 +1,4 @@
-package it.polito.g26.server.security
+package it.polito.g26.server.security.jwt
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.validation.annotation.Validated

@@ -1,4 +1,4 @@
-package it.polito.g26.server.security
+package it.polito.g26.server.security.login
 
 class LoginResponse {
     var access_token: String? = ""

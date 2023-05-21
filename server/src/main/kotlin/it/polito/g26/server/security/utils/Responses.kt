@@ -1,4 +1,4 @@
-package it.polito.g26.server.security
+package it.polito.g26.server.security.utils
 
 class Response {
     var message: String = ""

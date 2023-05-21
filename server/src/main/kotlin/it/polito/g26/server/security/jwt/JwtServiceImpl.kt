@@ -1,11 +1,5 @@
-package it.polito.g26.server.security
+package it.polito.g26.server.security.jwt
 
-import io.jsonwebtoken.Claims
-import io.jsonwebtoken.Jwts
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.stereotype.Service
-import java.util.*
 /*
 @Service
 class JwtServiceImpl (

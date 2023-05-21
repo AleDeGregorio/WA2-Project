@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @RestController
+@RequestMapping("/manager")
 class ManagerController(
     private val managerService: ManagerService
 ) {
@@ -17,13 +18,13 @@ class ManagerController(
         return manager
     }
 
-    @GetMapping("/API/manager/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getManager(@PathVariable id: Long) : ManagerDTO? {
         return managerService.getManager(id) ?: throw Exception("Manager not found")
     }
 
-    @PostMapping("/API/manager")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     fun insertManager(@RequestBody managerDTO: ManagerDTO?) {
         if (managerDTO != null) {
@@ -36,7 +37,7 @@ class ManagerController(
         }
     }
 
-    @PutMapping("/API/manager/{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     fun updateManager(@RequestBody managerDTO: ManagerDTO?, @PathVariable id: Long) {
         if (managerDTO != null) {

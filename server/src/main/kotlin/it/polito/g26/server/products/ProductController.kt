@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @RestController
+@RequestMapping("/product")
 class ProductController(
     private val productService: ProductService
 ) {
@@ -19,19 +20,19 @@ class ProductController(
         return device
     }
 
-    @GetMapping("/products")
+    @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     fun getAll() : List<ProductDTO> {
         return productService.getAll()
     }
 
-    @GetMapping("/products/{ean}")
+    @GetMapping("/{ean}")
     @ResponseStatus(HttpStatus.OK)
     fun getDevice(@PathVariable ean: Long) : ProductDTO? {
         return productService.getProduct(ean) ?: throw Exception("Product not found")
     }
 
-    @PostMapping("/products")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     fun insertDevice(@RequestBody productDTO: ProductDTO?) {
         if (productDTO != null) {
@@ -44,7 +45,7 @@ class ProductController(
         }
     }
 
-    @PutMapping("/products/{ean}")
+    @PutMapping("/{ean}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     fun updateDevice(@RequestBody productDTO: ProductDTO?, @PathVariable ean: Long) {
         if (productDTO != null) {

@@ -1,5 +1,9 @@
-package it.polito.g26.server.security
+package it.polito.g26.server.security.login
 
+import it.polito.g26.server.security.*
+import it.polito.g26.server.security.utils.IntrospectResponse
+import it.polito.g26.server.security.utils.Response
+import it.polito.g26.server.security.utils.TokenRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

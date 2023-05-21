@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @RestController
+@RequestMapping("/expert")
 class ExpertController(
     private val expertService: ExpertService
 ) {
@@ -20,19 +21,19 @@ class ExpertController(
         return expert
     }
 
-    @GetMapping("/API/expert/{email}")
+    @GetMapping("/{email}")
     @ResponseStatus(HttpStatus.OK)
     fun getExpert(@PathVariable email: String) : ExpertDTO? {
         return expertService.getExpert(email) ?: throw Exception("Expert not found")
     }
 
-    @GetMapping("/API/expert/field/{field}")
+    @GetMapping("/field/{field}")
     @ResponseStatus(HttpStatus.OK)
     fun getExpertsByField(@PathVariable field: String) : List<ExpertDTO>? {
         return expertService.getExpertsByField(field) ?: throw Exception("No expert found")
     }
 
-    @PostMapping("/API/expert")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     fun insertExpert(@RequestBody expertDTO: ExpertDTO?) {
         if (expertDTO != null) {
@@ -45,7 +46,7 @@ class ExpertController(
         }
     }
 
-    @PutMapping("/API/expert/{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     fun updateExpert(@RequestBody expertDTO: ExpertDTO?, @PathVariable id: Long) {
         if (expertDTO != null) {
@@ -58,7 +59,7 @@ class ExpertController(
         }
     }
 
-    @GetMapping("/API/expert/tickets/{id}")
+    @GetMapping("/tickets/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getExpertTickets(@PathVariable id: Long) : Set<TicketDTO> {
         return expertService.getTickets(id) ?: throw Exception("Expert not found")

@@ -1,4 +1,4 @@
-package it.polito.g26.server.security
+package it.polito.g26.server.security.utils
 
 import org.keycloak.adapters.KeycloakConfigResolver
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver
