@@ -3,6 +3,7 @@ package it.polito.g26.server.profiles.customer
 import it.polito.g26.server.profiles.Profile
 import it.polito.g26.server.ticketing.tickets.Ticket
 import it.polito.g26.server.ticketing.utility.Role
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.OneToMany
 
@@ -11,8 +12,9 @@ data class Customer(
     override var name: String,
     override var surname: String,
 
-    //@Column(unique = true)
+    @Column(unique = true)
     override var email: String = "",
+    var password: String = "",
 
     var city: String = "",
     var address: String = "",

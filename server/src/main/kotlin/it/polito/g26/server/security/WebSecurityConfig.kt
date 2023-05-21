@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper
 import org.springframework.security.core.session.SessionRegistryImpl
 import org.springframework.security.web.SecurityFilterChain
@@ -18,8 +19,7 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 @Configuration
 @EnableWebSecurity
 class WebSecurityConfig(
-    private val jwtAuthConverter: JwtAuthConverter,
-    private val jwtServer: JwtServer
+    private val jwtAuthConverter: JwtAuthConverter
 ) {
     companion object {
         const val ADMIN = "admin"
@@ -32,30 +32,24 @@ class WebSecurityConfig(
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
 
-        println(http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthConverter))
-        http
-            .csrf().disable()
+        http.csrf().disable()
             .authorizeHttpRequests()
             .requestMatchers(HttpMethod.POST,"/auth/**").permitAll()
-
-        /*http.authorizeHttpRequests()
-            .requestMatchers(HttpMethod.GET,"/customer").hasAnyRole(CUSTOMER)
-            .requestMatchers(HttpMethod.GET,"/expert").hasAnyRole(ADMIN, MANAGER, EXPERT)
-            .requestMatchers(HttpMethod.GET,"/manager").hasAnyRole(ADMIN, MANAGER)
-            .requestMatchers(HttpMethod.GET,"/products").permitAll()
-
-            .requestMatchers(HttpMethod.GET,"/test/anonymous").permitAll()
-            .requestMatchers(HttpMethod.GET,"/test/admin").hasRole(ADMIN)
-            .requestMatchers(HttpMethod.GET,"/test/user").hasAnyRole(ADMIN, USER)
+            .requestMatchers(HttpMethod.GET,"/api/product").permitAll()
+            .requestMatchers(HttpMethod.POST,"/api/product**").hasAnyRole(ADMIN,MANAGER)
+            .requestMatchers(HttpMethod.PUT,"/api/product**").hasAnyRole(ADMIN,MANAGER)
+            .requestMatchers(HttpMethod.PATCH,"/api/product**").hasAnyRole(ADMIN,MANAGER)
+            .requestMatchers("/api/customer**").hasAnyRole(ADMIN,MANAGER,EXPERT,CUSTOMER)
+            .requestMatchers("/api/expert**").hasAnyRole(ADMIN,MANAGER,EXPERT)
+            .requestMatchers("/api/manager**").hasAnyRole(ADMIN,MANAGER)
+            .requestMatchers("/api/ticket**").hasAnyRole(ADMIN,MANAGER, EXPERT, CUSTOMER)
             .anyRequest().authenticated()
 
         http.oauth2ResourceServer()
             .jwt()
             .jwtAuthenticationConverter(jwtAuthConverter)
 
-
-         */
-        //http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
         return http.build()
     }

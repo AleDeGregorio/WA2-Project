@@ -16,4 +16,14 @@ class LoginController (
     fun login(@RequestBody loginRequest: LoginRequest): ResponseEntity<LoginResponse>{
         return loginServiceImpl.login(loginRequest)
     }
+
+    @PostMapping("/logout")
+    fun logout(@RequestBody tokenRequest: TokenRequest): ResponseEntity<Response>{
+        return loginServiceImpl.logout(tokenRequest)
+    }
+
+    @PostMapping("/introspect")
+    fun introspect(@RequestBody tokenRequest: TokenRequest): ResponseEntity<IntrospectResponse>{
+        return loginServiceImpl.introspect(tokenRequest)
+    }
 }

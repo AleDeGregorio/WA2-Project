@@ -1,6 +1,5 @@
 package it.polito.g26.server.security
 
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.oauth2.jwt.Jwt
@@ -8,10 +7,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.stereotype.Component
 
 @Component
-class JwtServer (
-    @Value("\${spring.security.oauth2.resourceserver.jwt.public-key-location}")
-    private val secretKey: String
-) {
+class JwtServer {
 /*
     @Bean
     fun jwtDecoder(): JwtDecoder{
