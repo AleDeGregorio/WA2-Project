@@ -22,7 +22,7 @@ data class TicketDTO(
     val expert: ExpertDTO?,
     val product: ProductDTO?,
     val status: MutableSet<StatusTicket>,
-    val chats: MutableSet<Chat>,
+    //val chats: MutableSet<Chat>,
     val issueType: String,
     val description: String,
     val priorityLevel: Int?,
@@ -30,12 +30,12 @@ data class TicketDTO(
 )
 
 fun Ticket.toDTO() : TicketDTO {
-    return TicketDTO(id, customer?.toDTO(), expert?.toDTO(), product?.toDTO(), status, chats, issueType, description, priorityLevel, dateOfCreation)
+    return TicketDTO(id, customer?.toDTO(), expert?.toDTO(), product?.toDTO(), status, issueType, description, priorityLevel, dateOfCreation)
 }
 
 fun TicketDTO.toEntity(): Ticket {
     val ticket = Ticket( customer =  customer?.toEntity(), expert = expert?.toEntity(), product = product?.toEntity(),
-    status = status, chats = chats, issueType = issueType, description = description, priorityLevel = priorityLevel, dateOfCreation = dateOfCreation)
+    status = status, issueType = issueType, description = description, priorityLevel = priorityLevel, dateOfCreation = dateOfCreation)
     ticket.id = id;
     return ticket
 }

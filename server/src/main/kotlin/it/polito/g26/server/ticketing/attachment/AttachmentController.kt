@@ -1,5 +1,8 @@
 package it.polito.g26.server.ticketing.attachment
 
+import it.polito.g26.server.AttachmentNotFoundException
+import it.polito.g26.server.EmptyPostBodyException
+import it.polito.g26.server.MessageNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -26,13 +29,13 @@ class AttachmentController(
     @GetMapping("/API/attachment/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getAttachment(@PathVariable id: Long) : AttachmentDTO? {
-        return attachmentService.getAttachment(id) ?: throw Exception("Attachment not found")
+        return attachmentService.getAttachment(id) ?: throw AttachmentNotFoundException("Attachment with id $id not found!")
     }
 
     @GetMapping("/API/attachment/message/{messageId}")
     @ResponseStatus(HttpStatus.OK)
     fun getAttachmentByMessage(@PathVariable messageId: Long) : List<AttachmentDTO>? {
-        return attachmentService.getAttachmentByMessage(messageId) ?: throw Exception("Message not found")
+        return attachmentService.getAttachmentByMessage(messageId) ?: throw MessageNotFoundException("Message with id $messageId not found!")
     }
 
     @PostMapping("/API/attachment")
@@ -40,11 +43,10 @@ class AttachmentController(
     fun insertAttachment(@RequestBody attachmentDTO: AttachmentDTO?) {
         if (attachmentDTO != null) {
             val insertAttachment = attachmentDTOToEntity(attachmentDTO)
-
             attachmentService.insertAttachment(insertAttachment)
         }
         else {
-            throw Exception("Empty attachment body")
+            throw EmptyPostBodyException("Empty attachment body")
         }
     }
 }

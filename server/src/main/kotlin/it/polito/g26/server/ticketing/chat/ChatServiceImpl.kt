@@ -1,5 +1,7 @@
 package it.polito.g26.server.ticketing.chat
 
+import it.polito.g26.server.ChatAlreadyExistsException
+import it.polito.g26.server.ChatNotFoundException
 import it.polito.g26.server.ticketing.messages.MessageDTO
 import it.polito.g26.server.ticketing.messages.toDTO
 import org.springframework.data.repository.findByIdOrNull
@@ -28,13 +30,13 @@ class ChatServiceImpl(
             return messages.map { it.toDTO() }.toSet()
         }
         else {
-            throw Exception("Chat not found")
+            throw throw ChatNotFoundException("Chat with id $id not found!")
         }
     }
 
     override fun insertChat(chat: Chat) {
         if (chat.id != null && chatRepository.existsById(chat.id!!)) {
-            throw Exception("Chat already exists")
+            throw ChatAlreadyExistsException("${chat.id} already exists!")
         }
         else {
             chatRepository.save(chat)
