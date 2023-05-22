@@ -1,5 +1,8 @@
 package it.polito.g26.server.profiles.manager
 
+import it.polito.g26.server.EmailAlreadyExistException
+import it.polito.g26.server.EmailNotFoundException
+import it.polito.g26.server.EmptyPostBodyException
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
@@ -17,19 +20,19 @@ class ManagerController(
     @GetMapping("/API/manager/{email}")
     @ResponseStatus(HttpStatus.OK)
     fun getManager(@PathVariable email: String) : ManagerDTO? {
-        return managerService.getManager(email) ?: throw Exception("Manager not found")
+        return managerService.getManager(email) ?: throw EmailNotFoundException("Manager with email $email not found!")
     }
 
     @PostMapping("/API/manager")
     @ResponseStatus(HttpStatus.CREATED)
     fun insertManager(@RequestBody managerDTO: ManagerDTO?) {
-        if (managerDTO != null) {
+        if (managerDTO == null) {
+            throw EmptyPostBodyException("Empty Manager body")
+        }else if(managerService.getManager(managerDTO.email)!=null){
+            throw EmailAlreadyExistException("${managerDTO.email} already in use!")
+        }else{
             val insertManager = managerDTOToEntity(managerDTO)
-
             managerService.insertManager(insertManager)
-        }
-        else {
-            throw Exception("Empty manager body")
         }
     }
 
@@ -42,7 +45,7 @@ class ManagerController(
             managerService.updateManager(updateManager)
         }
         else {
-            throw Exception("Empty manager body")
+            throw EmptyPostBodyException("Empty Manager body")
         }
     }
 }

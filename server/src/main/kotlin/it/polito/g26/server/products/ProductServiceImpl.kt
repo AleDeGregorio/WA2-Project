@@ -1,5 +1,8 @@
 package it.polito.g26.server.products
 
+import it.polito.g26.server.DuplicateProductException
+import it.polito.g26.server.ProductNotFoundException
+import it.polito.g26.server.UserNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -17,7 +20,7 @@ class ProductServiceImpl(
 
     override fun insertProduct(product: Product) {
         if (productRepository.existsById(product.ean)) {
-            throw Exception("Product already inserted")
+            throw DuplicateProductException("Product with ean ${product.ean} already inserted!")
         }
         else {
             productRepository.save(product)
@@ -36,7 +39,7 @@ class ProductServiceImpl(
             productRepository.save(retrievedProduct)
         }
         else {
-            throw Exception("Product not found")
+            throw ProductNotFoundException("Expert with ean ${product.ean} not found")
         }
     }
 

@@ -1,7 +1,6 @@
 package it.polito.g26.server.profiles
 
 import it.polito.g26.server.EmailAlreadyExistException
-import it.polito.g26.server.ProfileNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 

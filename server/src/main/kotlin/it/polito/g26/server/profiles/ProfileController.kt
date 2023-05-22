@@ -1,7 +1,5 @@
 package it.polito.g26.server.profiles
 
-import it.polito.g26.server.EmptyPostProfileException
-import it.polito.g26.server.ProfileNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface ExpertRepository : JpaRepository<Expert, Long> {
     @Query("SELECT e FROM Expert e WHERE LOWER(e.fields) LIKE LOWER(CONCAT('%', :field, '%'))")
-    fun getByField(@Param("field") field: String) : List<Expert>?
+    fun getByField(@Param("field") field: String) : List<Expert>
 
     @Query("SELECT e FROM Expert e WHERE e.email = :email")
     fun getByEmail(@Param("email") email: String): Expert?

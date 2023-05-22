@@ -1,5 +1,7 @@
 package it.polito.g26.server.ticketing.statusTicket
 
+import it.polito.g26.server.EmptyPostBodyException
+import it.polito.g26.server.TicketNotFoundException
 import it.polito.g26.server.products.ProductDTO
 import it.polito.g26.server.ticketing.tickets.toEntity
 import org.springframework.beans.factory.annotation.Autowired
@@ -28,13 +30,13 @@ class StatusTicketController(
     @GetMapping("/API/statusTicket/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getStatusTicket(@PathVariable id: Long) : List<StatusTicketDTO>? {
-        return statusTicketService.getStatusTicket(id) ?: throw Exception("Ticket not found")
+        return statusTicketService.getStatusTicket(id) ?: throw TicketNotFoundException("Ticket with id $id not found!")
     }
 
     @GetMapping("/API/statusTicket/latest/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getLatestStatus(@PathVariable id: Long) : StatusTicketDTO? {
-        return statusTicketService.getLatestStatus(id) ?: throw Exception("Ticket not found")
+        return statusTicketService.getLatestStatus(id) ?: throw TicketNotFoundException("Ticket with id $id not found!")
     }
 
     @PostMapping("/API/statusTicket/open")
@@ -45,7 +47,7 @@ class StatusTicketController(
             statusTicketService.openStatusTicket(openedStatusTicket)
         }
         else {
-            throw Exception("Empty status ticket body")
+            throw EmptyPostBodyException("Empty Status Ticket body")
         }
     }
     @PostMapping("/API/statusTicket/close")
@@ -57,7 +59,7 @@ class StatusTicketController(
             statusTicketService.closeStatusTicket(closedStatusTicket)
         }
         else {
-            throw Exception("Empty status ticket body")
+            throw EmptyPostBodyException("Empty Status Ticket body")
         }
     }
     @PostMapping("/API/statusTicket/progress")
@@ -69,7 +71,7 @@ class StatusTicketController(
             statusTicketService.progressStatusTicket(inProgressStatusTicket)
         }
         else {
-            throw Exception("Empty status ticket body")
+            throw EmptyPostBodyException("Empty Status Ticket body")
         }
     }
     @PostMapping("/API/statusTicket/reopen")
@@ -81,7 +83,7 @@ class StatusTicketController(
             statusTicketService.reopenStatusTicket(reopenedStatusTicket)
         }
         else {
-            throw Exception("Empty status ticket body")
+            throw EmptyPostBodyException("Empty Status Ticket body")
         }
     }
     @PostMapping("/API/statusTicket/resolve")
@@ -93,7 +95,7 @@ class StatusTicketController(
             statusTicketService.resolveStatusTicket(resolvedStatusTicket)
         }
         else {
-            throw Exception("Empty status ticket body")
+            throw EmptyPostBodyException("Empty Status Ticket body")
         }
     }
 
