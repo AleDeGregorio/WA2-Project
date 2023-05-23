@@ -1,9 +1,9 @@
-package it.polito.g26.server.profiles
+package com.example.security.users
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
-/*
+
 @Repository
-interface ProfileRepository: JpaRepository<Profile, String> {
+interface CustomerRepository: JpaRepository<Customer, Long> {
+
 }
-*/
