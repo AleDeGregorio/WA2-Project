@@ -20,9 +20,9 @@ class LoginServiceImpl(
 ) {
 
     val restTemplate = RestTemplate()
-    val tokenUrl = "http://localhost:8081/realms/ticketingRealm/protocol/openid-connect/token"
-    val logoutUrl = "http://localhost:8081/realms/ticketingRealm/protocol/openid-connect/logout"
-    val introspectUrl = "http://localhost:8081/realms/ticketingRealm/protocol/openid-connect/token/introspect"
+    val tokenUrl = "http://keycloak:8080/realms/ticketingRealm/protocol/openid-connect/token"
+    val logoutUrl = "http://keycloak:8080/realms/ticketingRealm/protocol/openid-connect/logout"
+    val introspectUrl = "http://keycloak:8080/realms/ticketingRealm/protocol/openid-connect/token/introspect"
 
     fun login(loginRequest: LoginRequest): ResponseEntity<LoginResponse>{
         val headers = HttpHeaders()
