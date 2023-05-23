@@ -21,10 +21,9 @@ class ProductController(
         return device
     }
 
-    @GetMapping("/API/products/")
+    @GetMapping("/API/products")
     @ResponseStatus(HttpStatus.OK)
-    fun getAll(principal: Principal) : List<ProductDTO> {
-        val token = principal as JwtAuthenticationToken
+    fun getAll() : List<ProductDTO> {
         return productService.getAll()
     }
 

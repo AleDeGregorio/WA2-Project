@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/customer")
+@RequestMapping("/API/customer")
 class CustomerController(
     private val customerService: CustomerService
 ) {

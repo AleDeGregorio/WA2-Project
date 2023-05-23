@@ -17,14 +17,14 @@ class LoginServiceImpl(
     private val clientId: String,
     @Value("\${spring.security.oauth2.client.registration.keycloak.authorization-grant-type}")
     private val grantType: String
-): LoginService {
+) {
 
     val restTemplate = RestTemplate()
-    val tokenUrl = "http://localhost:8080/realms/SpringBoot-Keycloak/protocol/openid-connect/token"
-    val logoutUrl = "http://localhost:8080/realms/SpringBoot-Keycloak/protocol/openid-connect/logout"
-    val introspectUrl = "http://localhost:8080/realms/SpringBoot-Keycloak/protocol/openid-connect/token/introspect"
+    val tokenUrl = "http://localhost:8081/realms/ticketingRealm/protocol/openid-connect/token"
+    val logoutUrl = "http://localhost:8081/realms/ticketingRealm/protocol/openid-connect/logout"
+    val introspectUrl = "http://localhost:8081/realms/ticketingRealm/protocol/openid-connect/token/introspect"
 
-    override fun login(loginRequest: LoginRequest): ResponseEntity<LoginResponse>{
+    fun login(loginRequest: LoginRequest): ResponseEntity<LoginResponse>{
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_FORM_URLENCODED
         val map: MultiValueMap<String,String> = LinkedMultiValueMap<String,String>()
@@ -39,7 +39,7 @@ class LoginServiceImpl(
         return ResponseEntity<LoginResponse>(response.body, HttpStatus.OK)
     }
 
-    override fun logout(logoutRequest: TokenRequest): ResponseEntity<Response>{
+    fun logout(logoutRequest: TokenRequest): ResponseEntity<Response>{
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_FORM_URLENCODED
 
@@ -55,7 +55,7 @@ class LoginServiceImpl(
         return ResponseEntity<Response>(response.body, response.statusCode)
     }
 
-    override fun introspect(tokenRequest: TokenRequest): ResponseEntity<IntrospectResponse> {
+    fun introspect(tokenRequest: TokenRequest): ResponseEntity<IntrospectResponse> {
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_FORM_URLENCODED
 
