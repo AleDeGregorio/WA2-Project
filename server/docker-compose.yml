@@ -8,11 +8,33 @@ services:
     container_name: server
     depends_on:
       - db
+      - keycloak
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=password
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create
+      - SPRING_APPLICATION_NAME=springboot-keycloak
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_ID=springboot-keycloak-client
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_AUTHORIZATION_GRANT_TYPE=password
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_SCOPE=openid,profile,roles
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI=http://keycloak:8080/realms/ticketingRealm
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_USER_NAME_ATTRIBUTE=preferred_username
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OAUTH2_CLIENT_CREDENTIALS_AUTHORIZATION_GRANT_TYPE=password
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/realms/ticketingRealm
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak:8080/realms/ticketingRealm/protocol/openid-connect/certs
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_TOKEN_URI=http://keycloak:8080/realms/ticketingRealm/protocol/openid-connect/token
+      - JWT_AUTH_CONVERTER_RESOURCE_ID=springboot-keycloak-client
+      - JWT_AUTH_CONVERTER_PRINCIPAL_ATTRIBUTE=preferred_username
+      - KEYCLOAK_AUTH_SERVER_URL=http://keycloak:8080/realms/ticketingRealm/protocol/openid-connect/auth
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OAUTH2_CLIENT_CREDENTIALS_CLIENT_ID=auth-client
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OAUTH2_CLIENT_CREDENTIALS_SCOPE=openid,profile,roles
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OAUTH2_CLIENT_CREDENTIALS_PROVIDER=keycloak
+      - KEYCLOAK_REALM=ticketingRealm
+      - KEYCLOAK_RESOURCE=springboot-keycloak-client
+      - KEYCLOAK_SSL_REQUIRED=external
+      - KEYCLOAK_PUBLIC_CLIENT=true
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY=DEBUG
     ports:
       - "8080:8080"
   db:
@@ -21,3 +43,17 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.1.1
+    container_name: keycloak_auth
+    ports:
+      - "8081:8080"
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    command: start-dev
+    volumes:
+      - keycloak_data:/opt/jboss/keycloak/standalone/data
+
+volumes:
+  keycloak_data:

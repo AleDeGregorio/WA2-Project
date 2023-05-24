@@ -2,14 +2,10 @@ package it.polito.g26.server.ticketing.messages
 
 import it.polito.g26.server.ticketing.attachment.AttachmentDTO
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.ResponseStatus
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
+@RequestMapping("/message")
 class MessageController(
     private val messageService: MessageService
 ) {
@@ -24,25 +20,25 @@ class MessageController(
         return message
     }
 
-    @GetMapping("/API/message/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getMessage(@PathVariable id: Long) : MessageDTO? {
         return messageService.getMessage(id) ?: throw Exception("Message not found")
     }
 
-    @GetMapping("/API/message/chat/{chatId}")
+    @GetMapping("/chat/{chatId}")
     @ResponseStatus(HttpStatus.OK)
     fun getMessageByChat(@PathVariable chatId: Long) : List<MessageDTO>? {
         return messageService.getMessageByChat(chatId) ?: throw Exception("Chat not found")
     }
 
-    @GetMapping("/API/message/attachments/{id}")
+    @GetMapping("/attachments/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getMessageAttachments(@PathVariable id: Long) : Set<AttachmentDTO> {
         return messageService.getAttachments(id) ?: throw Exception("Message not found")
     }
 
-    @PostMapping("/API/message")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     fun insertMessage(@RequestBody messageDTO: MessageDTO?) {
         if (messageDTO != null) {
