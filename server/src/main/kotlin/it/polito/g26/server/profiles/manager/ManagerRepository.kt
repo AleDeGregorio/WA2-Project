@@ -6,7 +6,7 @@ import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 
 @Repository
-interface ManagerRepository : JpaRepository<Manager, String> {
+interface ManagerRepository : JpaRepository<Manager, Long> {
     @Query("SELECT m FROM Manager m WHERE m.email = :email")
     fun getByEmail(@Param("email") email: String): Manager?
 }

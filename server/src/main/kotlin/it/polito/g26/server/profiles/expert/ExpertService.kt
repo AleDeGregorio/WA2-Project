@@ -11,5 +11,5 @@ interface ExpertService {
 
     fun updateExpert(expert: Expert)
 
-    fun getTickets(id: String) : Set<TicketDTO>?
+    fun getTickets(id: Long) : Set<TicketDTO>?
 }

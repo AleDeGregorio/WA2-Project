@@ -4,7 +4,7 @@ import it.polito.g26.server.profiles.customer.Customer
 import it.polito.g26.server.ticketing.tickets.Ticket
 
 data class ExpertDTO(
-    val id: String?,
+    val id: Long?,
     val name: String,
     val surname: String,
     val email: String,

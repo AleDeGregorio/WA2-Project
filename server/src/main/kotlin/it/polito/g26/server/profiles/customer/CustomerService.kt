@@ -9,5 +9,5 @@ interface CustomerService {
 
     fun updateCustomer(customer: Customer)
 
-    fun getTickets(id: String) : Set<TicketDTO>?
+    fun getTickets(id: Long) : Set<TicketDTO>?
 }

@@ -41,7 +41,7 @@ class CustomerServiceImpl(
         }
     }
 
-    override fun getTickets(id: String): Set<TicketDTO>? {
+    override fun getTickets(id: Long): Set<TicketDTO>? {
         if (customerRepository.existsById(id)) {
             val tickets = customerRepository.getTickets(id) ?: return null
             return tickets.map { it.toDTO() }.toSet()

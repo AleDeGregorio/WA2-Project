@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat
 class TicketController(
     private val ticketService: TicketService
 ) {
-    private fun expertDTOToEntity(expertDTO: ExpertDTO, id: String?) : Expert {
+    private fun expertDTOToEntity(expertDTO: ExpertDTO, id: Long?) : Expert {
         val expert = Expert(name = expertDTO.name!!, surname = expertDTO.surname!!, email = expertDTO.email!!)
 
         if (id != null) {

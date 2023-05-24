@@ -65,7 +65,7 @@ class ExpertController(
 
     @GetMapping("/API/expert/tickets/{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun getExpertTickets(@PathVariable id: String) : Set<TicketDTO> {
+    fun getExpertTickets(@PathVariable id: Long) : Set<TicketDTO> {
         val tickets = expertService.getTickets(id) ?: throw UserNotFoundException("Expert with id $id not found!")
         if(tickets.isEmpty()) {
             throw TicketListIsEmptyException("Expert with id $id has no tickets")

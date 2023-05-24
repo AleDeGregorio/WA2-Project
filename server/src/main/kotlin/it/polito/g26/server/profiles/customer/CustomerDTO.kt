@@ -4,7 +4,7 @@ import it.polito.g26.server.ticketing.tickets.Ticket
 import it.polito.g26.server.ticketing.utility.Role
 
 data class CustomerDTO (
-    val id: String?,
+    val id: Long?,
     val name: String,
     val surname: String,
     val role: Role,
