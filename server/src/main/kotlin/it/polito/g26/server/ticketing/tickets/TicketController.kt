@@ -63,7 +63,7 @@ class TicketController(
         return ticketService.getTicketByDateOfCreation(formattedDate) ?: throw TicketNotFoundException("No Tickets created on the $dateOfCreation")
     }
 
-    @GetMapping("/API/ticket/statusTicket/{id}")
+    /*@GetMapping("/API/ticket/statusTicket/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getStatusTicket(@PathVariable id: Long) : Set<StatusTicketDTO>? {
         return ticketService.getStatusTicket(id) ?: throw TicketNotFoundException("Ticket with id $id not found!")
@@ -74,6 +74,8 @@ class TicketController(
     fun getChats(@PathVariable id: Long) : Set<ChatDTO>? {
         return ticketService.getChats(id) ?: throw TicketNotFoundException("Ticket with id $id not found!")
     }
+
+     */
 
     @PostMapping("/API/ticket")
     @ResponseStatus(HttpStatus.CREATED)
