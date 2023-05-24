@@ -1,5 +1,9 @@
 package it.polito.g26.server.profiles.customer
 
+import it.polito.g26.server.EmailAlreadyExistException
+import it.polito.g26.server.EmailNotFoundException
+import it.polito.g26.server.UserAlreadyExistException
+import it.polito.g26.server.UserNotFoundException
 import it.polito.g26.server.ticketing.tickets.TicketDTO
 import it.polito.g26.server.ticketing.tickets.toDTO
 import org.springframework.stereotype.Service
@@ -14,7 +18,7 @@ class CustomerServiceImpl(
 
     override fun insertCustomer(customer: Customer) {
         if (customerRepository.existsByEmail(customer.email)) {
-            throw Exception("Email already exists")
+            throw UserAlreadyExistException("Customer with id ${customer.id} already exist")
         }
         else {
             customerRepository.save(customer)
@@ -33,7 +37,7 @@ class CustomerServiceImpl(
             customerRepository.save(retrievedCustomer!!)
         }
         else {
-            throw Exception("Customer not found")
+            throw UserNotFoundException("Customer with id ${customer.id} not found!")
         }
     }
 
@@ -43,7 +47,7 @@ class CustomerServiceImpl(
             return tickets.map { it.toDTO() }.toSet()
         }
         else {
-            throw Exception("Customer not found")
+            throw EmailNotFoundException("Customer not found!")
         }
     }
 }

@@ -1,5 +1,8 @@
 package it.polito.g26.server.profiles.expert
 
+import it.polito.g26.server.EmailAlreadyExistException
+import it.polito.g26.server.UserAlreadyExistException
+import it.polito.g26.server.UserNotFoundException
 import it.polito.g26.server.ticketing.tickets.TicketDTO
 import it.polito.g26.server.ticketing.tickets.toDTO
 import org.springframework.data.repository.findByIdOrNull
@@ -13,13 +16,13 @@ class ExpertServiceImpl(
         return expertRepository.getByEmail(email)?.toDTO()
     }
 
-    override fun getExpertsByField(field: String): List<ExpertDTO>? {
-        return expertRepository.getByField(field)?.map { it.toDTO() }
+    override fun getExpertsByField(field: String): List<ExpertDTO> {
+        return expertRepository.getByField(field).map { it.toDTO() }
     }
 
     override fun insertExpert(expert: Expert) {
         if (expert.id != null && expertRepository.existsById(expert.id!!)) {
-            throw Exception("Expert already exists")
+            throw UserAlreadyExistException("Expert with id ${expert.id} already exist")
         }
         else {
             expertRepository.save(expert)
@@ -37,7 +40,7 @@ class ExpertServiceImpl(
             expertRepository.save(retrievedExpert)
         }
         else {
-            throw Exception("Expert not found")
+             throw UserNotFoundException("Expert with id ${expert.id} not found")
         }
     }
 
@@ -47,7 +50,7 @@ class ExpertServiceImpl(
             return tickets.map { it.toDTO() }.toSet()
         }
         else {
-            throw Exception("Expert not found")
+            throw UserNotFoundException("Expert not found")
         }
     }
 }

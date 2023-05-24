@@ -5,7 +5,7 @@ import it.polito.g26.server.ticketing.tickets.TicketDTO
 interface ExpertService {
     fun getExpert(email: String) : ExpertDTO?
 
-    fun getExpertsByField(field: String) : List<ExpertDTO>?
+    fun getExpertsByField(field: String) : List<ExpertDTO>
 
     fun insertExpert(expert: Expert)
 
