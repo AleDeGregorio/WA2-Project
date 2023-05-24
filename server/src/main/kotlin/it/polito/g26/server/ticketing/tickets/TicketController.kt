@@ -20,56 +20,6 @@ import java.text.SimpleDateFormat
 class TicketController(
     private val ticketService: TicketService
 ) {
-    private fun expertDTOToEntity(expertDTO: ExpertDTO, id: Long?) : Expert {
-        val expert = Expert(name = expertDTO.name!!, surname = expertDTO.surname!!, email = expertDTO.email!!)
-
-        if (id != null) {
-            expert.id = id
-        }
-
-        expert.fields = expertDTO.fields
-        expert.email = expertDTO.email
-
-        return expert
-    }
-
-    private fun customerDTOToEntity(customerDTO: CustomerDTO) : Customer {
-        val customer = Customer(name = customerDTO.name,
-            surname = customerDTO.surname,
-            email = customerDTO.email,
-            city = customerDTO.city,
-            address = customerDTO.address)
-        if (customer.id != null) {
-            customer.id = customerDTO.id
-        }
-        return customer
-    }
-
-    private fun productDTOToEntity(deviceDTO: ProductDTO) : Product {
-        val device = Product(deviceDTO.ean)
-
-        device.name = deviceDTO.name
-        device.category = deviceDTO.category
-        device.brand = deviceDTO.brand
-        device.price = deviceDTO.price
-
-        return device
-    }
-
-    private fun ticketDTOToEntity(ticketDTO: TicketDTO) : Ticket {
-        val ticket = Ticket()
-        println(ticketDTO)
-        ticket.customer = ticketDTO.customer?.toEntity()
-        ticket.expert = ticketDTO.expert?.toEntity()
-        ticket.product = ticketDTO.product?.toEntity()
-        ticket.status = ticketDTO.status
-        ticket.issueType = ticketDTO.issueType
-        ticket.description = ticketDTO.description
-        ticket.priorityLevel = ticketDTO.priorityLevel
-        ticket.dateOfCreation = ticketDTO.dateOfCreation
-        println(ticket)
-        return ticket
-    }
 
     @GetMapping("/API/tickets")
     @ResponseStatus(HttpStatus.OK)
@@ -131,8 +81,7 @@ class TicketController(
         if (ticketDTO == null) {
             throw EmptyPostBodyException("Empty Ticket body")
         }else{
-            val insertTicket = ticketDTOToEntity(ticketDTO)
-            ticketService.insertTicket(insertTicket)
+            ticketService.insertTicket(ticketDTO.toEntity())
         }
     }
 
@@ -161,8 +110,7 @@ class TicketController(
         }
         else if(expertDTO != null)
         {
-            val setExpert = expertDTOToEntity(expertDTO, expertDTO.id)
-            ticketService.setExpert(id, setExpert)
+            ticketService.setExpert(id, expertDTO.toEntity())
         }
         else
         {

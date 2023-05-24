@@ -10,13 +10,6 @@ import org.springframework.web.bind.annotation.*
 class ManagerController(
     private val managerService: ManagerService
 ) {
-    private fun managerDTOToEntity(managerDTO: ManagerDTO) : Manager {
-        val manager = Manager(name = managerDTO.name, surname = managerDTO.surname, email = managerDTO.email, department = managerDTO.department)
-        manager.id = managerDTO.id
-
-        return manager
-    }
-
     @GetMapping("/API/manager/{email}")
     @ResponseStatus(HttpStatus.OK)
     fun getManager(@PathVariable email: String) : ManagerDTO? {
@@ -31,8 +24,7 @@ class ManagerController(
         }else if(managerService.getManager(managerDTO.email)!=null){
             throw EmailAlreadyExistException("${managerDTO.email} already in use!")
         }else{
-            val insertManager = managerDTOToEntity(managerDTO)
-            managerService.insertManager(insertManager)
+            managerService.insertManager(managerDTO.toEntity())
         }
     }
 
@@ -40,9 +32,7 @@ class ManagerController(
     @ResponseStatus(HttpStatus.ACCEPTED)
     fun updateManager(@RequestBody managerDTO: ManagerDTO?) {
         if (managerDTO != null) {
-            val updateManager = managerDTOToEntity(managerDTO)
-
-            managerService.updateManager(updateManager)
+            managerService.updateManager(managerDTO.toEntity())
         }
         else {
             throw EmptyPostBodyException("Empty Manager body")

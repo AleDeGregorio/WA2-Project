@@ -10,8 +10,7 @@ data class CustomerDTO (
     val role: Role,
     val email: String,
     val city: String,
-    val address: String,
-    //val tickets: MutableSet<Ticket>
+    val address: String
 )
 
 fun Customer.toDTO() : CustomerDTO {

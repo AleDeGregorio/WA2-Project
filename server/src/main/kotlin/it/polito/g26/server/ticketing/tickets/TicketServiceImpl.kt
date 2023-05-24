@@ -17,8 +17,7 @@ import java.util.*
 
 @Service
 class TicketServiceImpl(
-    private val ticketRepository: TicketRepository,
-    private val statusTicketRepository: StatusTicketRepository
+    private val ticketRepository: TicketRepository
 ) : TicketService {
     override fun getAll(): List<TicketDTO> {
         return ticketRepository.findAll().map { it.toDTO() }
@@ -43,7 +42,7 @@ class TicketServiceImpl(
     override fun getTicketByDateOfCreation(dateOfCreation: Date): List<TicketDTO>? {
         return ticketRepository.findByDateOfCreation(dateOfCreation)?.map { it.toDTO() }
     }
-
+/*
     override fun getStatusTicket(id: Long): Set<StatusTicketDTO>? {
         if (ticketRepository.existsById(id)) {
             val ticketStatus = ticketRepository.getStatusTicket(id) ?: return null
@@ -53,7 +52,9 @@ class TicketServiceImpl(
             throw TicketNotFoundException("Ticket with id $id not found!")
         }
     }
+ */
 
+/*
     override fun getChats(id: Long): Set<ChatDTO>? {
         if (ticketRepository.existsById(id)) {
             val chats = ticketRepository.getChats(id) ?: return null
@@ -63,7 +64,7 @@ class TicketServiceImpl(
             throw TicketNotFoundException("Ticket with id $id not found!")
         }
     }
-
+ */
     override fun insertTicket(ticket: Ticket) {
         if (ticket.id != null && ticketRepository.existsById(ticket.id!!)) {
             throw TicketAlreadyExistException("Ticket with id ${ticket.id} already exists")
@@ -76,10 +77,6 @@ class TicketServiceImpl(
             throw MissingProductException("No Product was provided!")
         }else{
             ticketRepository.save(ticket)
-            val status = ticket.status.first()
-            status.ticketDate?.id = ticket
-            status.ticketDate?.lastModifiedDate = SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString())
-            statusTicketRepository.save(status)
         }
     }
 

@@ -17,3 +17,7 @@ data class MessageDTO(
 fun Message.toDTO() : MessageDTO {
     return MessageDTO(id, chat, attachments, sentBy, content, sendingDate)
 }
+
+fun MessageDTO.toEntity() : Message {
+    return Message(id, chat, attachments, sentBy, content, sendingDate)
+}

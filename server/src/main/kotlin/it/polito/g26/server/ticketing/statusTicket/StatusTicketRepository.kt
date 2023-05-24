@@ -11,6 +11,18 @@ interface StatusTicketRepository : JpaRepository<StatusTicket, TicketDate> {
     @Query("SELECT CASE WHEN COUNT(s) > 0 THEN true ELSE false END FROM StatusTicket s WHERE s.ticketDate.id.id = :id")
     fun existsByTicketId(@Param("id") id: Long) : Boolean
 
+
+    @Query("""
+        SELECT CASE 
+            WHEN EXISTS (
+                SELECT s from StatusTicket s WHERE s.ticketDate.id = :id) 
+            OR EXISTS (SELECT t FROM Ticket t WHERE t.id = :id)
+            THEN true
+            ELSE false 
+        END
+        FROM StatusTicket s, Ticket t 
+    """)
+    fun existsByTicket(@Param("id") id: Long): Boolean
     @Query("SELECT s FROM StatusTicket s WHERE s.ticketDate.id.id = :id")
     fun findByTicketId(@Param("id") id: Long) : List<StatusTicket>?
 

@@ -14,3 +14,6 @@ data class ChatDTO(
 fun Chat.toDTO() : ChatDTO {
     return ChatDTO(id, messages, ticket, creationDate)
 }
+fun ChatDTO.toEntity() : Chat {
+    return Chat(id, messages, ticket, creationDate)
+}

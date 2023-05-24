@@ -14,6 +14,7 @@ class StatusTicketServiceImpl(
 
 
     override fun getStatusTicket(id: Long): List<StatusTicketDTO>? {
+
         if (statusTicketRepository.existsByTicketId(id)) {
             return statusTicketRepository.findByTicketId(id)?.map { it.toDTO() }
         } else {

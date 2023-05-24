@@ -12,17 +12,6 @@ import org.springframework.web.bind.annotation.RestController
 class AttachmentController(
     private val attachmentService: AttachmentService
 ) {
-    private fun attachmentDTOToEntity(attachmentDTO: AttachmentDTO) : Attachment {
-        val attachment = Attachment()
-
-        attachment.content = attachmentDTO.content
-        attachment.message = attachmentDTO.message
-        attachment.name = attachmentDTO.name
-        attachment.size = attachmentDTO.size
-
-        return attachment
-    }
-
     @GetMapping("/API/attachment/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getAttachment(@PathVariable id: Long) : AttachmentDTO? {
@@ -39,9 +28,7 @@ class AttachmentController(
     @ResponseStatus(HttpStatus.CREATED)
     fun insertAttachment(@RequestBody attachmentDTO: AttachmentDTO?) {
         if (attachmentDTO != null) {
-            val insertAttachment = attachmentDTOToEntity(attachmentDTO)
-
-            attachmentService.insertAttachment(insertAttachment)
+            attachmentService.insertAttachment(attachmentDTO.toEntity())
         }
         else {
             throw Exception("Empty attachment body")

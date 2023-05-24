@@ -9,16 +9,6 @@ import org.springframework.web.bind.annotation.*
 class MessageController(
     private val messageService: MessageService
 ) {
-    private fun messageDTOToEntity(messageDTO: MessageDTO) : Message {
-        val message = Message()
-
-        message.chat = messageDTO.chat
-        message.content = messageDTO.content
-        message.sentBy = messageDTO.sentBy
-        message.sendingDate = messageDTO.sendingDate
-
-        return message
-    }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -42,9 +32,7 @@ class MessageController(
     @ResponseStatus(HttpStatus.CREATED)
     fun insertMessage(@RequestBody messageDTO: MessageDTO?) {
         if (messageDTO != null) {
-            val insertMessage = messageDTOToEntity(messageDTO)
-
-            messageService.insertMessage(insertMessage)
+            messageService.insertMessage(messageDTO.toEntity())
         }
         else {
             throw Exception("Empty message body")

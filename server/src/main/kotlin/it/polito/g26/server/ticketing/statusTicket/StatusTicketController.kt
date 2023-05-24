@@ -13,19 +13,6 @@ class StatusTicketController(
     @Autowired
     private val statusTicketService: StatusTicketService
 ) {
-    private fun statusTicketDTOToEntity(statusTicketDTO: StatusTicketDTO) : StatusTicket {
-        val ticketDate = TicketDate()
-
-        ticketDate.id = statusTicketDTO.id?.toEntity()
-        ticketDate.lastModifiedDate = statusTicketDTO.lastModifiedDate
-
-        val statusTicket = StatusTicket()
-
-        statusTicket.ticketDate = ticketDate
-        statusTicket.status = statusTicketDTO.status
-
-        return statusTicket
-    }
 
     @GetMapping("/API/statusTicket/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -43,8 +30,7 @@ class StatusTicketController(
     @ResponseStatus(HttpStatus.CREATED)
     fun openStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {
-            val openedStatusTicket = statusTicketDTOToEntity(statusTicketDTO)
-            statusTicketService.openStatusTicket(openedStatusTicket)
+            statusTicketService.openStatusTicket(statusTicketDTO.toEntity())
         }
         else {
             throw EmptyPostBodyException("Empty Status Ticket body")
@@ -54,9 +40,7 @@ class StatusTicketController(
     @ResponseStatus(HttpStatus.CREATED)
     fun closeStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {
-            val closedStatusTicket = statusTicketDTOToEntity(statusTicketDTO)
-
-            statusTicketService.closeStatusTicket(closedStatusTicket)
+            statusTicketService.closeStatusTicket(statusTicketDTO.toEntity())
         }
         else {
             throw EmptyPostBodyException("Empty Status Ticket body")
@@ -66,9 +50,7 @@ class StatusTicketController(
     @ResponseStatus(HttpStatus.CREATED)
     fun progressStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {
-            val inProgressStatusTicket = statusTicketDTOToEntity(statusTicketDTO)
-
-            statusTicketService.progressStatusTicket(inProgressStatusTicket)
+            statusTicketService.progressStatusTicket(statusTicketDTO.toEntity())
         }
         else {
             throw EmptyPostBodyException("Empty Status Ticket body")
@@ -78,9 +60,7 @@ class StatusTicketController(
     @ResponseStatus(HttpStatus.CREATED)
     fun reopenStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {
-            val reopenedStatusTicket = statusTicketDTOToEntity(statusTicketDTO)
-
-            statusTicketService.reopenStatusTicket(reopenedStatusTicket)
+            statusTicketService.reopenStatusTicket(statusTicketDTO.toEntity())
         }
         else {
             throw EmptyPostBodyException("Empty Status Ticket body")
@@ -90,9 +70,7 @@ class StatusTicketController(
     @ResponseStatus(HttpStatus.CREATED)
     fun resolveStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {
-            val resolvedStatusTicket = statusTicketDTOToEntity(statusTicketDTO)
-
-            statusTicketService.resolveStatusTicket(resolvedStatusTicket)
+            statusTicketService.resolveStatusTicket(statusTicketDTO.toEntity())
         }
         else {
             throw EmptyPostBodyException("Empty Status Ticket body")

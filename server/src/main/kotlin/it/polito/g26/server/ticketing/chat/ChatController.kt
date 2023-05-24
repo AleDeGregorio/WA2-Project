@@ -14,15 +14,6 @@ import java.text.SimpleDateFormat
 class ChatController(
     private val chatService: ChatService
 ) {
-    private fun chatDTOToEntity(chatDTO: ChatDTO) : Chat {
-        val chat = Chat()
-
-        chat.ticket = chatDTO.ticket
-        chat.creationDate = chatDTO.creationDate
-
-        return chat
-    }
-
     @GetMapping("/API/chat/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getChat(@PathVariable id: Long) : ChatDTO? {
@@ -52,9 +43,7 @@ class ChatController(
     @ResponseStatus(HttpStatus.CREATED)
     fun insertChat(@RequestBody chatDTO: ChatDTO?) {
         if (chatDTO != null) {
-            val insertChat = chatDTOToEntity(chatDTO)
-
-            chatService.insertChat(insertChat)
+            chatService.insertChat(chatDTO.toEntity())
         }
         else {
             throw Exception("Empty chat body")

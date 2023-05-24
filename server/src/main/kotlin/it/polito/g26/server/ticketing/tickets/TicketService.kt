@@ -18,9 +18,9 @@ interface TicketService {
 
     fun getTicketByDateOfCreation(dateOfCreation: Date) : List<TicketDTO>?
 
-    fun getStatusTicket(id: Long) : Set<StatusTicketDTO>?
+ //   fun getStatusTicket(id: Long) : Set<StatusTicketDTO>?
 
-    fun getChats(id: Long) : Set<ChatDTO>?
+//    fun getChats(id: Long) : Set<ChatDTO>?
 
     fun insertTicket(ticket: Ticket)
 

@@ -9,17 +9,6 @@ import org.springframework.web.bind.annotation.*
 class ExpertController(
     private val expertService: ExpertService
 ) {
-    private fun expertDTOToEntity(expertDTO: ExpertDTO) : Expert {
-        val expert = Expert(name = expertDTO.name,
-            surname = expertDTO.surname,
-            email = expertDTO.email,
-            fields = expertDTO.fields
-        )
-        if (expertDTO.id != null){
-            expert.id = expertDTO.id
-        }
-        return expert
-    }
 
     @GetMapping("/API/expert/{email}")
     @ResponseStatus(HttpStatus.OK)
@@ -45,8 +34,7 @@ class ExpertController(
         }else if(expertService.getExpert(expertDTO.email)!=null){
             throw EmailAlreadyExistException("${expertDTO.email} already in use!")
         }else{
-            val insertExpert = expertDTOToEntity(expertDTO)
-            expertService.insertExpert(insertExpert)
+            expertService.insertExpert(expertDTO.toEntity())
         }
     }
 
@@ -54,9 +42,7 @@ class ExpertController(
     @ResponseStatus(HttpStatus.ACCEPTED)
     fun updateExpert(@RequestBody expertDTO: ExpertDTO? ) {
         if (expertDTO != null) {
-            val updateExpert = expertDTOToEntity(expertDTO)
-
-            expertService.updateExpert(updateExpert)
+            expertService.updateExpert(expertDTO.toEntity())
         }
         else {
             throw EmptyPostBodyException("Empty Expert body")

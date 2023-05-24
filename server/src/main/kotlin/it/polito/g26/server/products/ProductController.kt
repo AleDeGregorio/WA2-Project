@@ -10,18 +10,6 @@ import java.security.Principal
 class ProductController(
     private val productService: ProductService
 ) {
-
-    private fun productDTOToEntity(deviceDTO: ProductDTO) : Product {
-        val device = Product(deviceDTO.ean)
-
-        device.name = deviceDTO.name
-        device.category = deviceDTO.category
-        device.brand = deviceDTO.brand
-        device.price = deviceDTO.price
-
-        return device
-    }
-
     @GetMapping("/API/products")
     @ResponseStatus(HttpStatus.OK)
     fun getAll() : List<ProductDTO> {
@@ -48,8 +36,7 @@ class ProductController(
             throw DuplicateProductException("${productDTO.ean} already in use!")
         }
         else{
-            val insertProduct = productDTOToEntity(productDTO)
-            productService.insertProduct(insertProduct)
+            productService.insertProduct(productDTO.toEntity())
             }
         }
 
@@ -58,9 +45,7 @@ class ProductController(
     @ResponseStatus(HttpStatus.ACCEPTED)
     fun updateDevice(@RequestBody productDTO: ProductDTO?, @PathVariable ean: Long) {
         if (productDTO != null) {
-            val updatedProduct = productDTOToEntity(productDTO)
-
-            productService.updateProduct(updatedProduct)
+            productService.updateProduct(productDTO.toEntity())
         }
         else {
             throw EmptyPostBodyException("Empty device body")
