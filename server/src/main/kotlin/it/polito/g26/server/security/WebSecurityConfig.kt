@@ -16,6 +16,7 @@ import org.springframework.security.core.session.SessionRegistryImpl
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy
+import javax.ws.rs.POST
 
 @Configuration
 @EnableWebSecurity
@@ -41,9 +42,21 @@ class WebSecurityConfig(
             .requestMatchers(HttpMethod.PUT,"/API/products**").hasAnyRole(ADMIN,MANAGER)
             .requestMatchers(HttpMethod.PATCH,"/API/products**").hasAnyRole(ADMIN,MANAGER)
             .requestMatchers("/API/customer/**").hasAnyRole(ADMIN,MANAGER,EXPERT,CUSTOMER)
-            .requestMatchers("/API/expert/**").hasAnyRole(ADMIN, MANAGER,EXPERT)
+            .requestMatchers(HttpMethod.POST, "/API/customer").permitAll()
+            .requestMatchers(HttpMethod.GET,"/API/expert/**").hasAnyRole(ADMIN, MANAGER,EXPERT)
+            .requestMatchers(HttpMethod.POST,"/API/expert/**").hasAnyRole(ADMIN, MANAGER)
+            .requestMatchers(HttpMethod.PUT,"/API/expert/**").hasAnyRole(ADMIN, MANAGER)
             .requestMatchers("/API/manager/**").hasAnyRole(ADMIN,MANAGER)
-            .requestMatchers("/API/ticket/**").hasAnyRole(ADMIN,MANAGER, EXPERT, CUSTOMER)
+            .requestMatchers("/API/ticket/**").hasAnyRole(ADMIN,MANAGER)
+            //.requestMatchers("/API/ticket/product/**").hasAnyRole(ADMIN, MANAGER, EXPERT)
+            //.requestMatchers("/API/ticket/customer/**").hasAnyRole(ADMIN, MANAGER, EXPERT)
+            //.requestMatchers("/API/ticket/product/**").hasAnyRole(ADMIN, MANAGER, EXPERT)
+            .requestMatchers(HttpMethod.GET,"/API/ticket/").permitAll()
+            .requestMatchers(HttpMethod.POST,"/API/ticket").hasRole(CUSTOMER)
+            .requestMatchers(HttpMethod.PUT,"/API/ticket/{id}/expert").hasAnyRole(ADMIN, MANAGER)
+            .requestMatchers(HttpMethod.PUT,"/API/ticket/{id}/priority").hasAnyRole(ADMIN, MANAGER)
+            .requestMatchers("/API/ticket/status/**").hasAnyRole(ADMIN,MANAGER, EXPERT)
+            .requestMatchers("/API/ticket/{id}/status/**").hasAnyRole(ADMIN,MANAGER, EXPERT)
             .anyRequest().authenticated()
 
         http.oauth2ResourceServer()
