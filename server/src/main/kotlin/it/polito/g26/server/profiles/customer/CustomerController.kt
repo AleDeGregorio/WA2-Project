@@ -40,7 +40,7 @@ class CustomerController(
         }
     }
 
-    @GetMapping("/tickets/{id}")
+    @GetMapping("/{id}/tickets")
     @ResponseStatus(HttpStatus.OK)
     fun getCustomerTickets(@PathVariable id: Long) : Set<TicketDTO>? {
         val tickets = customerService.getTickets(id) ?: throw UserNotFoundException("Customer with id $id not found!")

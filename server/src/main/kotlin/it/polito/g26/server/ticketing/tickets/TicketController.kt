@@ -17,11 +17,12 @@ import org.springframework.web.bind.annotation.*
 import java.text.SimpleDateFormat
 
 @RestController
+@RequestMapping("/ticket")
 class TicketController(
     private val ticketService: TicketService
 ) {
 
-    @GetMapping("/API/tickets")
+    @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     fun getAll() : List<TicketDTO> {
         val ticketL = ticketService.getAll()
@@ -32,31 +33,31 @@ class TicketController(
     }
 }
 
-    @GetMapping("/API/ticket/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getTicket(@PathVariable id: Long) : TicketDTO? {
         return ticketService.getTicket(id) ?: throw TicketNotFoundException("Ticket with id $id not found!")
     }
 
-    @GetMapping("/API/ticket/customer/{customerId}")
+    @GetMapping("/customer/{customerId}")
     @ResponseStatus(HttpStatus.OK)
     fun getTicketByCustomer(@PathVariable customerId: Long) : List<TicketDTO>? {
         return ticketService.getTicketByCustomer(customerId) ?: throw UserNotFoundException("Customer with id $customerId not found!")
     }
 
-    @GetMapping("/API/ticket/expert/{expertId}")
+    @GetMapping("/expert/{expertId}")
     @ResponseStatus(HttpStatus.OK)
     fun getTicketByExpert(@PathVariable expertId: Long) : List<TicketDTO>? {
         return ticketService.getTicketByExpert(expertId) ?: throw UserNotFoundException("Expert with id $expertId not found!")
     }
 
-    @GetMapping("/API/ticket/product/{productId}")
+    @GetMapping("/product/{productId}")
     @ResponseStatus(HttpStatus.OK)
     fun getTicketByProduct(@PathVariable productId: Long) : List<TicketDTO>? {
         return ticketService.getTicketByProduct(productId) ?: throw ProductNotFoundException("Product with ean $productId not found!")
     }
 
-    @GetMapping("/API/ticket/date/{dateOfCreation}")
+    @GetMapping("/date/{dateOfCreation}")
     @ResponseStatus(HttpStatus.OK)
     fun getTicketByDateOfCreation(@PathVariable dateOfCreation: String) : List<TicketDTO>? {
         val formattedDate = SimpleDateFormat("yyyy-MM-dd").parse(dateOfCreation)
@@ -77,7 +78,7 @@ class TicketController(
 
      */
 
-    @PostMapping("/API/ticket")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     fun insertTicket(@RequestBody ticketDTO: TicketDTO?) {
         if (ticketDTO == null) {
@@ -87,7 +88,7 @@ class TicketController(
         }
     }
 
-    @PutMapping("/API/ticket/{id}")
+    @PutMapping("/{id}/priority")
     @ResponseStatus(HttpStatus.ACCEPTED)
     fun setPriorityLevel(@PathVariable id: Long, @RequestParam priorityLevel: Int?) {
         if (ticketService.getTicket(id)==null)
@@ -103,7 +104,7 @@ class TicketController(
         }
     }
 
-    @PutMapping("/API/ticket/expert/{id}")
+    @PutMapping("/{id}/expert")
     @ResponseStatus(HttpStatus.ACCEPTED)
     fun setExpert(@PathVariable id: Long, @RequestParam expertDTO: ExpertDTO?) {
         if (ticketService.getTicket(id)==null)

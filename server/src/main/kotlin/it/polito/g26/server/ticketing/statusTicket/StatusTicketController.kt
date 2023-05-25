@@ -9,24 +9,25 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @RestController
+@RequestMapping("/ticket")
 class StatusTicketController(
     @Autowired
     private val statusTicketService: StatusTicketService
 ) {
 
-    @GetMapping("/API/statusTicket/{id}")
+    @GetMapping("/{id}/status")
     @ResponseStatus(HttpStatus.OK)
     fun getStatusTicket(@PathVariable id: Long) : List<StatusTicketDTO>? {
         return statusTicketService.getStatusTicket(id) ?: throw TicketNotFoundException("Ticket with id $id not found!")
     }
 
-    @GetMapping("/API/statusTicket/latest/{id}")
+    @GetMapping("/{id}/status/latest")
     @ResponseStatus(HttpStatus.OK)
     fun getLatestStatus(@PathVariable id: Long) : StatusTicketDTO? {
         return statusTicketService.getLatestStatus(id) ?: throw TicketNotFoundException("Ticket with id $id not found!")
     }
 
-    @PostMapping("/API/statusTicket/open")
+    @PostMapping("/status/open")
     @ResponseStatus(HttpStatus.CREATED)
     fun openStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {
@@ -36,7 +37,7 @@ class StatusTicketController(
             throw EmptyPostBodyException("Empty Status Ticket body")
         }
     }
-    @PostMapping("/API/statusTicket/close")
+    @PostMapping("/status/close")
     @ResponseStatus(HttpStatus.CREATED)
     fun closeStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {
@@ -46,7 +47,7 @@ class StatusTicketController(
             throw EmptyPostBodyException("Empty Status Ticket body")
         }
     }
-    @PostMapping("/API/statusTicket/progress")
+    @PostMapping("/status/progress")
     @ResponseStatus(HttpStatus.CREATED)
     fun progressStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {
@@ -56,7 +57,7 @@ class StatusTicketController(
             throw EmptyPostBodyException("Empty Status Ticket body")
         }
     }
-    @PostMapping("/API/statusTicket/reopen")
+    @PostMapping("/status/reopen")
     @ResponseStatus(HttpStatus.CREATED)
     fun reopenStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {
@@ -66,7 +67,7 @@ class StatusTicketController(
             throw EmptyPostBodyException("Empty Status Ticket body")
         }
     }
-    @PostMapping("/API/statusTicket/resolve")
+    @PostMapping("/status/resolve")
     @ResponseStatus(HttpStatus.CREATED)
     fun resolveStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {
