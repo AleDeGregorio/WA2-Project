@@ -7,10 +7,11 @@ import org.springframework.web.bind.annotation.*
 import java.security.Principal
 
 @RestController
+@RequestMapping("/product")
 class ProductController(
     private val productService: ProductService
 ) {
-    @GetMapping("/API/products")
+    @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     fun getAll() : List<ProductDTO> {
         val productL = productService.getAll()
@@ -21,13 +22,13 @@ class ProductController(
         }
     }
 
-    @GetMapping("/API/products/{ean}")
+    @GetMapping("/{ean}")
     @ResponseStatus(HttpStatus.OK)
     fun getDevice(@PathVariable ean: Long) : ProductDTO? {
         return productService.getProduct(ean) ?: throw ProductNotFoundException("Product with ean $ean not found!")
     }
 
-    @PostMapping("/API/products/")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     fun insertDevice(@RequestBody productDTO: ProductDTO?) {
         if (productDTO == null) {
@@ -41,7 +42,7 @@ class ProductController(
         }
 
 
-    @PutMapping("/API/products/{ean}")
+    @PutMapping("/{ean}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     fun updateDevice(@RequestBody productDTO: ProductDTO?, @PathVariable ean: Long) {
         if (productDTO != null) {
