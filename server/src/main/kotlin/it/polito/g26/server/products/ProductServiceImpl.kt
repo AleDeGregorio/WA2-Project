@@ -29,7 +29,7 @@ class ProductServiceImpl(
 
     override fun updateProduct(product: Product) {
         if (productRepository.existsById(product.ean)) {
-            val retrievedProduct = productRepository.findById(product.ean!!).get()
+            val retrievedProduct = productRepository.findById(product.ean).get()
 
             retrievedProduct.name = product.name
             retrievedProduct.brand = product.brand
@@ -39,7 +39,7 @@ class ProductServiceImpl(
             productRepository.save(retrievedProduct)
         }
         else {
-            throw ProductNotFoundException("Expert with ean ${product.ean} not found")
+            throw ProductNotFoundException("Product with ean ${product.ean} not found")
         }
     }
 

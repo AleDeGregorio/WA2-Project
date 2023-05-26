@@ -15,7 +15,7 @@ interface StatusTicketRepository : JpaRepository<StatusTicket, TicketDate> {
     @Query("""
         SELECT CASE 
             WHEN EXISTS (
-                SELECT s from StatusTicket s WHERE s.ticketDate.id = :id) 
+                SELECT s from StatusTicket s WHERE s.ticketDate.id.id = :id) 
             OR EXISTS (SELECT t FROM Ticket t WHERE t.id = :id)
             THEN true
             ELSE false 

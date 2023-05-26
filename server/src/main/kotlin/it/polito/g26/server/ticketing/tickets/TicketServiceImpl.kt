@@ -1,9 +1,6 @@
 package it.polito.g26.server.ticketing.tickets
 
-import it.polito.g26.server.MissingProductException
-import it.polito.g26.server.MissingUserException
-import it.polito.g26.server.TicketAlreadyExistException
-import it.polito.g26.server.TicketNotFoundException
+import it.polito.g26.server.*
 import it.polito.g26.server.ticketing.chat.ChatDTO
 import it.polito.g26.server.ticketing.chat.toDTO
 import it.polito.g26.server.profiles.expert.Expert
@@ -28,7 +25,11 @@ class TicketServiceImpl(
     }
 
     override fun getTicketByCustomer(customerId: Long): List<TicketDTO>? {
-        return ticketRepository.findByCustomer(customerId)?.map { it.toDTO() }
+        val list = ticketRepository.findByCustomer(customerId)?.map { it.toDTO() }
+        if (list?.isEmpty()!!) {
+            throw UserNotFoundException("Customer with id {$customerId} not found.")
+        }
+        return list
     }
 
     override fun getTicketByExpert(expertId: Long): List<TicketDTO>? {
@@ -71,8 +72,6 @@ class TicketServiceImpl(
         }
         else if(ticket.customer == null){
             throw MissingUserException("No Customer was provided!")
-        }else if(ticket.expert == null){
-            throw MissingUserException("No Expert was provided!")
         }else if(ticket.product == null){
             throw MissingProductException("No Product was provided!")
         }else{

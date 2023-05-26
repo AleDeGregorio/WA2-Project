@@ -7,21 +7,21 @@ import it.polito.g26.server.ticketing.utility.Status
 import java.util.Date
 
 data class StatusTicketDTO(
-    val id: TicketDTO?,
-    val lastModifiedDate: Date,
+    val tId: TicketDTO?,
+    val lastModifiedDate: Date?,
     val status: Status?
 )
 
 fun StatusTicket.toDTO() : StatusTicketDTO {
     return StatusTicketDTO(
-        id = this.ticketDate?.id?.toDTO(),
+        tId = this.ticketDate?.id?.toDTO(),
         lastModifiedDate = this.ticketDate!!.lastModifiedDate!!,
         status = this.status!!
     )
 }
 
 fun StatusTicketDTO.toEntity() : StatusTicket {
-    val td = TicketDate(id = this.id?.toEntity(),
+    val td = TicketDate(id = this.tId?.toEntity(),
     lastModifiedDate = this.lastModifiedDate)
     return StatusTicket(
         td,

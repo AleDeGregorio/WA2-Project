@@ -60,8 +60,8 @@ class StatusTicketServiceImpl(
                     statusTicket.status = Status.OPEN
                     statusTicket.ticketDate?.lastModifiedDate = Instant.now() as Date
                     statusTicketRepository.save(statusTicket)
-                }
-                throw TicketNotFoundException("Ticket with id ${statusTicket.ticketDate?.id} not fount!")
+                }else{
+                throw TicketNotFoundException("Ticket with id ${statusTicket.ticketDate?.id} not fount!")}
             }
         }
     }
@@ -132,8 +132,8 @@ class StatusTicketServiceImpl(
             }else {
                 throw StatusTicketAlreadyClosedException("Status ticket with id ${statusTicket.ticketDate} not opened")
             }
-        }
-        throw TicketNotFoundException("Ticket with id ${statusTicket.ticketDate?.id} not fount!")
+        }else{
+        throw TicketNotFoundException("Ticket with id ${statusTicket.ticketDate?.id} not fount!")}
     }
 
     override fun progressStatusTicket(statusTicket: StatusTicket) {

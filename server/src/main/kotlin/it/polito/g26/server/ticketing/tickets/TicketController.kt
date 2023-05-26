@@ -106,7 +106,7 @@ class TicketController(
 
     @PutMapping("/{id}/expert")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    fun setExpert(@PathVariable id: Long, @RequestParam expertDTO: ExpertDTO?) {
+    fun setExpert(@PathVariable id: Long, @RequestBody expertDTO: ExpertDTO?) {
         if (ticketService.getTicket(id)==null)
         {
             throw TicketNotFoundException("Ticket with id $id not found!")
