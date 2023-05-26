@@ -65,7 +65,7 @@ class WebSecurityConfig(
             .requestMatchers(HttpMethod.GET,"/ticket/status**").hasAnyRole(ADMIN,MANAGER, EXPERT, CUSTOMER)
             .requestMatchers("/attachment**").hasAnyRole(ADMIN,MANAGER,EXPERT,CUSTOMER)
             .requestMatchers("/chat**").hasAnyRole(ADMIN,MANAGER,EXPERT,CUSTOMER)
-
+            .anyRequest().authenticated()
 
 
 
