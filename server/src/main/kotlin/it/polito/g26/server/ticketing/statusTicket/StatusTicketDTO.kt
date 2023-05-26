@@ -12,16 +12,21 @@ data class StatusTicketDTO(
     val status: Status?
 )
 
+data class TicketDateDTO(
+    val id: Long?,
+    val lastModifiedDate: Date?
+)
+
 fun StatusTicket.toDTO() : StatusTicketDTO {
     return StatusTicketDTO(
-        tId = this.ticketDate?.id?.toDTO(),
+        tId = this.ticketDate?.ticket?.toDTO(),
         lastModifiedDate = this.ticketDate!!.lastModifiedDate!!,
         status = this.status!!
     )
 }
 
 fun StatusTicketDTO.toEntity() : StatusTicket {
-    val td = TicketDate(id = this.tId?.toEntity(),
+    val td = TicketDate(ticket = this.tId?.toEntity(),
     lastModifiedDate = this.lastModifiedDate)
     return StatusTicket(
         td,

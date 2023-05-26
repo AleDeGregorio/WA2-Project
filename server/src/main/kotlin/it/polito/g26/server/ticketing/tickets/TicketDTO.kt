@@ -14,6 +14,9 @@ import it.polito.g26.server.profiles.expert.ExpertDTO
 import it.polito.g26.server.profiles.expert.toDTO
 import it.polito.g26.server.profiles.expert.toEntity
 import it.polito.g26.server.ticketing.statusTicket.StatusTicket
+import it.polito.g26.server.ticketing.statusTicket.TicketDate
+import it.polito.g26.server.ticketing.utility.Status
+import java.time.Instant
 import java.util.Date
 
 data class TicketDTO(
@@ -38,7 +41,8 @@ fun TicketDTO.toEntity(): Ticket {
         issueType = issueType,
         description = description,
         priorityLevel = priorityLevel,
-        dateOfCreation = dateOfCreation)
-    ticket.id = id;
+        dateOfCreation = dateOfCreation
+    )
+    ticket.id = id
     return ticket
 }

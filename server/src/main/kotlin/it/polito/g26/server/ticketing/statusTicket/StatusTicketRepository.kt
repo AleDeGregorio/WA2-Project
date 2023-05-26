@@ -8,31 +8,24 @@ import java.util.*
 
 @Repository
 interface StatusTicketRepository : JpaRepository<StatusTicket, TicketDate> {
-    @Query("SELECT CASE WHEN COUNT(s) > 0 THEN true ELSE false END FROM StatusTicket s WHERE s.ticketDate.id.id = :id")
+    @Query("SELECT CASE WHEN COUNT(s) > 0 THEN true ELSE false END FROM StatusTicket s WHERE s.ticketDate.ticket.id = :id")
     fun existsByTicketId(@Param("id") id: Long) : Boolean
 
-
-    @Query("""
-        SELECT CASE 
-            WHEN EXISTS (
-                SELECT s from StatusTicket s WHERE s.ticketDate.id.id = :id) 
-            OR EXISTS (SELECT t FROM Ticket t WHERE t.id = :id)
-            THEN true
-            ELSE false 
-        END
-        FROM StatusTicket s, Ticket t 
-    """)
+    @Query("""SELECT CASE
+        WHEN (SELECT COUNT(s) FROM StatusTicket s WHERE s.ticketDate.ticket.id = :id) > 0
+        OR (SELECT COUNT(t) FROM Ticket t WHERE t.id = :id) > 0
+        THEN true ELSE false END FROM Ticket""")
     fun existsByTicket(@Param("id") id: Long): Boolean
-    @Query("SELECT s FROM StatusTicket s WHERE s.ticketDate.id.id = :id")
+    @Query("SELECT s FROM StatusTicket s WHERE s.ticketDate.ticket.id = :id")
     fun findByTicketId(@Param("id") id: Long) : List<StatusTicket>?
 
     @Query("""
         SELECT s FROM StatusTicket s
-        WHERE s.ticketDate.id.id = :id
+        WHERE s.ticketDate.ticket.id = :id
         AND s.ticketDate.lastModifiedDate = (
             SELECT MAX(s2.ticketDate.lastModifiedDate)
             FROM StatusTicket s2
-            WHERE s2.ticketDate.id.id = :id
+            WHERE s2.ticketDate.ticket.id = :id
         )
     """)
     fun getLatestStatus(@Param("id") id: Long) : StatusTicket?

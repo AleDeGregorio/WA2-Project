@@ -22,7 +22,7 @@ data class Ticket(
     var product: Product? = null,
 
     @OneToMany
-    var status: MutableSet<StatusTicket> = mutableSetOf(),
+    var status: MutableSet<StatusTicket>? = mutableSetOf(),
     @OneToMany(mappedBy = "ticket")
     var chats: MutableSet<Chat> = mutableSetOf(),
 

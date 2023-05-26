@@ -17,7 +17,9 @@ class StatusTicketServiceImpl(
 
 
     override fun getStatusTicket(id: Long): List<StatusTicketDTO>? {
-        if(statusTicketRepository.existsByTicket(id)){
+        val q = statusTicketRepository?.existsByTicket(id)
+        val q2 = q?:false
+        if( q2 ){
             if (statusTicketRepository.existsByTicketId(id)) {
                 return statusTicketRepository.findByTicketId(id)?.map { it.toDTO() }
             } else {
@@ -44,7 +46,7 @@ class StatusTicketServiceImpl(
         if (statusTicket.ticketDate != null && statusTicketRepository.existsById(statusTicket.ticketDate!!)) {
             throw StatusTicketAlreadyInsertedException("Status Ticket with id ${statusTicket.ticketDate} already exists")
         } else {
-            val ticket = statusTicket.ticketDate?.id!!
+            val ticket = statusTicket.ticketDate?.ticket!!
             if (statusTicketRepository.existsByTicket(ticket.id!!)) {
                 if (statusTicketRepository.existsByTicketId(ticket.id!!)) {
                     val status = getLatestStatus(ticket.id!!)?.status
@@ -60,8 +62,13 @@ class StatusTicketServiceImpl(
                     statusTicket.status = Status.OPEN
                     statusTicket.ticketDate?.lastModifiedDate = Instant.now() as Date
                     statusTicketRepository.save(statusTicket)
-                }else{
-                throw TicketNotFoundException("Ticket with id ${statusTicket.ticketDate?.id} not fount!")}
+                }else {
+                    statusTicket.status = Status.OPEN
+                    statusTicket.ticketDate?.lastModifiedDate = SimpleDateFormat("YYYY-MM-DD").parse(Instant.now().toString())
+                    statusTicketRepository.save(statusTicket)
+                }
+            }else{
+                throw TicketNotFoundException("Ticket with id ${statusTicket.ticketDate?.ticket?.id} not found!")
             }
         }
     }
@@ -70,7 +77,7 @@ class StatusTicketServiceImpl(
         if (statusTicket.ticketDate != null && statusTicketRepository.existsById(statusTicket.ticketDate!!)) {
             throw StatusTicketAlreadyInsertedException("Status Ticket with id ${statusTicket.ticketDate} already exists")
         }
-        val ticket = statusTicket.ticketDate?.id!!
+        val ticket = statusTicket.ticketDate?.ticket!!
         if (statusTicketRepository.existsByTicket(ticket.id!!)) {
             if (statusTicketRepository.existsByTicketId(ticket.id!!)) {
                 val status = getLatestStatus(ticket.id!!)?.status
@@ -84,7 +91,7 @@ class StatusTicketServiceImpl(
                 throw StatusTicketAlreadyClosedException("Status ticket with id ${statusTicket.ticketDate} not opened")
             }
         }else {
-            throw TicketNotFoundException("Ticket with id ${statusTicket.ticketDate?.id} not fount!")
+            throw TicketNotFoundException("Ticket with id ${statusTicket.ticketDate?.ticket?.id} not found!")
         }
     }
 
@@ -92,7 +99,7 @@ class StatusTicketServiceImpl(
         if (statusTicket.ticketDate != null && statusTicketRepository.existsById(statusTicket.ticketDate!!)) {
             throw StatusTicketAlreadyInsertedException("Status Ticket with id ${statusTicket.ticketDate} already exists")
         }
-        val ticket = statusTicket.ticketDate?.id!!
+        val ticket = statusTicket.ticketDate?.ticket!!
         if (statusTicketRepository.existsByTicket(ticket.id!!)) {
             if (statusTicketRepository.existsByTicketId(ticket.id!!)) {
                 val status = getLatestStatus(ticket.id!!)?.status
@@ -109,7 +116,7 @@ class StatusTicketServiceImpl(
                 throw StatusTicketAlreadyClosedException("Status ticket with id ${statusTicket.ticketDate} not opened")
             }
         }else {
-            throw TicketNotFoundException("Ticket with id ${statusTicket.ticketDate?.id} not fount!")
+            throw TicketNotFoundException("Ticket with id ${statusTicket.ticketDate?.ticket?.id} not found!")
         }
     }
 
@@ -117,7 +124,7 @@ class StatusTicketServiceImpl(
         if (statusTicket.ticketDate != null && statusTicketRepository.existsById(statusTicket.ticketDate!!)) {
             throw StatusTicketAlreadyInsertedException("Status Ticket with id ${statusTicket.ticketDate} already exists")
         }
-        val ticket = statusTicket.ticketDate?.id!!
+        val ticket = statusTicket.ticketDate?.ticket!!
         if (statusTicketRepository.existsByTicket(ticket.id!!)) {
             if (statusTicketRepository.existsByTicketId(ticket.id!!)) {
                 val status = getLatestStatus(ticket.id!!)?.status
@@ -133,14 +140,14 @@ class StatusTicketServiceImpl(
                 throw StatusTicketAlreadyClosedException("Status ticket with id ${statusTicket.ticketDate} not opened")
             }
         }else{
-        throw TicketNotFoundException("Ticket with id ${statusTicket.ticketDate?.id} not fount!")}
+        throw TicketNotFoundException("Ticket with id ${statusTicket.ticketDate?.ticket?.id} not found!")}
     }
 
     override fun progressStatusTicket(statusTicket: StatusTicket) {
         if (statusTicket.ticketDate != null && statusTicketRepository.existsById(statusTicket.ticketDate!!)) {
             throw StatusTicketAlreadyInsertedException("Status Ticket with id ${statusTicket.ticketDate} already exists")
         }
-        val ticket = statusTicket.ticketDate?.id!!
+        val ticket = statusTicket.ticketDate?.ticket!!
         if (statusTicketRepository.existsByTicket(ticket.id!!)) {
             if (statusTicketRepository.existsByTicketId(ticket.id!!)) {
                 val status = getLatestStatus(ticket.id!!)?.status
@@ -159,7 +166,7 @@ class StatusTicketServiceImpl(
                 throw StatusTicketAlreadyClosedException("Status ticket with id ${statusTicket.ticketDate} not opened")
             }
         }else {
-            throw TicketNotFoundException("Ticket with id ${statusTicket.ticketDate?.id} not fount!")
+            throw TicketNotFoundException("Ticket with id ${statusTicket.ticketDate?.ticket?.id} not found!")
         }
     }
 
