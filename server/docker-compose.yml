@@ -51,9 +51,12 @@ services:
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
-    command: start-dev
+    command:
+    - start-dev
+    - --import-realm
     volumes:
       - keycloak_data:/opt/jboss/keycloak/standalone/data
+      - ./keycloak_realm:/opt/keycloak/data/import
 
 volumes:
   keycloak_data:
