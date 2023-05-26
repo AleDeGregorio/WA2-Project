@@ -1,5 +1,6 @@
 package it.polito.g26.server.ticketing.attachment
 
+import it.polito.g26.server.AttachmentAlreadyInsertedException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -17,7 +18,7 @@ class AttachmentServiceImpl(
 
     override fun insertAttachment(attachment: Attachment) {
         if (attachment.id != null && attachmentRepository.existsById(attachment.id!!)) {
-            throw Exception("Attachment already exists")
+            throw AttachmentAlreadyInsertedException("Attachment with id ${attachment.id} already exists")
         }
         else {
             attachmentRepository.save(attachment)

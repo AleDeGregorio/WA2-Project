@@ -1,5 +1,7 @@
 package it.polito.g26.server.ticketing.messages
 
+import it.polito.g26.server.MessageAlreadySentException
+import it.polito.g26.server.MessageNotFoundException
 import it.polito.g26.server.ticketing.attachment.AttachmentDTO
 import it.polito.g26.server.ticketing.attachment.toDTO
 import org.springframework.data.repository.findByIdOrNull
@@ -23,16 +25,18 @@ class MessageServiceImpl(
             return attachments.map { it.toDTO() }.toSet()
         }
         else {
-            throw Exception("Message not found")
+            throw MessageNotFoundException("Message with id $id not found!")
         }
     }
 
     override fun insertMessage(message: Message) {
         if (message.id != null && messageRepository.existsById(message.id!!)) {
-            throw Exception("Message already inserted")
+            throw MessageAlreadySentException("Message with id ${message.id} already inserted!")
         }
         else {
             messageRepository.save(message)
         }
     }
 }
+
+
