@@ -49,6 +49,13 @@ dependencies {
 	implementation("org.keycloak:keycloak-admin-client:15.0.2")
 	implementation(platform("org.keycloak.bom:keycloak-adapter-bom:15.0.2"))
 
+	implementation ("org.springframework.boot:spring-boot-starter-aop")
+	implementation ("org.springframework.boot:spring-boot-starter-actuator")
+	implementation ("io.micrometer:micrometer-registry-prometheus")
+	implementation ("io.micrometer:micrometer-tracing-bridge-brave")
+	implementation ("io.zipkin.reporter2:zipkin-reporter-brave:2.16.3")
+	implementation ("com.github.loki4j:loki-logback-appender:1.4.0-rc2")
+
 	implementation("com.nimbusds:nimbus-jose-jwt:9.11")
 	implementation("com.auth0:java-jwt:3.18.2")
 
