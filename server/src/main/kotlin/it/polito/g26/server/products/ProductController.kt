@@ -1,16 +1,10 @@
 package it.polito.g26.server.products
 
-import it.polito.g26.server.*
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.ResponseStatus
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
+@RequestMapping("/product")
 class ProductController(
     private val productService: ProductService
 ) {
@@ -26,39 +20,32 @@ class ProductController(
         return device
     }
 
-    @GetMapping("/API/products/")
+    @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     fun getAll() : List<ProductDTO> {
-        val productL = productService.getAll()
-        if(productL.isNotEmpty())
-            return productL
-        else{
-            throw ProductListIsEmptyException("Product List is Empty")
-        }
+        return productService.getAll()
     }
 
-    @GetMapping("/API/products/{ean}")
+    @GetMapping("/{ean}")
     @ResponseStatus(HttpStatus.OK)
     fun getDevice(@PathVariable ean: Long) : ProductDTO? {
-        return productService.getProduct(ean) ?: throw ProductNotFoundException("Product with ean $ean not found!")
+        return productService.getProduct(ean) ?: throw Exception("Product not found")
     }
 
-    @PostMapping("/API/products/")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     fun insertDevice(@RequestBody productDTO: ProductDTO?) {
-        if (productDTO == null) {
-            throw EmptyPostBodyException("Empty device body")
-        } else if(productService.getProduct(productDTO.ean)!=null) {
-            throw DuplicateProductException("${productDTO.ean} already in use!")
-        }
-        else{
+        if (productDTO != null) {
             val insertProduct = productDTOToEntity(productDTO)
+
             productService.insertProduct(insertProduct)
-            }
         }
+        else {
+            throw Exception("Empty device body")
+        }
+    }
 
-
-    @PutMapping("/API/products/{ean}")
+    @PutMapping("/{ean}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     fun updateDevice(@RequestBody productDTO: ProductDTO?, @PathVariable ean: Long) {
         if (productDTO != null) {
@@ -67,7 +54,7 @@ class ProductController(
             productService.updateProduct(updatedProduct)
         }
         else {
-            throw EmptyPostBodyException("Empty device body")
+            throw Exception("Empty device body")
         }
     }
 }

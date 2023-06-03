@@ -38,6 +38,23 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+
+	implementation("org.springframework.boot:spring-boot-configuration-processor")
+	implementation("com.google.code.gson:gson:2.8.9")
+	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("org.springframework.security:spring-security-oauth2-jose")
+
+	implementation("io.jsonwebtoken:jjwt:0.2")
+
+	implementation("org.keycloak:keycloak-spring-boot-starter:15.0.2")
+	implementation("org.keycloak:keycloak-admin-client:15.0.2")
+	implementation(platform("org.keycloak.bom:keycloak-adapter-bom:15.0.2"))
+
+	implementation("com.nimbusds:nimbus-jose-jwt:9.11")
+	implementation("com.auth0:java-jwt:3.18.2")
+
 	runtimeOnly("org.postgresql:postgresql")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation ("org.testcontainers:junit-jupiter:1.16.3")

@@ -1,22 +1,17 @@
 package it.polito.g26.server.ticketing.statusTicket
 
-import it.polito.g26.server.EmptyPostBodyException
-import it.polito.g26.server.TicketNotFoundException
-import it.polito.g26.server.products.ProductDTO
-import it.polito.g26.server.ticketing.tickets.toEntity
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @RestController
+@RequestMapping("/status")
 class StatusTicketController(
-    @Autowired
     private val statusTicketService: StatusTicketService
 ) {
     private fun statusTicketDTOToEntity(statusTicketDTO: StatusTicketDTO) : StatusTicket {
         val ticketDate = TicketDate()
 
-        ticketDate.id = statusTicketDTO.id?.toEntity()
+        ticketDate.id?.id = statusTicketDTO.id
         ticketDate.lastModifiedDate = statusTicketDTO.lastModifiedDate
 
         val statusTicket = StatusTicket()
@@ -27,76 +22,28 @@ class StatusTicketController(
         return statusTicket
     }
 
-    @GetMapping("/API/statusTicket/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getStatusTicket(@PathVariable id: Long) : List<StatusTicketDTO>? {
-        return statusTicketService.getStatusTicket(id) ?: throw TicketNotFoundException("Ticket with id $id not found!")
+        return statusTicketService.getStatusTicket(id) ?: throw Exception("Ticket not found")
     }
 
-    @GetMapping("/API/statusTicket/latest/{id}")
+    @GetMapping("/latest/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getLatestStatus(@PathVariable id: Long) : StatusTicketDTO? {
-        return statusTicketService.getLatestStatus(id) ?: throw TicketNotFoundException("Ticket with id $id not found!")
+        return statusTicketService.getLatestStatus(id) ?: throw Exception("Ticket not found")
     }
 
-    @PostMapping("/API/statusTicket/open")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    fun openStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
+    fun insertStatusTicket(statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {
-            val openedStatusTicket = statusTicketDTOToEntity(statusTicketDTO)
-            statusTicketService.openStatusTicket(openedStatusTicket)
+            val insertStatusTicket = statusTicketDTOToEntity(statusTicketDTO)
+
+            statusTicketService.insertStatusTicket(insertStatusTicket)
         }
         else {
-            throw EmptyPostBodyException("Empty Status Ticket body")
+            throw Exception("Empty status ticket body")
         }
     }
-    @PostMapping("/API/statusTicket/close")
-    @ResponseStatus(HttpStatus.CREATED)
-    fun closeStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
-        if (statusTicketDTO != null) {
-            val closedStatusTicket = statusTicketDTOToEntity(statusTicketDTO)
-
-            statusTicketService.closeStatusTicket(closedStatusTicket)
-        }
-        else {
-            throw EmptyPostBodyException("Empty Status Ticket body")
-        }
-    }
-    @PostMapping("/API/statusTicket/progress")
-    @ResponseStatus(HttpStatus.CREATED)
-    fun progressStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
-        if (statusTicketDTO != null) {
-            val inProgressStatusTicket = statusTicketDTOToEntity(statusTicketDTO)
-
-            statusTicketService.progressStatusTicket(inProgressStatusTicket)
-        }
-        else {
-            throw EmptyPostBodyException("Empty Status Ticket body")
-        }
-    }
-    @PostMapping("/API/statusTicket/reopen")
-    @ResponseStatus(HttpStatus.CREATED)
-    fun reopenStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
-        if (statusTicketDTO != null) {
-            val reopenedStatusTicket = statusTicketDTOToEntity(statusTicketDTO)
-
-            statusTicketService.reopenStatusTicket(reopenedStatusTicket)
-        }
-        else {
-            throw EmptyPostBodyException("Empty Status Ticket body")
-        }
-    }
-    @PostMapping("/API/statusTicket/resolve")
-    @ResponseStatus(HttpStatus.CREATED)
-    fun resolveStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
-        if (statusTicketDTO != null) {
-            val resolvedStatusTicket = statusTicketDTOToEntity(statusTicketDTO)
-
-            statusTicketService.resolveStatusTicket(resolvedStatusTicket)
-        }
-        else {
-            throw EmptyPostBodyException("Empty Status Ticket body")
-        }
-    }
-
 }
