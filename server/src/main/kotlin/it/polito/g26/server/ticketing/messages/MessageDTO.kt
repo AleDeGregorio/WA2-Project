@@ -8,12 +8,16 @@ import java.util.*
 data class MessageDTO(
     val id: Long?,
     val chat: Chat?,
-    //val attachments: MutableSet<Attachment>,
+    val attachments: MutableSet<Attachment>,
     val sentBy: Role?,
     val content: String,
     val sendingDate: Date?
 )
 
 fun Message.toDTO() : MessageDTO {
-    return MessageDTO(id, chat, sentBy, content, sendingDate)
+    return MessageDTO(id, chat, attachments, sentBy, content, sendingDate)
+}
+
+fun MessageDTO.toEntity() : Message {
+    return Message(id, chat, attachments, sentBy, content, sendingDate)
 }

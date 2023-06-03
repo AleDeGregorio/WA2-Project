@@ -13,3 +13,7 @@ data class AttachmentDTO (
 fun Attachment.toDTO() : AttachmentDTO {
     return AttachmentDTO(id, message, name, content, size)
 }
+
+fun AttachmentDTO.toEntity() : Attachment {
+    return Attachment(id, message, name, content, size)
+}

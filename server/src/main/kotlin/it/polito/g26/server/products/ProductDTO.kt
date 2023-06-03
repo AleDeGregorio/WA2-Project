@@ -7,9 +7,8 @@ data class ProductDTO(
     val name:String,
     val brand:String,
     val category: String,
-    val price: Double,
-    //val tickets: MutableSet<TicketDTO>
-    )
+    val price: Double
+)
 
 fun Product.toDTO(): ProductDTO{
     return ProductDTO(ean, name, brand, category, price)

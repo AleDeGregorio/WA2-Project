@@ -10,15 +10,6 @@ import org.springframework.web.bind.annotation.*
 class CustomerController(
     private val customerService: CustomerService
 ) {
-    private fun customerDTOToEntity(customerDTO: CustomerDTO, email: String?) : Customer {
-        val customer = Customer(name = customerDTO.name!!, surname = customerDTO.surname!!)
-
-        customer.email = email ?: customerDTO.email
-        customer.city = customerDTO.city
-        customer.address = customerDTO.address
-
-        return customer
-    }
 
     @GetMapping("/{email}")
     @ResponseStatus(HttpStatus.OK)
@@ -34,8 +25,7 @@ class CustomerController(
         }else if(customerService.getCustomer(customerDTO.email)!=null){
             throw EmailAlreadyExistException("${customerDTO.email} already in use!")
         }else{
-            val insertCustomer = customerDTOToEntity(customerDTO, null)
-            customerService.insertCustomer(insertCustomer)
+            customerService.insertCustomer(customerDTO.toEntity())
         }
     }
 
@@ -43,15 +33,14 @@ class CustomerController(
     @ResponseStatus(HttpStatus.ACCEPTED)
     fun updateCustomer(@RequestBody customerDTO: CustomerDTO?, @PathVariable email: String) {
         if (customerDTO != null) {
-            val updateCustomer = customerDTOToEntity(customerDTO, email)
-            customerService.updateCustomer(updateCustomer)
+            customerService.updateCustomer(customerDTO.toEntity())
         }
         else {
             throw EmptyPostBodyException("Empty Costumer body")
         }
     }
 
-    @GetMapping("/tickets/{id}")
+    @GetMapping("/{id}/tickets")
     @ResponseStatus(HttpStatus.OK)
     fun getCustomerTickets(@PathVariable id: Long) : Set<TicketDTO>? {
         val tickets = customerService.getTickets(id) ?: throw UserNotFoundException("Customer with id $id not found!")

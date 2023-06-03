@@ -14,6 +14,9 @@ import it.polito.g26.server.profiles.expert.ExpertDTO
 import it.polito.g26.server.profiles.expert.toDTO
 import it.polito.g26.server.profiles.expert.toEntity
 import it.polito.g26.server.ticketing.statusTicket.StatusTicket
+import it.polito.g26.server.ticketing.statusTicket.TicketDate
+import it.polito.g26.server.ticketing.utility.Status
+import java.time.Instant
 import java.util.Date
 
 data class TicketDTO(
@@ -21,8 +24,6 @@ data class TicketDTO(
     val customer: CustomerDTO?,
     val expert: ExpertDTO?,
     val product: ProductDTO?,
-    val status: MutableSet<StatusTicket>,
-    //val chats: MutableSet<Chat>,
     val issueType: String,
     val description: String,
     val priorityLevel: Int?,
@@ -30,12 +31,18 @@ data class TicketDTO(
 )
 
 fun Ticket.toDTO() : TicketDTO {
-    return TicketDTO(id, customer?.toDTO(), expert?.toDTO(), product?.toDTO(), status, issueType, description, priorityLevel, dateOfCreation)
+    return TicketDTO(id, customer?.toDTO(), expert?.toDTO(), product?.toDTO(), issueType, description, priorityLevel, dateOfCreation)
 }
 
 fun TicketDTO.toEntity(): Ticket {
-    val ticket = Ticket( customer =  customer?.toEntity(), expert = expert?.toEntity(), product = product?.toEntity(),
-    status = status, issueType = issueType, description = description, priorityLevel = priorityLevel, dateOfCreation = dateOfCreation)
-    ticket.id = id;
+    val ticket = Ticket(customer =  customer?.toEntity(),
+        expert = expert?.toEntity(),
+        product = product?.toEntity(),
+        issueType = issueType,
+        description = description,
+        priorityLevel = priorityLevel,
+        dateOfCreation = dateOfCreation
+    )
+    ticket.id = id
     return ticket
 }

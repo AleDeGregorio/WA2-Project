@@ -4,7 +4,7 @@ plugins {
 	id("org.springframework.boot") version "3.0.5"
 	id("io.spring.dependency-management") version "1.1.0"
 	id ("java")
-	id ("com.google.cloud.tools.jib") version "3.3.1"
+	id ("com.google.cloud.tools.jib") version "3.2.0"
 	kotlin("jvm") version "1.7.22"
 	kotlin("plugin.spring") version "1.7.22"
 	kotlin("plugin.jpa") version "1.7.22"
@@ -13,9 +13,6 @@ plugins {
 jib {
 	to {
 		image = "gcr.io/wa2-g26-ticketing/wa2-g26-ticketing"
-	}
-	container {
-		ports = listOf("8080")
 	}
 }
 

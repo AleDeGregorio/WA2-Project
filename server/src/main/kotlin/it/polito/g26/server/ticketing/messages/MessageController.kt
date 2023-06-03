@@ -9,40 +9,29 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/message")
+@RequestMapping("/ticket/chat")
 class MessageController(
     private val messageService: MessageService
 ) {
-    private fun messageDTOToEntity(messageDTO: MessageDTO): Message {
-        val message = Message()
-
-        message.chat = messageDTO.chat
-        message.content = messageDTO.content
-        message.sentBy = messageDTO.sentBy
-        message.sendingDate = messageDTO.sendingDate
-
-        return message
-    }
-
-    @GetMapping("/{id}")
+    @GetMapping("/message/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getMessage(@PathVariable id: Long): MessageDTO? {
         return messageService.getMessage(id) ?: throw MessageNotFoundException("Message with id $id not found!")
     }
 
-    @GetMapping("/chat/{chatId}")
+    @GetMapping("/{chatId}/message")
     @ResponseStatus(HttpStatus.OK)
     fun getMessageByChat(@PathVariable chatId: Long): List<MessageDTO>? {
         return messageService.getMessageByChat(chatId) ?: throw ChatNotFoundException("Chat with id $chatId not found!")
     }
 
-    @GetMapping("/attachments/{id}")
+    @GetMapping("/message/attachments/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getMessageAttachments(@PathVariable id: Long): Set<AttachmentDTO> {
         return messageService.getAttachments(id) ?: throw MessageNotFoundException("Message with id $id not found!")
     }
 
-    @PostMapping("")
+    @PostMapping("/message")
     @ResponseStatus(HttpStatus.CREATED)
     fun insertMessage(@RequestBody messageDTO: MessageDTO?) {
         if (messageDTO == null) {
@@ -50,8 +39,7 @@ class MessageController(
         } else if (messageService.getMessage(messageDTO.id!!) != null) {
             throw MessageAlreadySentException("${messageDTO.id} already in use!")
         } else {
-            val insertMessage = messageDTOToEntity(messageDTO)
-            messageService.insertMessage(insertMessage)
+            messageService.insertMessage(messageDTO.toEntity())
         }
     }
 }

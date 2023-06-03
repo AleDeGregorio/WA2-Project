@@ -1,5 +1,6 @@
 package it.polito.g26.server.profiles.expert
 
+import it.polito.g26.server.*
 import it.polito.g26.server.ticketing.tickets.TicketDTO
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -9,59 +10,55 @@ import org.springframework.web.bind.annotation.*
 class ExpertController(
     private val expertService: ExpertService
 ) {
-    private fun expertDTOToEntity(expertDTO: ExpertDTO, id: Long?) : Expert {
-        val expert = Expert(name = expertDTO.name!!, surname = expertDTO.surname!!, email = expertDTO.email!!)
-
-        if (id != null) {
-            expert.id = id
-        }
-
-        expert.fields = expertDTO.fields
-
-        return expert
-    }
 
     @GetMapping("/{email}")
     @ResponseStatus(HttpStatus.OK)
     fun getExpert(@PathVariable email: String) : ExpertDTO? {
-        return expertService.getExpert(email) ?: throw Exception("Expert not found")
+        return expertService.getExpert(email) ?: throw EmailNotFoundException("Expert with email $email not found!")
     }
 
     @GetMapping("/field/{field}")
     @ResponseStatus(HttpStatus.OK)
-    fun getExpertsByField(@PathVariable field: String) : List<ExpertDTO>? {
-        return expertService.getExpertsByField(field) ?: throw Exception("No expert found")
+    fun getExpertsByField(@PathVariable field: String) : List<ExpertDTO> {
+        val experts = expertService.getExpertsByField(field)
+        if (experts.isEmpty()) {
+            throw ExpertNotFoundException("No expert found for field $field")
+        }
+        return experts
     }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     fun insertExpert(@RequestBody expertDTO: ExpertDTO?) {
-        if (expertDTO != null) {
-            val insertExpert = expertDTOToEntity(expertDTO, null)
-
-            expertService.insertExpert(insertExpert)
-        }
-        else {
-            throw Exception("Empty expert body")
+        if (expertDTO == null) {
+            throw EmptyPostBodyException("Empty Expert body")
+        }else if(expertService.getExpert(expertDTO.email)!=null){
+            throw EmailAlreadyExistException("${expertDTO.email} already in use!")
+        }else{
+            expertService.insertExpert(expertDTO.toEntity())
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{email}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    fun updateExpert(@RequestBody expertDTO: ExpertDTO?, @PathVariable id: Long) {
+    fun updateExpert(@RequestBody expertDTO: ExpertDTO? ) {
         if (expertDTO != null) {
-            val updateExpert = expertDTOToEntity(expertDTO, id)
-
-            expertService.updateExpert(updateExpert)
+            expertService.updateExpert(expertDTO.toEntity())
         }
         else {
-            throw Exception("Empty expert body")
+            throw EmptyPostBodyException("Empty Expert body")
         }
     }
 
-    @GetMapping("/tickets/{id}")
+    @GetMapping("/{id}/tickets")
     @ResponseStatus(HttpStatus.OK)
     fun getExpertTickets(@PathVariable id: Long) : Set<TicketDTO> {
-        return expertService.getTickets(id) ?: throw Exception("Expert not found")
+        val tickets = expertService.getTickets(id) ?: throw UserNotFoundException("Expert with id $id not found!")
+        if(tickets.isEmpty()) {
+            throw TicketListIsEmptyException("Expert with id $id has no tickets")
+        }
+        else{
+            return tickets;
+        }
     }
 }

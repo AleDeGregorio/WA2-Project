@@ -6,11 +6,14 @@ import java.util.*
 
 data class ChatDTO(
     val id: Long?,
-    //val messages: MutableSet<Message>,
+    val messages: MutableSet<Message>,
     val ticket: Ticket?,
     val creationDate: Date?
 )
 
 fun Chat.toDTO() : ChatDTO {
-    return ChatDTO(id, ticket, creationDate)
+    return ChatDTO(id, messages, ticket, creationDate)
+}
+fun ChatDTO.toEntity() : Chat {
+    return Chat(id, messages, ticket, creationDate)
 }

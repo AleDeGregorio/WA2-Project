@@ -1,9 +1,6 @@
 package it.polito.g26.server.ticketing.tickets
 
-import it.polito.g26.server.MissingProductException
-import it.polito.g26.server.MissingUserException
-import it.polito.g26.server.TicketAlreadyExistException
-import it.polito.g26.server.TicketNotFoundException
+import it.polito.g26.server.*
 import it.polito.g26.server.ticketing.chat.ChatDTO
 import it.polito.g26.server.ticketing.chat.toDTO
 import it.polito.g26.server.profiles.expert.Expert
@@ -17,8 +14,7 @@ import java.util.*
 
 @Service
 class TicketServiceImpl(
-    private val ticketRepository: TicketRepository,
-    private val statusTicketRepository: StatusTicketRepository
+    private val ticketRepository: TicketRepository
 ) : TicketService {
     override fun getAll(): List<TicketDTO> {
         return ticketRepository.findAll().map { it.toDTO() }
@@ -29,7 +25,11 @@ class TicketServiceImpl(
     }
 
     override fun getTicketByCustomer(customerId: Long): List<TicketDTO>? {
-        return ticketRepository.findByCustomer(customerId)?.map { it.toDTO() }
+        val list = ticketRepository.findByCustomer(customerId)?.map { it.toDTO() }
+        if (list?.isEmpty()!!) {
+            throw UserNotFoundException("Customer with id {$customerId} not found.")
+        }
+        return list
     }
 
     override fun getTicketByExpert(expertId: Long): List<TicketDTO>? {
@@ -43,7 +43,7 @@ class TicketServiceImpl(
     override fun getTicketByDateOfCreation(dateOfCreation: Date): List<TicketDTO>? {
         return ticketRepository.findByDateOfCreation(dateOfCreation)?.map { it.toDTO() }
     }
-
+/*
     override fun getStatusTicket(id: Long): Set<StatusTicketDTO>? {
         if (ticketRepository.existsById(id)) {
             val ticketStatus = ticketRepository.getStatusTicket(id) ?: return null
@@ -53,7 +53,9 @@ class TicketServiceImpl(
             throw TicketNotFoundException("Ticket with id $id not found!")
         }
     }
+ */
 
+/*
     override fun getChats(id: Long): Set<ChatDTO>? {
         if (ticketRepository.existsById(id)) {
             val chats = ticketRepository.getChats(id) ?: return null
@@ -63,23 +65,17 @@ class TicketServiceImpl(
             throw TicketNotFoundException("Ticket with id $id not found!")
         }
     }
-
+ */
     override fun insertTicket(ticket: Ticket) {
         if (ticket.id != null && ticketRepository.existsById(ticket.id!!)) {
             throw TicketAlreadyExistException("Ticket with id ${ticket.id} already exists")
         }
         else if(ticket.customer == null){
             throw MissingUserException("No Customer was provided!")
-        }else if(ticket.expert == null){
-            throw MissingUserException("No Expert was provided!")
         }else if(ticket.product == null){
             throw MissingProductException("No Product was provided!")
         }else{
             ticketRepository.save(ticket)
-            val status = ticket.status.first()
-            status.ticketDate?.id = ticket
-            status.ticketDate?.lastModifiedDate = SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString())
-            statusTicketRepository.save(status)
         }
     }
 

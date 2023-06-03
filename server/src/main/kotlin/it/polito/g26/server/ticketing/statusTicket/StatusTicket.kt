@@ -10,7 +10,7 @@ import java.util.*
 data class TicketDate(
     @MapsId("id")
     @ManyToOne
-    var id: Ticket? = null,
+    var ticket: Ticket? = null,
     @Temporal(TemporalType.TIMESTAMP)
     var lastModifiedDate: Date? = null
 ) : Serializable

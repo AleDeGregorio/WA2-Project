@@ -24,11 +24,11 @@ interface TicketRepository : JpaRepository<Ticket, Long> {
     @Query("SELECT t FROM Ticket t WHERE DATE(t.dateOfCreation) = DATE(:dateOfCreation)")
     fun findByDateOfCreation(@Param("dateOfCreation") dateOfCreation: Date) : List<Ticket>?
 
-    @Query("SELECT s FROM StatusTicket s WHERE s.ticketDate.id.id = :id")
-    fun getStatusTicket(@Param("id") id: Long) : List<StatusTicket>?
+//    @Query("SELECT s FROM StatusTicket s WHERE s.ticketDate.id.id = :id")
+//    fun getStatusTicket(@Param("id") id: Long) : List<StatusTicket>?
 
-    @Query("SELECT c FROM Chat c WHERE c.ticket.id = :id")
-    fun getChats(@Param("id") id: Long) : List<Chat>?
+//    @Query("SELECT c FROM Chat c WHERE c.ticket.id = :id")
+//    fun getChats(@Param("id") id: Long) : List<Chat>?
 
     @Modifying
     @Query("UPDATE Ticket t SET t.priorityLevel = :priorityLevel WHERE t.id = :id")

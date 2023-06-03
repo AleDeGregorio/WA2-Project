@@ -9,7 +9,6 @@ data class ExpertDTO(
     val surname: String,
     val email: String,
     val fields: String
-    //val tickets: MutableSet<Ticket>
 )
 
 fun Expert.toDTO() : ExpertDTO {

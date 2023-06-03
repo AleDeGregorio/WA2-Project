@@ -8,42 +8,32 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
+@RequestMapping("/attachment")
 class AttachmentController(
     private val attachmentService: AttachmentService
 ) {
-    private fun attachmentDTOToEntity(attachmentDTO: AttachmentDTO) : Attachment {
-        val attachment = Attachment()
-
-        attachment.content = attachmentDTO.content
-        attachment.message = attachmentDTO.message
-        attachment.name = attachmentDTO.name
-        attachment.size = attachmentDTO.size
-
-        return attachment
-    }
-
-    @GetMapping("/API/attachment/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getAttachment(@PathVariable id: Long) : AttachmentDTO? {
         return attachmentService.getAttachment(id) ?: throw AttachmentNotFoundException("Attachment with id $id not found!")
     }
 
-    @GetMapping("/API/attachment/message/{messageId}")
+    @GetMapping("/message/{messageId}")
     @ResponseStatus(HttpStatus.OK)
     fun getAttachmentByMessage(@PathVariable messageId: Long) : List<AttachmentDTO>? {
         return attachmentService.getAttachmentByMessage(messageId) ?: throw MessageNotFoundException("Message with id $messageId not found!")
     }
 
-    @PostMapping("/API/attachment")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     fun insertAttachment(@RequestBody attachmentDTO: AttachmentDTO?) {
         if (attachmentDTO != null) {
-            val insertAttachment = attachmentDTOToEntity(attachmentDTO)
-            attachmentService.insertAttachment(insertAttachment)
+            attachmentService.insertAttachment(attachmentDTO.toEntity())
         }
         else {
             throw EmptyPostBodyException("Empty attachment body")
