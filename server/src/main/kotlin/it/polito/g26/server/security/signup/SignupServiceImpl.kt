@@ -9,7 +9,7 @@ import org.springframework.http.*
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 
-
+@Service
 class SignupServiceImpl(
     @Value("\${spring.security.oauth2.client.registration.keycloak.client-id}")
     private val clientId: String,

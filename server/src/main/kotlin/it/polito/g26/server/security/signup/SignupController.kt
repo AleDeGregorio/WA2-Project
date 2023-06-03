@@ -20,8 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/auth")
 class SignupController (
     private val signupServiceImpl: SignupServiceImpl
-) {
-
+){
 
     @PostMapping("/signup/customer")
     fun customerSignup(@RequestBody customerDTO: CustomerDTO?, @RequestParam token: String): ResponseEntity<Response> {
