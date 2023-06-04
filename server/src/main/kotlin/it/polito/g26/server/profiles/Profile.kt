@@ -12,11 +12,11 @@ import jakarta.persistence.Table
 @MappedSuperclass
 open class Profile (
     @Id
-    @GeneratedValue
-    var id: Long? = null,
+    open var id: String?,
 
     open var name: String,
     open var surname: String,
+    open var password: String,
     open var email: String,
 
     @Enumerated(value = EnumType.STRING)

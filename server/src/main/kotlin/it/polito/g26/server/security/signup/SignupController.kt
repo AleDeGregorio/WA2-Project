@@ -17,7 +17,7 @@ class SignupController (
 ) {
 
     @PostMapping("/signup/customer")
-    fun customerSignup(@RequestBody customerDTO: CustomerDTO?): ResponseEntity<Response> {
+    fun customerSignup(@RequestBody customerDTO: CustomerDTO?) {
         if (customerDTO != null) {
             return signupServiceImpl.customerSignup(customerDTO.toEntity())
         } else {
@@ -25,8 +25,4 @@ class SignupController (
         }
     }
 
-    @PostMapping("/signuptoken")
-    fun signupToken() {
-
-    }
 }
