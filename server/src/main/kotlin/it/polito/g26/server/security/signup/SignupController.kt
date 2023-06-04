@@ -17,9 +17,9 @@ class SignupController (
 ) {
 
     @PostMapping("/signup/customer")
-    fun customerSignup(@RequestBody customerDTO: CustomerDTO?, @RequestParam token: String): ResponseEntity<Response> {
+    fun customerSignup(@RequestBody customerDTO: CustomerDTO?): ResponseEntity<Response> {
         if (customerDTO != null) {
-            return signupServiceImpl.CustomerSignup(customerDTO.toEntity(), token)
+            return signupServiceImpl.customerSignup(customerDTO.toEntity())
         } else {
             throw Exception("not body")
         }
