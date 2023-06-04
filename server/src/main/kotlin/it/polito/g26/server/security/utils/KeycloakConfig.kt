@@ -13,4 +13,5 @@ class KeycloakConfig {
     fun keycloakConfigResolver(): KeycloakConfigResolver {
         return KeycloakSpringBootConfigResolver()
     }
+
 }
