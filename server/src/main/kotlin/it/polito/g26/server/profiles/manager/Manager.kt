@@ -6,9 +6,13 @@ import jakarta.persistence.Entity
 
 @Entity
 data class Manager(
-    override var name: String,
-    override var surname: String,
+    override var id: String?,
+    override var username: String,
+    override var firstName: String,
+    override var lastName: String,
+    @Transient
+    override var password: String,
     override var email: String,
 
     var department: String
-) : Profile(name = name, surname = surname, email = email, role = Role.MANAGER)
+) : Profile(id = id, username = username, firstName = firstName, lastName = lastName, email = email, password = password)

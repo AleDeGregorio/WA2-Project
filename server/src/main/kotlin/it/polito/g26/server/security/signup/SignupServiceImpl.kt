@@ -19,9 +19,8 @@ import org.springframework.util.MultiValueMap
 import org.springframework.web.client.RestTemplate
 
 @Service
-class SignupServiceImpl {
-    val restTemplate = RestTemplate()
-
+class SignupServiceImpl {}
+/*
     private val userUrl = "http://localhost:8080/admin/realms/SpringBoot-Keycloak/users"
     fun customerSignup(customer: Customer){
         val keycloak: Keycloak = KeycloakBuilder.builder() //
@@ -75,4 +74,6 @@ class SignupServiceImpl {
         //println(customerRep.credentials[0].value)
     }
 }
+
+ */
 

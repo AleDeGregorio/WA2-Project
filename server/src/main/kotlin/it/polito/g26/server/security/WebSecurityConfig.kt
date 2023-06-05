@@ -35,7 +35,8 @@ class WebSecurityConfig(
 2
         http.csrf().disable()
             .authorizeHttpRequests()
-            .requestMatchers(HttpMethod.POST, "/customer").anonymous()
+            //.requestMatchers(HttpMethod.POST, "/customer").anonymous()
+            .requestMatchers(HttpMethod.POST, "/customer/signup").permitAll()
             .requestMatchers(HttpMethod.GET,"/ticket/**").permitAll()
             .requestMatchers(HttpMethod.POST,"/auth/**").permitAll()
             .requestMatchers(HttpMethod.GET,"/product**").permitAll()

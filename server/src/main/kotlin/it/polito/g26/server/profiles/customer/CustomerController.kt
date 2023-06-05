@@ -17,15 +17,15 @@ class CustomerController(
         return customerService.getCustomer(email) ?:  throw EmailNotFoundException("Customer with email $email not found!")
     }
 
-    @PostMapping("")
+    @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    fun insertCustomer(@RequestBody customerDTO: CustomerDTO?) {
+    fun customerSignup(@RequestBody customerDTO: CustomerDTO?) {
         if (customerDTO == null) {
             throw EmptyPostBodyException("Empty Costumer body")
         }else if(customerService.getCustomer(customerDTO.email)!=null){
             throw EmailAlreadyExistException("${customerDTO.email} already in use!")
         }else{
-            customerService.insertCustomer(customerDTO.toEntity())
+            customerService.customerSignup(customerDTO.toEntity())
         }
     }
 
@@ -42,7 +42,7 @@ class CustomerController(
 
     @GetMapping("/{id}/tickets")
     @ResponseStatus(HttpStatus.OK)
-    fun getCustomerTickets(@PathVariable id: Long) : Set<TicketDTO>? {
+    fun getCustomerTickets(@PathVariable id: String) : Set<TicketDTO>? {
         val tickets = customerService.getTickets(id) ?: throw UserNotFoundException("Customer with id $id not found!")
         if(tickets.isEmpty()) {
             throw TicketListIsEmptyException("Customer with id $id has no tickets")

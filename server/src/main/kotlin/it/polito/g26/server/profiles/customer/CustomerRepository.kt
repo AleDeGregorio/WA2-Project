@@ -14,7 +14,10 @@ interface CustomerRepository : JpaRepository<Customer, Long> {
     @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END FROM Customer c WHERE c.email = :email")
     fun existsByEmail(@Param("email") email: String) : Boolean
 
+    @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END FROM Customer c WHERE c.id = :id")
+    fun existsById(@Param("id") id: String) : Boolean
+
     @Query("SELECT t FROM Ticket t WHERE t.customer.id = :id")
-    fun getTickets(@Param("id") id: Long) : List<Ticket>?
+    fun getTickets(@Param("id") id: String) : List<Ticket>?
 
 }

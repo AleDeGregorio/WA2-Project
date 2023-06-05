@@ -4,10 +4,9 @@ import it.polito.g26.server.ticketing.tickets.TicketDTO
 
 interface CustomerService {
     fun getCustomer(email: String) : CustomerDTO?
-
-    fun insertCustomer(customer: Customer)
+    fun customerSignup(customer:Customer)
 
     fun updateCustomer(customer: Customer)
 
-    fun getTickets(id: Long) : Set<TicketDTO>?
+    fun getTickets(id: String) : Set<TicketDTO>?
 }

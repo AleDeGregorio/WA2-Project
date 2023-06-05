@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 class SignupController (
     private val signupServiceImpl: SignupServiceImpl
 ) {
-
+/*
     @PostMapping("/signup/customer")
     fun customerSignup(@RequestBody customerDTO: CustomerDTO?) {
         if (customerDTO != null) {
@@ -24,5 +24,7 @@ class SignupController (
             throw Exception("not body")
         }
     }
+
+ */
 
 }

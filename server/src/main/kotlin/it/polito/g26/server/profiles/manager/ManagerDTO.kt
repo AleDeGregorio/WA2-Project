@@ -4,22 +4,22 @@ import it.polito.g26.server.profiles.expert.Expert
 import it.polito.g26.server.profiles.expert.ExpertDTO
 
 data class ManagerDTO(
-    val id: Long?,
-    val name: String,
-    val surname: String,
+    val id: String?,
+    val username: String,
+    val firstName: String,
+    val lastName: String,
     val email: String,
+    val password: String,
     val department: String
 )
 
 fun Manager.toDTO() : ManagerDTO {
-    return ManagerDTO(id, name, surname, email, department)
+    return ManagerDTO(id, username, firstName, lastName, email, password, department)
 }
 
 fun ManagerDTO.toEntity(): Manager {
-    val manager = Manager(name = name,
-        surname= surname,
+    return Manager(id = id, username = username,
+        firstName = firstName, lastName = lastName,
         email = email,
-        department = department)
-    manager.id = id
-    return manager
-}
+        password = password,
+        department = department)}
