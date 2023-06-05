@@ -35,12 +35,6 @@ class SignupServiceImpl {}
         val realmResource = keycloak.realm("SpringBoot-Keycloak")
         //val client = realmResource.clients().findByClientId("springboot-keycloak-client")[0].id
 
-        val map: MultiValueMap<String, String> = LinkedMultiValueMap<String, String>()
-        map["client_id"] = "admin-cli"
-        map["grant_type"] = "password"
-        map["username"] = "admin"
-        map["password"] = "password"
-
         val userResource = realmResource.users()
 
         val customerRole = realmResource.roles().get("app_customer").toRepresentation()
@@ -70,8 +64,7 @@ class SignupServiceImpl {}
             .users()
             .get(userid)
             .roles().realmLevel().add(listOf(customerRole))
-        //println("response status ${response.status}, response info status ${response.statusInfo}\n reponse body ${response} and \n userid ${userid}")
-        //println(customerRep.credentials[0].value)
+
     }
 }
 
