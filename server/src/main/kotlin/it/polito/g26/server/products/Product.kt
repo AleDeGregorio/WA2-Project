@@ -12,7 +12,6 @@ class Product (
 
     var name: String = "",
     var brand: String = "",
-    @Transient
     var category: String = "",
 
     var price: Double = 0.0,
