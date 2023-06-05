@@ -5,6 +5,6 @@ data class LoginRequest (
     var password: String
 ) {
     override fun toString() : String {
-        return "Username: ${username}, Password:${password}"
+        return "Username: ${username}, Password: ${password}"
     }
 }
