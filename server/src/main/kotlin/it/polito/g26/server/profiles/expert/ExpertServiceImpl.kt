@@ -5,8 +5,13 @@ import it.polito.g26.server.UserAlreadyExistException
 import it.polito.g26.server.UserNotFoundException
 import it.polito.g26.server.ticketing.tickets.TicketDTO
 import it.polito.g26.server.ticketing.tickets.toDTO
-import org.springframework.data.repository.findByIdOrNull
+import org.keycloak.admin.client.CreatedResponseUtil
+import org.keycloak.admin.client.Keycloak
+import org.keycloak.admin.client.KeycloakBuilder
+import org.keycloak.representations.idm.CredentialRepresentation
+import org.keycloak.representations.idm.UserRepresentation
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ExpertServiceImpl(
@@ -20,31 +25,88 @@ class ExpertServiceImpl(
         return expertRepository.getByField(field).map { it.toDTO() }
     }
 
+    @Transactional
     override fun insertExpert(expert: Expert) {
-        if (expert.id != null && expertRepository.existsById(expert.id!!)) {
-            throw UserAlreadyExistException("Expert with id ${expert.id} already exist")
+        val keycloak: Keycloak = KeycloakBuilder.builder() //
+            .serverUrl("http://localhost:8080") //
+            .realm("SpringBoot-Keycloak") //
+            .clientId("admin-cli") //
+            .username("idm-client") //
+            .password("pwd") //
+            .build();
+
+        println(expert)
+        val realmResource = keycloak.realm("SpringBoot-Keycloak")
+        //val client = realmResource.clients().findByClientId("springboot-keycloak-client")[0].id
+
+
+        val userResource = realmResource.users()
+        if (userResource.search(expert.username).isNotEmpty() ) {
+            throw UserAlreadyExistException("Expert ${expert.username} already exists")
+        } else if(userResource.search(expert.email, 0, 1).isNotEmpty()) {
+            throw EmailAlreadyExistException("Expert ${expert.email} already exists")
         }
-        else {
-            expertRepository.save(expert)
-        }
+            val expertRole = realmResource.roles().get("app_expert").toRepresentation()
+            val passwordCred = CredentialRepresentation().apply {
+                isTemporary = false
+                type = CredentialRepresentation.PASSWORD
+                value = expert.password
+            }
+            val attr: MutableMap<String, List<String>> = mutableMapOf();
+            val fields: List<String> = expert.fields.split(",")
+            attr["fields"] = fields
+
+            val expertRep = UserRepresentation().apply {
+                isEnabled = true
+                username = expert.username
+                firstName = expert.firstName
+                lastName = expert.lastName
+                email = expert.email
+                credentials = listOf(passwordCred)
+                attributes = attr
+            }
+
+            val response = userResource.create(expertRep)
+
+            val userid = CreatedResponseUtil.getCreatedId(response)
+            expert.id = userid
+            if (expertRepository.existsById(userid)) {
+                throw UserAlreadyExistException("Expert with id ${expert.id} already exist")
+            } else {
+                expertRepository.save(expert)
+            }
+
+
+            keycloak.realm("SpringBoot-Keycloak")
+                .users()
+                .get(userid)
+                .roles().realmLevel().add(listOf(expertRole))
+            //println("response status ${response.status}, response info status ${response.statusInfo}\n reponse body ${response} and \n userid ${userid}")
+            //println(customerRep.credentials[0].value)
+
     }
+
+
+
+
 
     override fun updateExpert(expert: Expert) {
         if (expertRepository.existsById(expert.id!!)) {
-            val retrievedExpert = expertRepository.findById(expert.id!!).get()
+            val retrievedExpert = expertRepository.findById(expert.id!!)
 
-            retrievedExpert.name = expert.name
-            retrievedExpert.surname = expert.surname
-            retrievedExpert.fields = expert.fields
+            retrievedExpert?.username = expert.username
+            retrievedExpert?.firstName = expert.firstName
+            retrievedExpert?.lastName = expert.lastName
+            retrievedExpert?.fields = expert.fields
 
-            expertRepository.save(retrievedExpert)
+            expertRepository.save(retrievedExpert!!)
         }
         else {
              throw UserNotFoundException("Expert with id ${expert.id} not found")
         }
     }
 
-    override fun getTickets(id: Long): Set<TicketDTO>? {
+    override fun getTickets(id: String): Set<TicketDTO>? {
         if (expertRepository.existsById(id)) {
             val tickets = expertRepository.getTickets(id) ?: return null
             return tickets.map { it.toDTO() }.toSet()

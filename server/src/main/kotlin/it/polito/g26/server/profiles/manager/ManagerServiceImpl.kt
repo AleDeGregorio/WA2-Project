@@ -24,13 +24,14 @@ class ManagerServiceImpl(
 
     override fun updateManager(manager: Manager) {
         if (managerRepository.existsById(manager.id!!)) {
-            val retrievedManager = managerRepository.findById(manager.id!!).get()
+            val retrievedManager = managerRepository.findById(manager.id!!)
 
-            retrievedManager.name = manager.name
-            retrievedManager.surname = manager.surname
-            retrievedManager.department = manager.department
+            retrievedManager?.username = manager.username
+            retrievedManager?.firstName = manager.firstName
+            retrievedManager?.lastName = manager.lastName
+            retrievedManager?.department = manager.department
 
-            managerRepository.save(retrievedManager)
+            managerRepository.save(retrievedManager!!)
         }
         else {
             throw UserNotFoundException("Manager with id ${manager.id} not found")

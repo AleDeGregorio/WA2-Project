@@ -8,12 +8,15 @@ import jakarta.persistence.OneToMany
 
 @Entity
 data class Expert (
+    override var id: String?,
     var fields: String = "",
-
-    override var name: String,
-    override var surname: String,
+    @Transient
+    override var password: String = "",
+    override var username: String,
+    override var firstName: String,
+    override var lastName: String,
     override var email: String,
 
     @OneToMany(mappedBy = "expert")
     var tickets: MutableSet<Ticket> = mutableSetOf()
-) : Profile(name = name, surname = surname, email = email, role = Role.EXPERT)
+) : Profile(id = id,  username = username, firstName = firstName, lastName = lastName, email = email, password = password)

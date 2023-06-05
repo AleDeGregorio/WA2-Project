@@ -13,12 +13,11 @@ import jakarta.persistence.Table
 open class Profile (
     @Id
     open var id: String?,
-
-    open var name: String,
-    open var surname: String,
+    open var username: String,
+    open var firstName: String,
+    open var lastName: String,
+    @Transient
     open var password: String,
     open var email: String,
 
-    @Enumerated(value = EnumType.STRING)
-    val role: Role
 )

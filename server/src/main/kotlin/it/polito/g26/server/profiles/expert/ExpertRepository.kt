@@ -13,7 +13,11 @@ interface ExpertRepository : JpaRepository<Expert, Long> {
 
     @Query("SELECT e FROM Expert e WHERE e.email = :email")
     fun getByEmail(@Param("email") email: String): Expert?
+    @Query("SELECT CASE WHEN COUNT(e) > 0 THEN true ELSE false END FROM Expert e WHERE e.id = :id")
+    fun existsById(@Param("id") id: String) : Boolean
+    @Query("SELECT e FROM Expert e WHERE e.id = :id")
+    fun findById(@Param("id") id: String) : Expert?
 
     @Query("SELECT t FROM Ticket t WHERE t.expert.id = :id")
-    fun getTickets(@Param("id") id: Long) : List<Ticket>?
+    fun getTickets(@Param("id") id: String) : List<Ticket>?
 }

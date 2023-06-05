@@ -10,11 +10,13 @@ import jakarta.persistence.OneToMany
 @Entity
 data class Customer(
     override var id: String?,
-    override var name: String,
-    override var surname: String,
+    override var username: String,
+    override var firstName: String,
+    override var lastName: String,
 
     @Column(unique = true)
     override var email: String = "",
+    @Transient
     override var password: String = "",
 
     var city: String = "",
@@ -22,4 +24,4 @@ data class Customer(
 
     @OneToMany(mappedBy = "customer")
     var tickets: MutableSet<Ticket> = mutableSetOf()
-) : Profile(id = id, name = name, surname = surname, password = password, email = email, role = Role.CUSTOMER)
+) : Profile(id = id,  username = username, firstName = firstName, lastName = lastName, email = email, password = password)
