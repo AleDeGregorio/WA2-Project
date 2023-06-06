@@ -8,6 +8,7 @@ plugins {
 	kotlin("jvm") version "1.7.22"
 	kotlin("plugin.spring") version "1.7.22"
 	kotlin("plugin.jpa") version "1.7.22"
+	id("io.freefair.lombok") version "6.2.0"
 }
 
 jib {
@@ -48,6 +49,15 @@ dependencies {
 	implementation("org.keycloak:keycloak-spring-boot-starter:15.0.2")
 	implementation("org.keycloak:keycloak-admin-client:15.0.2")
 	implementation(platform("org.keycloak.bom:keycloak-adapter-bom:15.0.2"))
+
+	implementation ("org.springframework.boot:spring-boot-starter-aop")
+	implementation ("org.springframework.boot:spring-boot-starter-actuator")
+	implementation ("io.micrometer:micrometer-registry-prometheus")
+	implementation ("io.micrometer:micrometer-tracing-bridge-brave")
+	implementation ("io.zipkin.reporter2:zipkin-reporter-brave:2.16.3")
+	implementation ("com.github.loki4j:loki-logback-appender:1.4.0-rc2")
+	compileOnly("org.projectlombok:lombok:1.18.20")
+	annotationProcessor("org.projectlombok:lombok:1.18.20")
 
 	implementation("com.nimbusds:nimbus-jose-jwt:9.11")
 	implementation("com.auth0:java-jwt:3.18.2")
