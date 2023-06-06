@@ -29,7 +29,9 @@ class ExpertServiceImpl(
     override fun insertExpert(expert: Expert) {
         val keycloak: Keycloak = KeycloakBuilder.builder() //
             .serverUrl("http://localhost:8080") //
+            //.serverUrl("http://keycloak:8080") //
             .realm("SpringBoot-Keycloak") //
+            //.realm("ticketingRealm") //
             .clientId("admin-cli") //
             .username("idm-client") //
             .password("pwd") //
@@ -37,6 +39,7 @@ class ExpertServiceImpl(
 
         println(expert)
         val realmResource = keycloak.realm("SpringBoot-Keycloak")
+        //val realmResource = keycloak.realm("ticketingRealm")
         //val client = realmResource.clients().findByClientId("springboot-keycloak-client")[0].id
 
 
@@ -78,6 +81,7 @@ class ExpertServiceImpl(
 
 
             keycloak.realm("SpringBoot-Keycloak")
+            //keycloak.realm("ticketingRealm")
                 .users()
                 .get(userid)
                 .roles().realmLevel().add(listOf(expertRole))
