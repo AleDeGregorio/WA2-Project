@@ -92,8 +92,6 @@ class ExpertServiceImpl(
 
 
 
-
-
     override fun updateExpert(expert: Expert) {
         if (expertRepository.existsById(expert.id!!)) {
             //Keycloak update
@@ -112,17 +110,8 @@ class ExpertServiceImpl(
             val realmResource = keycloak.realm("ticketingRealm")
             val userResource = realmResource.users()
 
-            //take list of users
-            val users = userResource.list()
-            var expertNew : UserRepresentation?=null
-            for (u in users) {
-                if (u.id == expert.id) {
-                    expertNew = u
-                    break
-                }
-            }
-            if(expertNew==null)
-                throw UserNotFoundException("Customer with id ${expert.id} not found!")
+            val expertNew: UserRepresentation = userResource[expert.id].toRepresentation()
+                ?: throw UserNotFoundException("Customer with id ${expert.id} not found in keycloak!")
 
             val expertId = expert.id
 
