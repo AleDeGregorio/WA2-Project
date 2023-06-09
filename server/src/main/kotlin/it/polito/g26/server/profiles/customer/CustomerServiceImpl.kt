@@ -85,6 +85,52 @@ class CustomerServiceImpl(
 
 
     override fun updateCustomer(customer: Customer) {
+        //Keycloak update
+        val keycloak: Keycloak = KeycloakBuilder.builder()
+            .serverUrl("http://localhost:8080")
+            .realm("SpringBoot-Keycloak")
+            .clientId("admin-cli")
+            .username("idm-client")
+            .password("pwd")
+            .build()
+
+
+        val realmResource = keycloak.realm("SpringBoot-Keycloak")
+        val userResource = realmResource.users()
+
+        //take list of users
+        val users = userResource.list()
+        var user : UserRepresentation?=null
+        for (u in users) {
+            if (u.id == customer.id) {
+                user = u
+                break
+            }
+        }
+        if(user==null)
+            throw UserNotFoundException("Customer with id ${customer.id} not found!")
+
+        val userId = user.id
+
+        val attr: MutableMap<String, List<String>> = mutableMapOf()
+        attr["city"] = listOf(customer.city)
+        attr["address"] = listOf(customer.address)
+
+        /* val passwordCred = CredentialRepresentation().apply {
+             isTemporary = false
+             type = CredentialRepresentation.PASSWORD
+             value = customer.password
+         }*/
+
+        // Update the attributes of the user
+        user.attributes = attr
+        user.lastName =customer.lastName
+        user.username = customer.username
+        user.firstName = customer.firstName
+        //user.credentials= listOf(passwordCred) doesn't update here?
+
+        // Update the user in Keycloak
+        userResource.get(userId).update(user)
         if (customerRepository.existsByEmail(customer.email)) {
             val retrievedCustomer = customerRepository.findByEmail(customer.email)
 

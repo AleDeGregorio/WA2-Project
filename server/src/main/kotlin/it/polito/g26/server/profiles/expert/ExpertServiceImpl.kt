@@ -96,6 +96,54 @@ class ExpertServiceImpl(
 
     override fun updateExpert(expert: Expert) {
         if (expertRepository.existsById(expert.id!!)) {
+            //Keycloak update
+            val keycloak: Keycloak = KeycloakBuilder.builder()
+                .serverUrl("http://localhost:8080")
+                .realm("SpringBoot-Keycloak")
+                .clientId("admin-cli")
+                .username("idm-client")
+                .password("pwd")
+                .build()
+
+
+            val realmResource = keycloak.realm("SpringBoot-Keycloak")
+            val userResource = realmResource.users()
+
+            //take list of users
+            val users = userResource.list()
+            var expertNew : UserRepresentation?=null
+            for (u in users) {
+                if (u.id == expert.id) {
+                    expertNew = u
+                    break
+                }
+            }
+            if(expertNew==null)
+                throw UserNotFoundException("Customer with id ${expert.id} not found!")
+
+            val expertId = expert.id
+
+            val attr: MutableMap<String, List<String>> = mutableMapOf();
+            val fields: List<String> = expert.fields.split(",")
+            attr["fields"] = fields
+
+            /* val passwordCred = CredentialRepresentation().apply {
+                 isTemporary = false
+                 type = CredentialRepresentation.PASSWORD
+                 value = customer.password
+             }*/
+
+            // Update the attributes of the user
+            expertNew.attributes = attr
+            expertNew.lastName =expert.lastName
+            expertNew.username = expert.username
+            expertNew.firstName =expert.firstName
+            //expertNew.credentials= listOf(passwordCred) doesn't update here?
+
+            // Update the user in Keycloak
+            userResource.get(expertId).update(expertNew)
+
+            //Database update
             val retrievedExpert = expertRepository.findById(expert.id!!)
 
             retrievedExpert?.username = expert.username
