@@ -32,7 +32,6 @@ class WebSecurityConfig(
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
-2
         http.csrf().disable()
             .authorizeHttpRequests()
             //.requestMatchers(HttpMethod.POST, "/customer").anonymous()
@@ -40,11 +39,13 @@ class WebSecurityConfig(
             .requestMatchers(HttpMethod.GET,"/ticket/**").permitAll()
             .requestMatchers(HttpMethod.POST,"/auth/**").permitAll()
             .requestMatchers(HttpMethod.GET,"/product**").permitAll()
+            .requestMatchers(HttpMethod.GET,"/product/**").permitAll()
             .requestMatchers(HttpMethod.POST,"/ticket").hasRole(CUSTOMER)
             .and()
             .authorizeHttpRequests()
             .requestMatchers(HttpMethod.POST,"/product**").hasAnyRole(ADMIN,MANAGER)
             .requestMatchers(HttpMethod.PUT,"/product**").hasAnyRole(ADMIN,MANAGER)
+            .requestMatchers(HttpMethod.PUT,"/product/**").hasAnyRole(ADMIN,MANAGER)
             .requestMatchers(HttpMethod.PATCH,"/product**").hasAnyRole(ADMIN,MANAGER)
             .requestMatchers(HttpMethod.PUT,"/expert/**").hasAnyRole(ADMIN, MANAGER)
             .requestMatchers("/manager/**").hasAnyRole(ADMIN,MANAGER)

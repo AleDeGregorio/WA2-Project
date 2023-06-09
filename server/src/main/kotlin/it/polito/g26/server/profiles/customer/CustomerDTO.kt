@@ -7,7 +7,7 @@ data class CustomerDTO (
     val username: String,
     val firstName: String,
     val lastName: String,
-    val password: String,
+    val password: String?,
     val email: String,
     val city: String,
     val address: String
@@ -22,7 +22,7 @@ fun CustomerDTO.toEntity(): Customer {
         id = id,
         username = username,
         firstName = firstName, lastName = lastName,
-        password = password, email = email,
+        password = password ?: "password", email = email,
         city = city, address = address
     )
 }
