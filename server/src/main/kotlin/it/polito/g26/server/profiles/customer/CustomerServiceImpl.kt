@@ -23,18 +23,18 @@ class CustomerServiceImpl(
     }
     override fun customerSignup(customer: Customer){
         val keycloak: Keycloak = KeycloakBuilder.builder() //
-            .serverUrl("http://localhost:8080") //
-            //.serverUrl("http://keycloak:8080") //
-            .realm("SpringBoot-Keycloak") //
-            //.realm("ticketingRealm") //
+            //.serverUrl("http://localhost:8080") //
+            .serverUrl("http://keycloak:8080") //
+            //.realm("SpringBoot-Keycloak") //
+            .realm("ticketingRealm") //
             .clientId("admin-cli") //
             .username("idm-client") //
             .password("pwd") //
             .build();
 
         println(customer)
-        val realmResource = keycloak.realm("SpringBoot-Keycloak")
-        //val realmResource = keycloak.realm("ticketingRealm")
+        //val realmResource = keycloak.realm("SpringBoot-Keycloak")
+        val realmResource = keycloak.realm("ticketingRealm")
         //val client = realmResource.clients().findByClientId("springboot-keycloak-client")[0].id
 
 
@@ -73,8 +73,8 @@ class CustomerServiceImpl(
         }
 
 
-        keycloak.realm("SpringBoot-Keycloak")
-        //keycloak.realm("ticketingRealm")
+        //keycloak.realm("SpringBoot-Keycloak")
+        keycloak.realm("ticketingRealm")
             .users()
             .get(userid)
             .roles().realmLevel().add(listOf(customerRole))
@@ -87,15 +87,18 @@ class CustomerServiceImpl(
     override fun updateCustomer(customer: Customer) {
         //Keycloak update
         val keycloak: Keycloak = KeycloakBuilder.builder()
-            .serverUrl("http://localhost:8080")
-            .realm("SpringBoot-Keycloak")
+            //.serverUrl("http://localhost:8080")
+            .serverUrl("http://keycloak:8080")
+            //.realm("SpringBoot-Keycloak")
+            .realm("ticketingRealm")
             .clientId("admin-cli")
             .username("idm-client")
             .password("pwd")
             .build()
 
 
-        val realmResource = keycloak.realm("SpringBoot-Keycloak")
+        //val realmResource = keycloak.realm("SpringBoot-Keycloak")
+        val realmResource = keycloak.realm("ticketingRealm")
         val userResource = realmResource.users()
 
         //take list of users
