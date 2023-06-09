@@ -94,17 +94,8 @@ class CustomerServiceImpl(
         val realmResource = keycloak.realm("SpringBoot-Keycloak")
         val userResource = realmResource.users()
 
-        //take list of users
-        val users = userResource.list()
-        var user : UserRepresentation?=null
-        for (u in users) {
-            if (u.id == customer.id) {
-                user = u
-                break
-            }
-        }
-        if(user==null)
-            throw UserNotFoundException("Customer with id ${customer.id} not found!")
+        val user: UserRepresentation = userResource[customer.id].toRepresentation()
+            ?: throw UserNotFoundException("Customer with id ${customer.id} not found in keycloak!")
 
         val userId = user.id
 
