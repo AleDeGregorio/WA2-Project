@@ -28,18 +28,19 @@ class ExpertServiceImpl(
     @Transactional
     override fun insertExpert(expert: Expert) {
         val keycloak: Keycloak = KeycloakBuilder.builder() //
-            .serverUrl("http://localhost:8080") //
+            //.serverUrl("http://localhost:8080") //
+            .serverUrl("http://localhost:8081")
             //.serverUrl("http://keycloak:8080") //
-            .realm("SpringBoot-Keycloak") //
-            //.realm("ticketingRealm") //
+            //.realm("SpringBoot-Keycloak") //
+            .realm("ticketingRealm") //
             .clientId("admin-cli") //
             .username("idm-client") //
             .password("pwd") //
             .build();
 
         println(expert)
-        val realmResource = keycloak.realm("SpringBoot-Keycloak")
-        //val realmResource = keycloak.realm("ticketingRealm")
+        //val realmResource = keycloak.realm("SpringBoot-Keycloak")
+        val realmResource = keycloak.realm("ticketingRealm")
         //val client = realmResource.clients().findByClientId("springboot-keycloak-client")[0].id
 
 
@@ -80,8 +81,8 @@ class ExpertServiceImpl(
             }
 
 
-            keycloak.realm("SpringBoot-Keycloak")
-            //keycloak.realm("ticketingRealm")
+            //keycloak.realm("SpringBoot-Keycloak")
+            keycloak.realm("ticketingRealm")
                 .users()
                 .get(userid)
                 .roles().realmLevel().add(listOf(expertRole))
@@ -98,18 +99,19 @@ class ExpertServiceImpl(
         if (expertRepository.existsById(expert.id!!)) {
             //Keycloak update
             val keycloak: Keycloak = KeycloakBuilder.builder()
-                .serverUrl("http://localhost:8080")
+                //.serverUrl("http://localhost:8080")
+                .serverUrl("http://localhost:8081")
                 //.serverUrl("http://keycloak:8080")
-                .realm("SpringBoot-Keycloak")
-                //.realm("ticketingRealm")
+                //.realm("SpringBoot-Keycloak")
+                .realm("ticketingRealm")
                 .clientId("admin-cli")
                 .username("idm-client")
                 .password("pwd")
                 .build()
 
 
-            val realmResource = keycloak.realm("SpringBoot-Keycloak")
-            //val realmResource = keycloak.realm("ticketingRealm")
+            //val realmResource = keycloak.realm("SpringBoot-Keycloak")
+            val realmResource = keycloak.realm("ticketingRealm")
             val userResource = realmResource.users()
 
             val expertNew: UserRepresentation = userResource[expert.id].toRepresentation()
