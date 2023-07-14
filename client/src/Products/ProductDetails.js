@@ -32,8 +32,8 @@ function ProductDetails(props) {
                 </tr>
                 </thead>
                 <tbody>
-                <tr key={productDetails.productId}>
-                    <td style={{ 'fontWeight': 'bold' }} className="productId">{productDetails.productId}</td>
+                <tr key={productDetails.ean}>
+                    <td style={{ 'fontWeight': 'bold' }} className="productId">{productDetails.ean}</td>
                     <td>{productDetails.name}</td>
                     <td>{productDetails.brand}</td>
                     <td>{productDetails.category}</td>
