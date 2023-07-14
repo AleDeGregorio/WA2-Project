@@ -42,6 +42,7 @@ function App2() {
     const [error, setError] = useState("");
     const [show, setShow] = useState(false);
 
+    /*
     useEffect(() => {
         API.products()
             .then(products => setProducts(products))
@@ -52,6 +53,8 @@ function App2() {
 
         setInitialLoading(false);
     }, []);
+
+     */
 
   return (
     <>
