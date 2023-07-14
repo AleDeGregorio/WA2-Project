@@ -1,6 +1,6 @@
 function products() {
     return new Promise((resolve, reject) => {
-        fetch('/API/products/', {
+        fetch('/API/product', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -20,7 +20,7 @@ function products() {
 
 function productDetails(product) {
     return new Promise((resolve, reject) => {
-        fetch('/API/products/' + product, {
+        fetch('/API/product/' + product, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
