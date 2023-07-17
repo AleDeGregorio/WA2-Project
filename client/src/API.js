@@ -58,6 +58,48 @@ function profileDetails(email) {
     });
 }
 
+function login(credentials) {
+    return new Promise((resolve, reject) => {
+        fetch('/API/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(credentials)
+        }).then((response) => {
+            if (response.ok) {
+                resolve(response.json());
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((message) => { reject(message); }) // error message in the response body
+                    .catch(() => { reject({ error: "Unable to elaborate server response" }) }); // something else
+            }
+        }).catch(() => { reject({ error: "Server communication error" }) }); // connection errors
+    });
+}
+
+function logout(token) {
+    return new Promise((resolve, reject) => {
+        fetch('/API/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(token)
+        }).then((response) => {
+            if (response.ok) {
+                resolve(response.json());
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((message) => { reject(message); }) // error message in the response body
+                    .catch(() => { reject({ error: "Unable to elaborate server response" }) }); // something else
+            }
+        }).catch(() => { reject({ error: "Server communication error" }) }); // connection errors
+    });
+}
+
 function insertProfile(profile) {
     return new Promise((resolve, reject) => {
         fetch('/API/profiles', {
@@ -102,5 +144,5 @@ function editProfile(profile) {
     });
 }
 
-const API = { products, productDetails, profileDetails, insertProfile, editProfile };
+const API = { products, productDetails, profileDetails, login, logout, insertProfile, editProfile };
 export default API;
