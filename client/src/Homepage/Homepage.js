@@ -1,8 +1,12 @@
 import {Button, Container} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
+import LoginContext from "../Profiles/LoginContext";
+import {useContext} from "react";
 
 function Homepage() {
     const navigate = useNavigate()
+
+    const user = useContext(LoginContext)
 
     return (
         <Container fluid>
@@ -15,9 +19,11 @@ function Homepage() {
                 >
                     Products
                 </Button>
-                <Button variant="danger" size="lg" onClick={() => navigate('/mainProfiles')}>
-                    Profiles
-                </Button>
+                {Object.keys(user).length > 0 ? false :
+                    <Button variant="danger" size="lg" onClick={() => navigate('/login')}>
+                    Login
+                    </Button>
+                }
             </div>
         </Container>
     )
