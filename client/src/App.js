@@ -1,6 +1,8 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import jwtDecode from "jwt-decode";
+
 import ErrorAlert from "./ErrorHandling/ErrorAlert";
 import API from "./API";
 import Products from "./Products/Products";
@@ -20,6 +22,8 @@ import PageNotFound from "./ErrorHandling/PageNotFound";
 import Login from "./Profiles/Login";
 import LoginContext from "./Profiles/LoginContext";
 import SuccessLogout from "./Profiles/SuccessLogout";
+import CustomerTickets from "./CustomerTickets/CustomerTickets";
+import WrongPrivileges from "./ErrorHandling/WrongPrivileges";
 
 
 
@@ -58,7 +62,18 @@ function App2() {
     const doLogin = (credentials) => {
         API.login(credentials)
             .then(user => {
+                let token = jwtDecode(user.access_token)
+
+                let role = token.resource_access["springboot-keycloak-client"].roles[0]
+                let name = token.name
+                let email = token.email
+
+                user.role = role
+                user.name = name
+                user.email = email
+
                 setUser(user);
+
                 setShow(false);
                 setError('');
                 navigate('/');
@@ -115,6 +130,8 @@ function App2() {
                 <Route path='/profiles/:email' element={<ProfileDetails setError={setError} setShow={setShow}/>} />
                 <Route path='/insertProfile' element={<InsertProfile setError={setError} setShow={setShow}/>} />
                 <Route path='/editProfile/:email' element={<EditProfile setError={setError} setShow={setShow}/>} />
+                <Route path='/customerTickets' element={<CustomerTickets />} />
+                <Route path='/wrongPrivileges' element={<WrongPrivileges />} />
                 <Route path='*' element={<PageNotFound />} />
             </Routes>
         </LoginContext.Provider>
