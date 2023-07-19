@@ -1,9 +1,9 @@
 import {useNavigate} from "react-router-dom";
 import {useContext} from "react";
 import LoginContext from "../Profiles/LoginContext";
-import {Button, Container, Form, InputGroup} from "react-bootstrap";
+import {Button, Container, InputGroup} from "react-bootstrap";
 
-function CustomerTickets(props) {
+function CustomerTickets() {
     const navigate = useNavigate()
 
     const user = useContext(LoginContext)
