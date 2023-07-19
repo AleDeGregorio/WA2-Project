@@ -73,6 +73,7 @@ function App2() {
                 user.email = email
 
                 setUser(user);
+                localStorage.setItem("user", JSON.stringify(user))
 
                 setShow(false);
                 setError('');
@@ -89,6 +90,8 @@ function App2() {
         //API.logout(token)
             //.then(() => {
                 setUser({});
+                localStorage.removeItem("user")
+
                 setShow(false);
                 setError('');
                 setShowLogout(true)
@@ -109,6 +112,12 @@ function App2() {
                 setError(error);
                 setShow(true)
             });
+
+        const user = JSON.parse(localStorage.getItem("user"))
+
+        if (user) {
+            setUser(user)
+        }
 
         setInitialLoading(false);
     }, []);
