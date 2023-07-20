@@ -24,6 +24,7 @@ import LoginContext from "./Profiles/LoginContext";
 import SuccessLogout from "./Profiles/SuccessLogout";
 import CustomerTickets from "./CustomerTickets/CustomerTickets";
 import WrongPrivileges from "./ErrorHandling/WrongPrivileges";
+import CreateTicket from "./CustomerTickets/CreateTicket";
 
 
 
@@ -140,6 +141,7 @@ function App2() {
                 <Route path='/insertProfile' element={<InsertProfile setError={setError} setShow={setShow}/>} />
                 <Route path='/editProfile/:email' element={<EditProfile setError={setError} setShow={setShow}/>} />
                 <Route path='/customerTickets' element={<CustomerTickets />} />
+                <Route path='/createTicket' element={<CreateTicket products={products}/>} />
                 <Route path='/wrongPrivileges' element={<WrongPrivileges />} />
                 <Route path='*' element={<PageNotFound />} />
             </Routes>
