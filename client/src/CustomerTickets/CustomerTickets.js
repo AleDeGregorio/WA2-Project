@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import {useContext} from "react";
 import LoginContext from "../Profiles/LoginContext";
-import {Button, Container, InputGroup} from "react-bootstrap";
+import {Button, Container} from "react-bootstrap";
 
 function CustomerTickets() {
     const navigate = useNavigate()
@@ -18,7 +18,7 @@ function CustomerTickets() {
                 <Button variant="primary" size="lg" style={{marginBottom: '30px'}}>
                     Check your tickets
                 </Button>
-                <Button variant="success" size="lg">
+                <Button variant="success" size="lg" onClick={() => navigate('/createTicket')}>
                     Open new ticket
                 </Button>
             </div>

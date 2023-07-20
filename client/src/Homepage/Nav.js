@@ -29,11 +29,6 @@ function Nav(props) {
                     </span>
                 </div>
                 <div className='p-2 bd-highlight'>
-                    <span className='head-text' id='icon-products' onClick={() => navigate('/mainProducts')}>
-                        <BoxSeamFill className='nav-icon' /> Products
-                    </span>
-                </div>
-                <div className='p-2 bd-highlight'>
                     {Object.keys(user).length > 0 ?
                         <span className='head-text' id='icon-profiles' onClick={() => doLogout()}>
                             <PersonLinesFill className='nav-icon' /> Logout
