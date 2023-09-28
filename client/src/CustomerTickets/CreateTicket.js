@@ -2,6 +2,8 @@ import {Alert, Button, Container, Form} from "react-bootstrap";
 
 import './CreateTicket.css'
 import {useState} from "react";
+import API from "../API";
+import jwtDecode from "jwt-decode";
 
 function RenderProducts(props) {
     const { products } = props
@@ -18,12 +20,46 @@ function RenderProducts(props) {
 function CreateTicket(props) {
     const { products } = props
 
+    const [product, setProduct] = useState("")
+    const [issueType, setIssueType] = useState("")
+    const [description, setDescription] = useState("")
+
     const [show, setShow] = useState(false)
+
+    /*
+    const doLogin = (credentials) => {
+        API.login(credentials)
+            .then(user => {
+                let token = jwtDecode(user.access_token)
+
+                let role = token.resource_access["springboot-keycloak-client"].roles[0]
+                let name = token.name
+                let email = token.email
+
+                user.role = role
+                user.name = name
+                user.email = email
+
+                setUser(user);
+                localStorage.setItem("user", JSON.stringify(user))
+
+                setShow(false);
+                setError('');
+                navigate('/');
+            })
+            .catch(err => {
+                    setShow(true);
+                    setError(err.error);
+                }
+            )
+    }
+     */
 
     const handleSubmit = (e) => {
         e.preventDefault()
 
         //handle new ticket
+
 
         window.scrollTo(0, 0)
 
@@ -47,7 +83,7 @@ function CreateTicket(props) {
                 <Form onSubmit={e => handleSubmit(e)}>
                     <Form.Group className="mb-3" controlId="product">
                         <Form.Label style={{fontWeight: 'bold'}}>Product</Form.Label>
-                        <Form.Select aria-label="Select your product">
+                        <Form.Select aria-label="Select your product" onChange={(event) => setProduct(event.target.value)}>
                             <option>Select your product</option>
                             <RenderProducts products={products}/>
                         </Form.Select>

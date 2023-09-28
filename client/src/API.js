@@ -144,5 +144,27 @@ function editProfile(profile) {
     });
 }
 
-const API = { products, productDetails, profileDetails, login, logout, insertProfile, editProfile };
+function insertTicket(ticket) {
+    return new Promise((resolve, reject) => {
+        fetch('/API/ticket', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(ticket),
+        }).then((response) => {
+            if (response.ok) {
+                const ok = true;
+                resolve(ok);
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((message) => { reject(message); }) // error message in the response body
+                    .catch(() => { reject({ error: "Unable to elaborate server response" }) }); // something else
+            }
+        }).catch(() => { reject({ error: "Server communication error" }) }); // connection errors
+    });
+}
+
+const API = { products, productDetails, profileDetails, login, logout, insertProfile, editProfile, insertTicket };
 export default API;
