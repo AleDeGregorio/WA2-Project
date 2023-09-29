@@ -30,6 +30,7 @@ class ExpertController(
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     fun insertExpert(@RequestBody expertDTO: ExpertDTO?) {
+        println("hello $expertDTO")
         if (expertDTO == null) {
             throw EmptyPostBodyException("Empty Expert body")
         }else if(expertService.getExpert(expertDTO.email)!=null){

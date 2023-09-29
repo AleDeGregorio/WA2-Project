@@ -30,6 +30,12 @@ function Homepage() {
                         Tickets
                     </Button> : false
                 }
+
+                {loggedUser && user.role === "customer" ?
+                    <Button variant="primary" size="lg" onClick={() => navigate('/chat')}>
+                        Chat
+                    </Button> : false
+                }
             </div>
         </Container>
     )

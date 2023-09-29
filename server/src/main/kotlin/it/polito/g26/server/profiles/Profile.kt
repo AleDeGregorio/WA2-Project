@@ -1,15 +1,11 @@
 package it.polito.g26.server.profiles
 
 import it.polito.g26.server.ticketing.utility.Role
-import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.Id
-import jakarta.persistence.MappedSuperclass
-import jakarta.persistence.Table
+import jakarta.persistence.*
+import kotlin.jvm.Transient
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 open class Profile (
     @Id
     open var id: String?,

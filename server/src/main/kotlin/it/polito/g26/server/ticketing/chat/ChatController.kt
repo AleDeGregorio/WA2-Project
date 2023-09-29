@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat
 class ChatController(
     private val chatService: ChatService
 ) {
-    private fun chatDTOToEntity(chatDTO: ChatDTO) : Chat {
+    /*private fun chatDTOToEntity(chatDTO: ChatDTO) : Chat {
         val chat = Chat()
         chat.ticket = chatDTO.ticket
         chat.creationDate = chatDTO.creationDate
@@ -61,5 +61,5 @@ class ChatController(
             val insertChat = chatDTOToEntity(chatDTO)
             chatService.insertChat(insertChat)
         }
-    }
+    }*/
 }

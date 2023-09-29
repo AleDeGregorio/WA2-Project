@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 class MessageController(
     private val messageService: MessageService
 ) {
-    @GetMapping("/message/{id}")
+    /*@GetMapping("/message/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getMessage(@PathVariable id: Long): MessageDTO? {
         return messageService.getMessage(id) ?: throw MessageNotFoundException("Message with id $id not found!")
@@ -41,5 +41,5 @@ class MessageController(
         } else {
             messageService.insertMessage(messageDTO.toEntity())
         }
-    }
+    }*/
 }

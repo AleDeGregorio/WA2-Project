@@ -63,7 +63,7 @@ class WebSecurityConfig(
 
         http.csrf().disable()
             .authorizeHttpRequests()
-            .requestMatchers(HttpMethod.POST,"/expert/**").hasRole(MANAGER)
+            .requestMatchers(HttpMethod.POST,"/expert/**").hasAnyRole(ADMIN, MANAGER)
             .requestMatchers(HttpMethod.GET,"/ticket/status**").hasAnyRole(ADMIN,MANAGER, EXPERT, CUSTOMER)
             .requestMatchers("/attachment**").hasAnyRole(ADMIN,MANAGER,EXPERT,CUSTOMER)
             .requestMatchers("/chat**").hasAnyRole(ADMIN,MANAGER,EXPERT,CUSTOMER)
