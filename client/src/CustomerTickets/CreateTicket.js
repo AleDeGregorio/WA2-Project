@@ -3,13 +3,15 @@ import {Alert, Button, Container, Form} from "react-bootstrap";
 import './CreateTicket.css'
 import {useContext, useState} from "react";
 import LoginContext from "../Profiles/LoginContext";
+import API from "../API";
+import ErrorAlert from "../ErrorHandling/ErrorAlert";
 
 function RenderProducts(props) {
     const { products } = props
 
     const listProducts = products.map((product) => {
         return (
-            <option value={product.ean}>{product.ean} - {product.brand} {product.name}</option>
+            <option key={product.ean} value={product.ean}>{product.ean} - {product.brand} {product.name}</option>
         )
     })
 
@@ -25,73 +27,58 @@ function CreateTicket(props) {
     const [issueType, setIssueType] = useState("")
     const [description, setDescription] = useState("")
 
+    //success handling
     const [show, setShow] = useState(false)
 
-    /*
-    const doLogin = (credentials) => {
-        API.login(credentials)
-            .then(user => {
-                let token = jwtDecode(user.access_token)
-
-                let role = token.resource_access["springboot-keycloak-client"].roles[0]
-                let name = token.name
-                let email = token.email
-
-                user.role = role
-                user.name = name
-                user.email = email
-
-                setUser(user);
-                localStorage.setItem("user", JSON.stringify(user))
-
-                setShow(false);
-                setError('');
-                navigate('/');
-            })
-            .catch(err => {
-                    setShow(true);
-                    setError(err.error);
-                }
-            )
-    }
-     */
+    //error handling
+    const [error, setError] = useState("");
+    const [showError, setShowError] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        console.log(user)
+        if(!product || issueType.length < 1 || description.length < 1) {
+            window.scrollTo(0, 0)
 
-        //handle new ticket
-        if(isNaN(Number(product)) || issueType.length < 1 || description.length < 1) {
-            //error
+            setError("Please, complete all the fields before submitting")
+            setShowError(true)
+
             return
         }
 
-        const currentDate = new Date()
-
-        const year = currentDate.getFullYear()
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0')
-        const day = String(currentDate.getDate()).padStart(2, '0')
-        const hours = String(currentDate.getHours()).padStart(2, '0')
-        const minutes = String(currentDate.getMinutes()).padStart(2, '0')
-        const seconds = String(currentDate.getSeconds()).padStart(2, '0')
-        const milliseconds = String(currentDate.getMilliseconds()).padStart(6, '0')
-
-        const formattedDate = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds + "." + milliseconds
-
-        const ticket = {
-            date_of_creation: formattedDate,
-            description: description,
-            issue_type: issueType,
-            priority_level: null,
-            customer_id: "cu",
-            expert_id: null,
-            product_ean: product
+        const customer = {
+            id: user.id,
+            username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            password: user.password,
+            email: user.email,
+            city: user.city,
+            address: user.address
         }
 
-        window.scrollTo(0, 0)
+        const ticket = {
+            dateOfCreation: new Date(),
+            description: description,
+            issueType: issueType,
+            priorityLevel: null,
+            customer: customer,
+            expert: null,
+            product: products.filter(it => it.ean == product)[0]
+        }
 
-        setShow(true)
+        API.insertTicket(ticket, user.access_token)
+            .then(() => {
+                window.scrollTo(0, 0)
+
+                setShow(true)
+            })
+            .catch(err => {
+                window.scrollTo(0, 0)
+
+                setError(err)
+                setShowError(true)
+            })
     }
 
     return (
@@ -105,6 +92,8 @@ function CreateTicket(props) {
                 </Alert>
                 : false
             }
+
+            <ErrorAlert show={showError} setShow={setShowError} error={error} />
 
             <h1 className='createTicketTitle'>Enter the details of your ticket</h1>
             <Container fluid className='createTicketContainer'>

@@ -63,15 +63,29 @@ function App2() {
     const doLogin = (credentials) => {
         API.login(credentials)
             .then(user => {
-                let token = jwtDecode(user.access_token)
+                const token = jwtDecode(user.access_token)
 
-                let role = token.resource_access["springboot-keycloak-client"].roles[0]
-                let name = token.name
-                let email = token.email
+                const role = token.resource_access["springboot-keycloak-client"].roles[0]
+                const name = token.name
+                const email = token.email
+                const id = token.sub
+                const username = token.preferred_username
+                const firstName = token.family_name
+                const lastName = token.given_name
+                const password = "password"
+                const city = ""
+                const address = ""
 
                 user.role = role
                 user.name = name
                 user.email = email
+                user.id = id
+                user.username = username
+                user.firstName = firstName
+                user.lastName = lastName
+                user.password = password
+                user.city = city
+                user.address = address
 
                 setUser(user);
                 localStorage.setItem("user", JSON.stringify(user))

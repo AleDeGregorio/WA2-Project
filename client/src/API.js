@@ -144,11 +144,12 @@ function editProfile(profile) {
     });
 }
 
-function insertTicket(ticket) {
+function insertTicket(ticket, token) {
     return new Promise((resolve, reject) => {
         fetch('/API/ticket', {
             method: 'POST',
             headers: {
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(ticket),
