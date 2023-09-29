@@ -30,6 +30,11 @@ function Homepage() {
                         Tickets
                     </Button> : false
                 }
+                {loggedUser && user.role === "expert" ?
+                    <Button variant="primary" size="lg" onClick={() => navigate('/expertTickets')}>
+                        Tickets
+                    </Button> : false
+                }
             </div>
         </Container>
     )
