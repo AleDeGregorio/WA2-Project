@@ -5,8 +5,11 @@ function ErrorAlert(props) {
 
     let msg = error;
 
-    if(error.title)
+    if(error && error.title)
         msg = error.title;
+
+    if(error && error.error)
+        msg = error.error
 
     if (show) {
         window.scrollTo(0, 0);
