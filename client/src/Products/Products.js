@@ -9,11 +9,11 @@ function RenderList(props) {
 
     const listProducts = products.map((product) => {
         return (
-            <tr key={product.productId}>
+            <tr key={product.ean}>
                 <td style={{ 'fontWeight': 'bold' }}
                     className="productId"
-                    onClick={() => navigate('/products/' + product.productId, { state: {setError: setError, setShow: setShow} })}>
-                    {product.productId}
+                    onClick={() => navigate('/products/' + product.ean, { state: {setError: setError, setShow: setShow} })}>
+                    {product.ean}
                 </td>
                 <td>{product.name}</td>
                 <td>{product.brand}</td>

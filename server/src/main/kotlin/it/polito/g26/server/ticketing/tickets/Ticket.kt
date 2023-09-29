@@ -11,7 +11,8 @@ import java.util.*
 @Entity
 data class Ticket(
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ticket_seq")
+    @SequenceGenerator(name = "ticket_seq", initialValue = 6)
     var id: Long? = null,
 
     @ManyToOne
