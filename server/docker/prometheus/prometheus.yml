@@ -1,14 +1,14 @@
 scrape_configs:
-  - job_name: 'prometheus'
+  - job_name: 'prometheus2'
     static_configs:
       - targets:
           - 'localhost:9090'
-  - job_name: 'cluster-api'
-    metrics_path: '/actuator/prometheus'
+  - job_name: 'prometheus'
+    metrics_path: '/API/prometheus'
+    scrape_interval: 5m
+    scrape_timeout: 1m
     static_configs:
-      - targets:
-          - server:8080
-          - host.docker.internal:8080
+      - targets: ['server:8080']
         labels:
           namespace: 'event-sourcing'
-          app: 'server'
+          application: 'springboot-keycloak'

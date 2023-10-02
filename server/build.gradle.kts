@@ -52,8 +52,10 @@ dependencies {
 
 	implementation ("org.springframework.boot:spring-boot-starter-aop")
 	implementation ("org.springframework.boot:spring-boot-starter-actuator")
+	implementation ("org.springframework.boot:spring-boot-actuator-autoconfigure")
 	implementation ("io.micrometer:micrometer-registry-prometheus")
 	implementation ("io.micrometer:micrometer-tracing-bridge-brave")
+	implementation ("io.micrometer:micrometer-core")
 	implementation ("io.zipkin.reporter2:zipkin-reporter-brave:2.16.3")
 	implementation ("com.github.loki4j:loki-logback-appender:1.4.0-rc2")
 	compileOnly("org.projectlombok:lombok:1.18.20")

@@ -38,6 +38,9 @@ class WebSecurityConfig(
             .requestMatchers(HttpMethod.POST, "/customer/signup").permitAll()
             .requestMatchers(HttpMethod.GET,"/ticket/**").permitAll()
             .requestMatchers(HttpMethod.POST,"/auth/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/actuator").permitAll()
+            .requestMatchers(HttpMethod.GET, "/actuator**").permitAll()
             .requestMatchers(HttpMethod.GET,"/product**").permitAll()
             .requestMatchers(HttpMethod.GET,"/product/**").permitAll()
             .requestMatchers(HttpMethod.POST,"/ticket").hasRole(CUSTOMER)
@@ -67,7 +70,7 @@ class WebSecurityConfig(
             .requestMatchers(HttpMethod.GET,"/ticket/status**").hasAnyRole(ADMIN,MANAGER, EXPERT, CUSTOMER)
             .requestMatchers("/attachment**").hasAnyRole(ADMIN,MANAGER,EXPERT,CUSTOMER)
             .requestMatchers("/chat**").hasAnyRole(ADMIN,MANAGER,EXPERT,CUSTOMER)
-            .anyRequest().authenticated()
+            .anyRequest().permitAll()
 
 
 
