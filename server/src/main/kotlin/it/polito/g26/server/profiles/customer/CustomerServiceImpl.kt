@@ -3,6 +3,8 @@ package it.polito.g26.server.profiles.customer
 import it.polito.g26.server.EmailNotFoundException
 import it.polito.g26.server.UserAlreadyExistException
 import it.polito.g26.server.UserNotFoundException
+import it.polito.g26.server.profiles.expert.ExpertDTO
+import it.polito.g26.server.profiles.expert.toDTO
 import it.polito.g26.server.ticketing.tickets.TicketDTO
 import it.polito.g26.server.ticketing.tickets.toDTO
 import org.keycloak.admin.client.CreatedResponseUtil
@@ -21,6 +23,8 @@ class CustomerServiceImpl(
     override fun getCustomer(email: String): CustomerDTO? {
         return customerRepository.findByEmail(email)?.toDTO()
     }
+
+
     override fun customerSignup(customer: Customer){
         val keycloak: Keycloak = KeycloakBuilder.builder() //
             .serverUrl("http://localhost:8080") //

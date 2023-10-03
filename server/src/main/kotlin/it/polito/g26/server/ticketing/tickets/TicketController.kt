@@ -47,7 +47,7 @@ class TicketController(
 
     @GetMapping("/expert/{expertId}")
     @ResponseStatus(HttpStatus.OK)
-    fun getTicketByExpert(@PathVariable expertId: Long) : List<TicketDTO>? {
+    fun getTicketByExpert(@PathVariable expertId: String) : List<TicketDTO>? {
         return ticketService.getTicketByExpert(expertId) ?: throw UserNotFoundException("Expert with id $expertId not found!")
     }
 

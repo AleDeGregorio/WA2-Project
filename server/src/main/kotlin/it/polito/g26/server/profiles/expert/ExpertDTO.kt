@@ -1,6 +1,7 @@
 package it.polito.g26.server.profiles.expert
 
 import it.polito.g26.server.profiles.customer.Customer
+import it.polito.g26.server.profiles.customer.CustomerDTO
 import it.polito.g26.server.ticketing.tickets.Ticket
 
 data class ExpertDTO(
@@ -8,17 +9,17 @@ data class ExpertDTO(
     val username: String,
     val firstName: String,
     val lastName: String,
-    val password: String,
+    val password: String?,
     val email: String,
     val fields: String
 )
 
 fun Expert.toDTO() : ExpertDTO {
-    return ExpertDTO(id,  username, firstName, lastName, email, password, fields)
+    return ExpertDTO(id,  username, firstName, lastName, password,  email, fields)
 }
 
 fun ExpertDTO.toEntity(): Expert {
     return Expert(id = id, username = username,
-        firstName = firstName, lastName = lastName, email =  email, password = password, fields =  fields)
+        firstName = firstName, lastName = lastName, password = password ?: "password", email =  email, fields =  fields)
 
 }

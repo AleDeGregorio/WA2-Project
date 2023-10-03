@@ -12,7 +12,7 @@ interface TicketService {
 
     fun getTicketByCustomer(customerId: Long) : List<TicketDTO>?
 
-    fun getTicketByExpert(expertId: Long) : List<TicketDTO>?
+    fun getTicketByExpert(expertId: String) : List<TicketDTO>?
 
     fun getTicketByProduct(productId: Long) : List<TicketDTO>?
 
