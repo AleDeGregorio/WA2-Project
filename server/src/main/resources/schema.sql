@@ -26,7 +26,7 @@ INSERT INTO public.ticket (id, date_of_creation, description, issue_type, priori
 
 INSERT INTO public.status_ticket (last_modified_date, status, ticket_id) VALUES ('2023-05-05 12:00:00.000000', 'OPEN', 7);
 INSERT INTO public.status_ticket (last_modified_date, status, ticket_id) VALUES ('2023-05-06 11:00:00.000000', 'IN_PROGRESS', 7);
-INSERT INTO public.status_ticket (last_modified_date, status, ticket_id) VALUES ('2023-05-06 15:00:00.000000', 'RESOLVED', 1);
+INSERT INTO public.status_ticket (last_modified_date, status, ticket_id) VALUES ('2023-05-06 15:00:00.000000', 'REOPENED', 7);
 INSERT INTO public.status_ticket (last_modified_date, status, ticket_id) VALUES ('2023-05-06 16:00:00.000000', 'CLOSED', 1);
 INSERT INTO public.status_ticket (last_modified_date, status, ticket_id) VALUES ('2023-05-15 16:00:00.000000', 'OPEN', 2);
 INSERT INTO public.status_ticket (last_modified_date, status, ticket_id) VALUES ('2023-05-15 17:00:00.000000', 'IN_PROGRESS', 2);
@@ -67,3 +67,10 @@ INSERT INTO public.message (id, content, sending_date, sent_by, chat_id) VALUES 
 
 INSERT INTO public.attachment (id, content, name, size, message_id) VALUES (1, 'path/to/a/photo/file', 'photo1', 10, 1);
 INSERT INTO public.attachment (id, content, name, size, message_id) VALUES (2, 'path/to/another/photo', 'photo2', 8, 1);
+
+INSERT INTO public.customer (id, username, first_name, last_name, email, city, address) VALUES ('056d235a-8eaa-41fc-8d2a-adaedcf317c7', 'mariorossi', 'Mario', 'Rossi', 'mariorossi@polito.it', 'Torino', 'Via Roma, 22');
+INSERT INTO public.product (ean, brand, category, name, price) VALUES (1, 'Apple', 'Smartphone', 'iPhone 11', 800);
+INSERT INTO public.expert (id, fields, username, first_name, last_name, email) VALUES ('a21c80cd-9c6c-4eed-b992-cd926a72ad4b', 'Smartphone', 'expert1', 'Expert', 'Uno', 'exp@polito.it');
+INSERT INTO public.ticket (id, date_of_creation, description, issue_type, priority_level, customer_id, expert_id, product_ean) VALUES (7, '2023-05-05 12:00:00.000000', 'Problem with smartphone', 'Problem', 3, '056d235a-8eaa-41fc-8d2a-adaedcf317c7', 'a21c80cd-9c6c-4eed-b992-cd926a72ad4b', 1);
+INSERT INTO public.status_ticket (last_modified_date, status, ticket_id) VALUES ('2023-05-05 12:00:00.000000', 'OPEN', 7);
+

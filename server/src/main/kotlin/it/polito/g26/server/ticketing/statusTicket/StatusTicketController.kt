@@ -41,6 +41,7 @@ class StatusTicketController(
     @ResponseStatus(HttpStatus.CREATED)
     fun closeStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {
+            //println(statusTicketDTO);
             statusTicketService.closeStatusTicket(statusTicketDTO.toEntity())
         }
         else {
@@ -60,6 +61,7 @@ class StatusTicketController(
     @PostMapping("/status/reopen")
     @ResponseStatus(HttpStatus.CREATED)
     fun reopenStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
+        println(statusTicketDTO);
         if (statusTicketDTO != null) {
             statusTicketService.reopenStatusTicket(statusTicketDTO.toEntity())
         }
