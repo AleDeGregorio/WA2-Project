@@ -9,7 +9,7 @@
     "emailVerified" : true,
     "firstName" : "Angela",
     "lastName" : "Bianchi",
-    "email" : "angela@polito.it",
+    "email" : "angelabianchi@polito.it",
     "credentials" : [ {
       "id" : "4db1d73c-7ff4-4d0d-9b94-229939a2449f",
       "type" : "password",
@@ -32,7 +32,7 @@
     "emailVerified" : true,
     "firstName" : "Beatrice",
     "lastName" : "Romano",
-    "email" : "beatriceromano@email.it",
+    "email" : "beatriceromano@polito.it",
     "credentials" : [ {
       "id" : "54b5ac7c-71ea-43ff-827a-3a0e1f66e6d2",
       "type" : "password",
@@ -55,7 +55,7 @@
     "emailVerified" : true,
     "firstName" : "Daniele",
     "lastName" : "Esposito",
-    "email" : "danieleesposito@email.it",
+    "email" : "danieleesposito@polito.it",
     "credentials" : [ {
       "id" : "29182cc0-94a5-46db-a29d-ff2733304ea1",
       "type" : "password",
@@ -78,7 +78,7 @@
     "emailVerified" : true,
     "firstName" : "Dario",
     "lastName" : "Greco",
-    "email" : "dariogreco@email.dep",
+    "email" : "dariogreco@polito.it",
     "credentials" : [ {
       "id" : "be33e569-944f-4295-b467-59f923dabcc7",
       "type" : "password",
@@ -101,7 +101,7 @@
     "emailVerified" : true,
     "firstName" : "Giorgio",
     "lastName" : "Gialli",
-    "email" : "giorgio@polito.it",
+    "email" : "giorgiogialli@polito.it",
     "credentials" : [ {
       "id" : "557fd8c5-e227-41d0-8b33-39584062af88",
       "type" : "password",
@@ -149,7 +149,7 @@
     "emailVerified" : true,
     "firstName" : "Luca",
     "lastName" : "Neri",
-    "email" : "luca@polito.it",
+    "email" : "lucaneri@polito.it",
     "credentials" : [ {
       "id" : "37b2368c-b4b4-45ae-8b78-d21a32aa03a3",
       "type" : "password",
@@ -172,7 +172,7 @@
     "emailVerified" : true,
     "firstName" : "Mario",
     "lastName" : "Rossi",
-    "email" : "mario@polito.it",
+    "email" : "mariorossi@polito.it",
     "credentials" : [ {
       "id" : "3293b2b8-8f74-4856-b3e9-f46c451f5170",
       "type" : "password",
@@ -195,7 +195,7 @@
     "emailVerified" : true,
     "firstName" : "Marta",
     "lastName" : "Ferrari",
-    "email" : "martaferrari@email.it",
+    "email" : "martaferrari@polito.it",
     "credentials" : [ {
       "id" : "0cee1c78-bd78-4b0e-b134-b28a6dc3a6ce",
       "type" : "password",
@@ -218,7 +218,7 @@
     "emailVerified" : true,
     "firstName" : "Michele",
     "lastName" : "Ricci",
-    "email" : "michelericci@email.it",
+    "email" : "michelericci@polito.it",
     "credentials" : [ {
       "id" : "1ed9346a-c481-43ce-b3e5-d19ab1746513",
       "type" : "password",
@@ -241,7 +241,7 @@
     "emailVerified" : true,
     "firstName" : "Paolo",
     "lastName" : "Russo",
-    "email" : "paolorusso@mail.it",
+    "email" : "paolorusso@polito.it",
     "credentials" : [ {
       "id" : "5d54d825-f7ec-4d20-a066-84cee76fde58",
       "type" : "password",
@@ -264,7 +264,7 @@
     "emailVerified" : true,
     "firstName" : "Sofia",
     "lastName" : "Verdi",
-    "email" : "sofia@polito.it",
+    "email" : "sofiaverdi@polito.it",
     "credentials" : [ {
       "id" : "36385431-32b5-422f-b794-6e0ef790adfc",
       "type" : "password",
