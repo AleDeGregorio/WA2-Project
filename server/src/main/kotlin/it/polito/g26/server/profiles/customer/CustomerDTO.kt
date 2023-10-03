@@ -21,8 +21,11 @@ fun CustomerDTO.toEntity(): Customer {
     return Customer(
         id = id,
         username = username,
-        firstName = firstName, lastName = lastName,
-        password = password ?: "password", email = email,
-        city = city, address = address
+        firstName = firstName,
+        lastName = lastName,
+        password = password ?: "password",
+        email = email,
+        city = city,
+        address = address
     )
 }

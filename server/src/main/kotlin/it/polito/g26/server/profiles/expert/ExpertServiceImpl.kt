@@ -131,7 +131,7 @@ class ExpertServiceImpl(
 
             // Update the attributes of the user
             expertNew.attributes = attr
-            expertNew.lastName =expert.lastName
+            expertNew.lastName = expert.lastName
             expertNew.username = expert.username
             expertNew.firstName =expert.firstName
             //expertNew.credentials= listOf(passwordCred) doesn't update here?
@@ -140,7 +140,7 @@ class ExpertServiceImpl(
             userResource.get(expertId).update(expertNew)
 
             //Database update
-            val retrievedExpert = expertRepository.findById(expert.id!!)
+            val retrievedExpert = expertRepository.findById(expertId!!)
 
             retrievedExpert?.username = expert.username
             retrievedExpert?.firstName = expert.firstName

@@ -14,7 +14,7 @@ data class ManagerDTO(
 )
 
 fun Manager.toDTO() : ManagerDTO {
-    return ManagerDTO(id, username, firstName, lastName, email, password, department)
+    return ManagerDTO(id, username, firstName, lastName, password, email, department)
 }
 
 fun ManagerDTO.toEntity(): Manager {

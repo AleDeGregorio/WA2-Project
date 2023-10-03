@@ -14,11 +14,17 @@ data class ExpertDTO(
 )
 
 fun Expert.toDTO() : ExpertDTO {
-    return ExpertDTO(id,  username, firstName, lastName, email, password, fields)
+    return ExpertDTO(id, username, firstName, lastName, password, email, fields)
 }
 
 fun ExpertDTO.toEntity(): Expert {
-    return Expert(id = id, username = username,
-        firstName = firstName, lastName = lastName, email =  email, password = password, fields =  fields)
+    return Expert(
+        id = id,
+        username = username,
+        firstName = firstName,
+        lastName = lastName,
+        email =  email,
+        password = password,
+        fields =  fields)
 
 }
