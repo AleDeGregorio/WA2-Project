@@ -1,25 +1,31 @@
 import {Container, Table} from "react-bootstrap";
 import {useNavigate, useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import API from "../API";
 import {PencilFill} from "react-bootstrap-icons";
+import LoginContext from "./LoginContext";
 
 function ProfileDetails(props) {
     const navigate = useNavigate();
 
-    const { email } = useParams();
+    const user = useContext(LoginContext)
+
     const { setError, setShow } = props;
 
     const [profileDetails, setProfileDetails] = useState([]);
 
     useEffect(() => {
-        API.profileDetails(email)
+        API.profileDetails(user.email, user.access_token)
             .then(profile => setProfileDetails(profile))
             .catch(error => {
-                setError(error);
+                setError(error)
                 setShow(true)
+
+                setTimeout(() => {
+                    setShow(false)
+                }, 3000)
             });
-    }, [profileDetails.size]);
+    }, []);
 
     return (
         <Container fluid>
@@ -36,14 +42,15 @@ function ProfileDetails(props) {
                 </tr>
                 </thead>
                 <tbody>
-                <tr key={profileDetails.email}>
-                    <td style={{ 'fontWeight': 'bold' }} className="email" onClick={() => navigate("/editProfile/" + profileDetails.email)}>
+                <tr key={user.email}>
+                    <td style={{ 'fontWeight': 'bold' }} className="email"
+                        onClick={() => navigate("/editProfile/" + user.email, { state: {profileDetails, setError, setShow }})}>
                         <span style={{ 'marginRight': '10px' }}><PencilFill /></span>
-                        {profileDetails.email}
+                        {user.email}
                     </td>
-                    <td>{profileDetails.password}</td>
-                    <td>{profileDetails.name}</td>
-                    <td>{profileDetails.surname}</td>
+                    <td>{user.password}</td>
+                    <td>{user.firstName}</td>
+                    <td>{user.lastName}</td>
                     <td>{profileDetails.city}</td>
                     <td>{profileDetails.address}</td>
                 </tr>

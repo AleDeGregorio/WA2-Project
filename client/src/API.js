@@ -38,11 +38,12 @@ function productDetails(product) {
     });
 }
 
-function profileDetails(email) {
+function profileDetails(email, token) {
     return new Promise((resolve, reject) => {
-        fetch('/API/profiles/' + email, {
+        fetch('/API/customer/' + email, {
             method: 'GET',
             headers: {
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
         }).then((response) => {

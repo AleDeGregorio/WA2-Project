@@ -12,9 +12,14 @@
     color: #198754;
 }
 
-#icon-profiles:hover {
+#icon-login:hover {
     cursor: pointer;
     color: #bb2d3b;
+}
+
+#icon-profile:hover {
+    cursor: pointer;
+    color: #0d6efd;
 }
 
 .nav-icon {

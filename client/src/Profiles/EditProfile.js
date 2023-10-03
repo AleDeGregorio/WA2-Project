@@ -1,17 +1,16 @@
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {Alert, Button, Card, Container, Form} from "react-bootstrap";
 import './InsertProfile.css'
 import API from "../API";
 import {useNavigate, useParams} from "react-router-dom";
+import LoginContext from "./LoginContext";
 
 function EditProfile(props) {
     const navigate = useNavigate()
 
-    const { email } = useParams();
+    const user = useContext(LoginContext)
 
-    const { setError, setShow } = props;
-
-    const [profileDetails, setProfileDetails] = useState([]);
+    const { profileDetails, setError, setShow } = props;
 
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
@@ -22,26 +21,20 @@ function EditProfile(props) {
     const [success, setSuccess] = useState(false);
 
     useEffect(() => {
-        API.profileDetails(email)
-            .then(profile => {
-                setProfileDetails(profile);
-                setPassword(profile.password);
-                setName(profile.name);
-                setSurname(profile.surname);
-                setCity(profile.city);
-                setAddress(profile.address);
-            })
-            .catch(error => {
-                setError(error);
-                setShow(true);
-            });
-    }, [profileDetails.size])
+        if(profileDetails && profileDetails.size > 0) {
+            setPassword(user.password)
+            setName(user.name)
+            setSurname(user.surname)
+            setCity(profileDetails.city)
+            setAddress(profileDetails.address)
+        }
+    }, [profileDetails?.size])
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const profile = {
-            email: email,
+            email: user.email,
             password: password,
             name: name,
             surname: surname,
@@ -50,7 +43,7 @@ function EditProfile(props) {
         }
 
         if (
-            email.length < 1 ||
+            user.email.length < 1 ||
             password.length < 1 ||
             name.length < 1 ||
             surname.length < 1 ||
@@ -68,7 +61,7 @@ function EditProfile(props) {
                     window.scrollTo(0, 0);
 
                     setTimeout(() => {
-                        navigate('/profiles/' + email);
+                        navigate('/profiles/' + user.email);
                     }, 2000);
                 })
                 .catch(err => { setError(err.detail); setShow(true); });
@@ -85,32 +78,32 @@ function EditProfile(props) {
                         <div className='form-profile'>
                             <Form.Group className="mb-3" controlId="email">
                                 <Form.Label>Email address</Form.Label>
-                                <Form.Control type="email" value={profileDetails.email}/>
+                                <Form.Control type="email" value={user.email}/>
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="password">
                                 <Form.Label>Password</Form.Label>
-                                <Form.Control type="password" placeholder={profileDetails.password} onChange={(e) => setPassword(e.target.value)}/>
+                                <Form.Control type="password" placeholder={password} onChange={(e) => setPassword(e.target.value)}/>
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="name">
                                 <Form.Label>Name</Form.Label>
-                                <Form.Control type="text" placeholder={profileDetails.name} onChange={(e) => setName(e.target.value)}/>
+                                <Form.Control type="text" placeholder={name} onChange={(e) => setName(e.target.value)}/>
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="surname">
                                 <Form.Label>Surname</Form.Label>
-                                <Form.Control type="text" placeholder={profileDetails.surname} onChange={(e) => setSurname(e.target.value)}/>
+                                <Form.Control type="text" placeholder={surname} onChange={(e) => setSurname(e.target.value)}/>
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="city">
                                 <Form.Label>City</Form.Label>
-                                <Form.Control type="text" placeholder={profileDetails.city} onChange={(e) => setCity(e.target.value)}/>
+                                <Form.Control type="text" placeholder={city} onChange={(e) => setCity(e.target.value)}/>
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="address">
                                 <Form.Label>Address</Form.Label>
-                                <Form.Control type="text" placeholder={profileDetails.address} onChange={(e) => setAddress(e.target.value)}/>
+                                <Form.Control type="text" placeholder={address} onChange={(e) => setAddress(e.target.value)}/>
                             </Form.Group>
                         </div>
                         <div className="d-grid gap-2">

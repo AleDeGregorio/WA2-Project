@@ -2,12 +2,13 @@ import {useState} from "react";
 import {Alert, Button, Card, Container, Form} from "react-bootstrap";
 import './InsertProfile.css'
 import API from "../API";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
 function InsertProfile(props) {
     const navigate = useNavigate()
+    const location = useLocation()
 
-    const { setError, setShow } = props;
+    const { profileDetails, setError, setShow } = location.state;
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");

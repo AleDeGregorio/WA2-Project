@@ -81,8 +81,8 @@ function App2() {
                 user.email = email
                 user.id = id
                 user.username = username
-                user.firstName = firstName
-                user.lastName = lastName
+                user.firstName = lastName
+                user.lastName = firstName
                 user.password = password
                 user.city = city
                 user.address = address
@@ -166,7 +166,7 @@ function App2() {
                 <Route path='/mainProfiles' element={<MainProfiles />} />
                 <Route path='/profiles/:email' element={<ProfileDetails setError={setError} setShow={setShow}/>} />
                 <Route path='/insertProfile' element={<InsertProfile setError={setError} setShow={setShow}/>} />
-                <Route path='/editProfile/:email' element={<EditProfile setError={setError} setShow={setShow}/>} />
+                <Route path='/editProfile/:email' element={<EditProfile/>} />
                 <Route path='/customerTickets' element={<CustomerTickets />} />
                 <Route path='/expertTickets' element={<ExpertTickets />} />
                 <Route path='/createTicket' element={<CreateTicket products={products}/>} />
