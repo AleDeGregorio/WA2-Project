@@ -116,6 +116,31 @@
     "notBefore" : 0,
     "groups" : [ ]
   }, {
+    "id" : "a4935249-da99-4c54-8e44-f10d751be9e4",
+    "createdTimestamp" : 1696333392576,
+    "username" : "idm-client",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : false,
+    "firstName" : "",
+    "lastName" : "",
+    "credentials" : [ {
+      "id" : "5e996c7d-0cc3-48f1-8122-b3c90d02daf6",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1696333413516,
+      "secretData" : "{\"value\":\"X8LIk6n/Xw+YTv7LoNIRZGzqdlp++o1Qscm3wBIFkxE=\",\"salt\":\"Ec7h+7i0/zwmIShzbdl4jg==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-ticketingrealm" ],
+    "clientRoles" : {
+      "realm-management" : [ "view-realm", "view-users", "view-clients", "manage-users" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
     "id" : "2bd77583-af4e-4680-a666-59c3b785c8b8",
     "createdTimestamp" : 1684245117407,
     "username" : "lucaneri",
