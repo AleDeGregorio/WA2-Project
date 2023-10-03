@@ -97,6 +97,10 @@ function App2() {
             .catch(err => {
                     setShow(true);
                     setError(err.error);
+
+                    setTimeout(() => {
+                        setShow(false)
+                    }, 3000)
                 }
             )
     }
@@ -110,6 +114,11 @@ function App2() {
                 setShow(false);
                 setError('');
                 setShowLogout(true)
+
+                setTimeout(() => {
+                    setShowLogout(false)
+                }, 3000)
+
                 navigate('/')
             /*})
             .catch(err => {
@@ -126,6 +135,10 @@ function App2() {
             .catch(error => {
                 setError(error);
                 setShow(true)
+
+                setTimeout(() => {
+                    setShow(false)
+                }, 3000)
             });
 
         const user = JSON.parse(localStorage.getItem("user"))

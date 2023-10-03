@@ -4,6 +4,8 @@ import {useState} from "react";
 function Login(props) {
     const { login, setShow, setError } = props;
 
+    const [loading, setLoading] = useState(false)
+
     const [username, setUsername] = useState("mariorossi")
     const [password, setPassword] = useState("password")
 
@@ -17,11 +19,16 @@ function Login(props) {
             valid = false;
 
         if (valid) {
+            setLoading(true)
             login(credentials);
         }
         else {
             setShow(true);
             setError('Wrong data format. Please try again');
+
+            setTimeout(() => {
+                setShow(false)
+            }, 3000)
         }
     }
 
@@ -31,6 +38,13 @@ function Login(props) {
                 <Col>
                     <br />
                     <h2>Login</h2>
+                    {
+                        loading ?
+                            <div>
+                                <br />
+                                <div className="spinner-border" role="status"></div>
+                            </div> : false
+                    }
                     <Form onSubmit={handleSubmit}>
                         <br />
                         <br />
