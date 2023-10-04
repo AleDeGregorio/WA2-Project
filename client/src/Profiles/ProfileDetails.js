@@ -9,23 +9,38 @@ function ProfileDetails(props) {
     const navigate = useNavigate();
 
     const user = useContext(LoginContext)
+    const { email } = useParams()
 
     const { setError, setShow } = props;
+
+    const [loading, setLoading] = useState(true)
+    const [loadContext, setLoadContext] = useState(true)
 
     const [profileDetails, setProfileDetails] = useState([]);
 
     useEffect(() => {
-        API.profileDetails(user.email, user.access_token)
-            .then(profile => setProfileDetails(profile))
-            .catch(error => {
-                setError(error)
-                setShow(true)
+        if(loadContext && user) {
+            setLoadContext(false)
+        }
+        else if(email === user.email) {
+            API.profileDetails(user.email, user.access_token)
+                .then(profile => {
+                    setProfileDetails(profile)
+                    setLoading(false)
+                })
+                .catch(error => {
+                    setError(error)
+                    setShow(true)
 
-                setTimeout(() => {
-                    setShow(false)
-                }, 3000)
-            });
-    }, []);
+                    setTimeout(() => {
+                        setShow(false)
+                    }, 3000)
+                });
+        }
+        else {
+            navigate("/wrongPrivileges")
+        }
+    }, [loadContext]);
 
     return (
         <Container fluid>
@@ -41,20 +56,29 @@ function ProfileDetails(props) {
                     <th>Address</th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr key={user.email}>
-                    <td style={{ 'fontWeight': 'bold' }} className="email"
-                        onClick={() => navigate("/editProfile/" + user.email, { state: {profileDetails, setError, setShow }})}>
-                        <span style={{ 'marginRight': '10px' }}><PencilFill /></span>
-                        {user.email}
-                    </td>
-                    <td>{user.password}</td>
-                    <td>{user.firstName}</td>
-                    <td>{user.lastName}</td>
-                    <td>{profileDetails.city}</td>
-                    <td>{profileDetails.address}</td>
-                </tr>
-                </tbody>
+                {
+                    loading ?
+
+                        <div>
+                            <br />
+                            <div className="spinner-border" role="status"></div>
+                        </div> :
+
+                        <tbody>
+                        <tr key={user.email}>
+                            <td style={{ 'fontWeight': 'bold' }} className="email"
+                                onClick={() => navigate("/editProfile/" + user.email, { state: {profileDetails, setError, setShow }})}>
+                                <span style={{ 'marginRight': '10px' }}><PencilFill /></span>
+                                {user.email}
+                            </td>
+                            <td>{user.password}</td>
+                            <td>{user.firstName}</td>
+                            <td>{user.lastName}</td>
+                            <td>{profileDetails.city}</td>
+                            <td>{profileDetails.address}</td>
+                        </tr>
+                        </tbody>
+                }
             </Table>
         </Container>
     );
