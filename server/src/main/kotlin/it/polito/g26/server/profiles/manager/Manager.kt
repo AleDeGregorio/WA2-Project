@@ -11,7 +11,7 @@ data class Manager(
     override var firstName: String,
     override var lastName: String,
     @Transient
-    override var password: String,
+    override var password: String?,
     override var email: String,
 
     var department: String

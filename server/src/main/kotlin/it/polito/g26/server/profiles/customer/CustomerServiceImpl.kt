@@ -21,6 +21,10 @@ class CustomerServiceImpl(
     private val customerRepository: CustomerRepository
 ) : CustomerService {
     override fun getCustomer(email: String): CustomerDTO? {
+        println("heila")
+        println("entrato service e risultato")
+        println(customerRepository.findByEmail(email))
+        println("fine risultato")
         return customerRepository.findByEmail(email)?.toDTO()
     }
 
