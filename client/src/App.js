@@ -48,6 +48,7 @@ function App2() {
     const navigate = useNavigate()
 
     const [initialLoading, setInitialLoading] = useState(true);
+    const [loginLoading, setLoginLoading] = useState(false)
 
     const [user, setUser] = useState({});
 
@@ -95,8 +96,9 @@ function App2() {
                 navigate('/');
             })
             .catch(err => {
+                    setLoginLoading(false)
                     setShow(true);
-                    setError(err.error);
+                    setError("Incorrect username or password, please try again");
 
                     setTimeout(() => {
                         setShow(false)
@@ -159,7 +161,7 @@ function App2() {
             {initialLoading ? <Loading /> : false}
             <Routes>
                 <Route path='/' element={<Homepage />} />
-                <Route path='login' element={<Login login={doLogin} setShow={setShow} setError={setError} />}/>
+                <Route path='login' element={<Login login={doLogin} setShow={setShow} setError={setError} loginLoading={loginLoading} setLoginLoading={setLoginLoading}/>}/>
                 <Route path='/mainProducts' element={<MainProducts products={products} setError={setError} setShow={setShow}/>}/>} />
                 <Route path='/products' element={<Products products={products} setError={setError} setShow={setShow}/>} />
                 <Route path='/products/:productId' element={<ProductDetails setError={setError} setShow={setShow}/>} />

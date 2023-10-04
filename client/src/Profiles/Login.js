@@ -2,9 +2,7 @@ import {Button, Col, Container, Form, Row} from "react-bootstrap";
 import {useState} from "react";
 
 function Login(props) {
-    const { login, setShow, setError } = props;
-
-    const [loading, setLoading] = useState(false)
+    const { login, setShow, setError, loginLoading, setLoginLoading } = props;
 
     const [username, setUsername] = useState("mariorossi")
     const [password, setPassword] = useState("password")
@@ -19,7 +17,7 @@ function Login(props) {
             valid = false;
 
         if (valid) {
-            setLoading(true)
+            setLoginLoading(true)
             login(credentials);
         }
         else {
@@ -39,7 +37,7 @@ function Login(props) {
                     <br />
                     <h2>Login</h2>
                     {
-                        loading ?
+                        loginLoading ?
                             <div>
                                 <br />
                                 <div className="spinner-border" role="status"></div>
