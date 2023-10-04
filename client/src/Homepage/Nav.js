@@ -34,7 +34,12 @@ function Nav(props) {
                             <span className='head-text' id='icon-profile' onClick={() => navigate('/profiles/' + user.email)}>
                                 <PersonCircle className='nav-icon' /> Your profile
                             </span>
-                        </div> : false
+                        </div> :
+                        <div className='p-2 bd-highlight'>
+                            <span className='head-text' id='icon-profile' onClick={() => navigate('/insertProfile')}>
+                                <PersonCircle className='nav-icon' /> Sign up
+                            </span>
+                        </div>
                 }
                 <div className='p-2 bd-highlight'>
                     {Object.keys(user).length > 0 ?

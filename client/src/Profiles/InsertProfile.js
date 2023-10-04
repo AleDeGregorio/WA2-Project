@@ -1,14 +1,14 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {Alert, Button, Card, Container, Form} from "react-bootstrap";
 import './InsertProfile.css'
 import API from "../API";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import LoginContext from "./LoginContext";
 
 function InsertProfile(props) {
     const navigate = useNavigate()
-    const location = useLocation()
 
-    const { profileDetails, setError, setShow } = location.state;
+    const { setError, setShow } = props
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -22,11 +22,13 @@ function InsertProfile(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const profile = {
+        const customer = {
+            id: null,
+            username: name+surname,
             email: email,
             password: password,
-            name: name,
-            surname: surname,
+            firstName: name,
+            lastName: surname,
             city: city,
             address: address
         }
@@ -44,16 +46,20 @@ function InsertProfile(props) {
         }
 
         else {
-            API.insertProfile(profile)
+            API.insertProfile(customer)
                 .then(() => {
                     setSuccess(true);
                     window.scrollTo(0, 0);
 
                     setTimeout(() => {
-                        navigate('/profiles/' + email);
-                    }, 2000);
+                        setSuccess(false)
+                        navigate('/login');
+                    }, 3000);
                 })
-                .catch(err => { setError(err.detail); setShow(true); });
+                .catch(err => {
+                    setError(err);
+                    setShow(true);
+                });
         }
     }
 

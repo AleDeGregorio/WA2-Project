@@ -38,7 +38,7 @@ function productDetails(product) {
     });
 }
 
-function profileDetails(email, token) {
+function getCustomer(email, token) {
     return new Promise((resolve, reject) => {
         fetch('/API/customer/' + email, {
             method: 'GET',
@@ -101,14 +101,14 @@ function logout(token) {
     });
 }
 
-function insertProfile(profile) {
+function signupCustomer(customer) {
     return new Promise((resolve, reject) => {
-        fetch('/API/profiles', {
+        fetch('/API/customer/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(profile),
+            body: JSON.stringify(customer),
         }).then((response) => {
             if (response.ok) {
                 const ok = true;
@@ -123,7 +123,7 @@ function insertProfile(profile) {
     });
 }
 
-function editProfile(profile, token) {
+function updateCustomer(profile, token) {
     return new Promise((resolve, reject) => {
         fetch('/API/customer/' + profile.email, {
             method: 'PUT',
@@ -169,5 +169,5 @@ function insertTicket(ticket, token) {
     });
 }
 
-const API = { products, productDetails, profileDetails, login, logout, insertProfile, editProfile, insertTicket };
+const API = { products, productDetails, profileDetails: getCustomer, login, logout, insertProfile: signupCustomer, editProfile: updateCustomer, insertTicket };
 export default API;
