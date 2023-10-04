@@ -123,11 +123,12 @@ function insertProfile(profile) {
     });
 }
 
-function editProfile(profile) {
+function editProfile(profile, token) {
     return new Promise((resolve, reject) => {
-        fetch('/API/profiles/' + profile.email, {
+        fetch('/API/customer/' + profile.email, {
             method: 'PUT',
             headers: {
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(profile),

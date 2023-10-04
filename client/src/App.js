@@ -166,7 +166,7 @@ function App2() {
                 <Route path='/mainProfiles' element={<MainProfiles />} />
                 <Route path='/profiles/:email' element={<ProfileDetails setError={setError} setShow={setShow}/>} />
                 <Route path='/insertProfile' element={<InsertProfile setError={setError} setShow={setShow}/>} />
-                <Route path='/editProfile/:email' element={<EditProfile/>} />
+                <Route path='/editProfile/:email' element={<EditProfile setError={setError} setShow={setShow} logout={doLogout}/>}/>
                 <Route path='/customerTickets' element={<CustomerTickets />} />
                 <Route path='/expertTickets' element={<ExpertTickets />} />
                 <Route path='/createTicket' element={<CreateTicket products={products}/>} />
