@@ -95,6 +95,7 @@ function App2() {
 
                 setShow(false);
                 setError('');
+                setLoginLoading(false)
                 navigate('/');
             })
             .catch(err => {
