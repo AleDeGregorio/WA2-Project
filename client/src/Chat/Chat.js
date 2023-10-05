@@ -106,8 +106,48 @@ const ticketData = {
         dateOfCreation: "2023-09-29T10:00:00",
     },
 };
+ const chatExample=[
+     {
+         "id": 1,
+         "messages": [],
+         "ticket": {
+             "id": 20,
+             "customer": {
+                 "id": "056d235a-8eaa-41fc-8d2a-adaedcf317c7",
+                 "username": "mariorossi",
+                 "firstName": "Mario",
+                 "lastName": "Rossi",
+                 "password": null,
+                 "email": "mariorossi@polito.it",
+                 "city": "Torino",
+                 "address": "Via Roma, 22"
+             },
+             "expert": {
+                 "id": "a21c80cd-9c6c-4eed-b992-cd926a72ad4b",
+                 "username": "expert1",
+                 "firstName": "Expert",
+                 "lastName": "Uno",
+                 "password": null,
+                 "email": "exp@polito.it",
+                 "fields": "Smartphone"
+             },
+             "product": {
+                 "ean": 1,
+                 "name": "iPhone 11",
+                 "brand": "Apple",
+                 "category": "Smartphone",
+                 "price": 800.0
+             },
+             "issueType": "Problem",
+             "description": "Problem with smartphone",
+             "priorityLevel": 3,
+             "dateOfCreation": "2023-05-05T10:00:00.000+00:00"
+         },
+         "creationDate": "2023-05-06T09:00:00.000+00:00"
+     }
+ ]
 function Chat() {
-    const [chats, setChats] = useState([]);
+    const [chats, setChats] = useState(chatExample);
 
     const [selectedChatId, setSelectedChatId] = useState(null);
 
@@ -131,7 +171,7 @@ function Chat() {
 
     return (
         <Container>
-            <h1>Chat for ticket {ticketData.ticket.id}</h1>
+            <h1>Chat for ticket {chats[0].ticket.id}</h1>
             <ListGroup>
                 {chats.map(chat => (
                     <ListGroup.Item key={chat.id}>
@@ -181,6 +221,9 @@ function ChatMessages({ chatId }) {
         //     .then(response => response.json())
         //     .then(data => setMessages(data))
         //     .catch(error => console.error('Errore nella richiesta API:', error));
+       /* API.getChatMessages(chatId)
+            .then(data => setMessages(data))
+            .catch(error => console.error('Errore nella richiesta API:', error));*/
         setMessages(ticketData.ticket.chats.find(chat => chat.id === chatId).messages)
     };
 
