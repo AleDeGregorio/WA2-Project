@@ -27,6 +27,7 @@ import WrongPrivileges from "./ErrorHandling/WrongPrivileges";
 import CreateTicket from "./CustomerTickets/CreateTicket";
 import ExpertTickets from "./ExpertTickets/ExpertTickets";
 import TicketDetails from "./ExpertTickets/TicketDetails"
+import Chat from "./Chat/Chat";
 
 
 
@@ -160,6 +161,7 @@ function App2() {
                 <Route path='/createTicket' element={<CreateTicket products={products}/>} />
                 <Route path='/viewTicket/:id' element={<TicketDetails />}/>
                 <Route path='/wrongPrivileges' element={<WrongPrivileges />} />
+                <Route path='/chat' element={<Chat />} />
                 <Route path='*' element={<PageNotFound />} />
             </Routes>
         </LoginContext.Provider>
