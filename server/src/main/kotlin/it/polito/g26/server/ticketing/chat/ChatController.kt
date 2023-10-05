@@ -2,7 +2,7 @@ package it.polito.g26.server.ticketing.chat
 
 import it.polito.g26.server.*
 import it.polito.g26.server.ticketing.messages.MessageDTO
-import it.polito.g26.server.ticketing.tickets.TicketDTO
+import it.polito.g26.server.ticketing.tickets.toEntity
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -20,7 +20,7 @@ class ChatController(
 ) {
     private fun chatDTOToEntity(chatDTO: ChatDTO) : Chat {
         val chat = Chat()
-        chat.ticket = chatDTO.ticket
+        chat.ticket = chatDTO.ticket.toEntity()
         chat.creationDate = chatDTO.creationDate
         return chat
     }

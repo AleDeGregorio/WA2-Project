@@ -21,6 +21,9 @@ class TicketServiceImpl(
     }
 
     override fun getTicket(id: Long): TicketDTO? {
+        println("trova questo")
+        println(ticketRepository.findByIdOrNull(id))
+        println("finito")
         return ticketRepository.findByIdOrNull(id)?.toDTO()
     }
 
