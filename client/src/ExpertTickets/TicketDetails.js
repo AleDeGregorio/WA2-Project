@@ -1,27 +1,30 @@
-import {Container, Table, Button, Form, Dropdown, DropdownButton, DropdownItem} from "react-bootstrap";
-import {useParams} from "react-router-dom";
+import {Container, Table, Button, Form, Dropdown, Row, Col, Alert} from "react-bootstrap";
+import {Link, useParams} from "react-router-dom";
 import {RxUpdate} from "react-icons/rx"
+import {BiChat} from "react-icons/bi"
 import {useContext, useEffect, useState} from "react";
 import API from "../API";
 import dayjs from "dayjs"
 import LoginContext from "../Profiles/LoginContext";
+import {GiTicket} from "react-icons/gi";
 
 function TicketDetails(props) {
     const {id} = useParams();
     const user = useContext(LoginContext)
     const [ticket, setTicket] = useState([]);
-    const [waiting, setWaiting] = useState(true);
-    const [status, setStatus] = useState();
-    // const { setError, setShow } = props
+    const [waitingTicket, setWaitingTicket] = useState(true);
+    const [waitingStatus, setWaitingStatus] = useState(true);
+    const [status, setStatus] = useState([]);
+     const [error, setError] =useState();
+     const [show, setShow] = useState(false);
 
     useEffect(() => {
         API.ticketDetails(id,  user.access_token).then((resultTicket) => {
-            console.log(resultTicket)
+           // console.log(resultTicket)
             setTicket(resultTicket);
-            setWaiting(false);
-            //setError(error);
-            //setShow(true);
-            //console.log(page);
+            setWaitingTicket(false);
+            setError(error);
+            setShow(true);
         });
     }, [id]);
 
@@ -30,7 +33,12 @@ function TicketDetails(props) {
             .then(s => {
                 setStatus(s)
             });
-    }, [id]);
+    }, [id, status]);
+
+    useEffect(()=>{
+       // console.log("status:", status);
+        setWaitingStatus(false)
+    },[status])
 
     function getStatusLabel(status) {
         switch (status) {
@@ -42,45 +50,102 @@ function TicketDetails(props) {
                 return "CLOSED";
             case "REOPENED":
                 return "REOPENED";
-            default:
+            case "IN_PROGRESS":
                 return "IN PROGRESS";
+
         }
     }
 
-    const handleResolveTicket = async (status) => {
-            await API.resolveTicket(status, user.access_token);
-            const newStatus = await API.latestStatus(status.ticket.id);
-            setStatus(newStatus)
-
+    const handleOpenTicket = async (s) => {
+        const newStatus = {
+            tid: s.tid,
+            lastModifiedDate: new Date(),
+            status: "OPEN",
+        }
+        await API.openTicket(newStatus, user.access_token)
+            .then( () => {
+                    setStatus(newStatus);
+                }
+            )
+            .catch(error => {
+                setError(error);
+                setShow(true)
+            })
     };
-    const handleProgressTicket = async (status) => {
-            await API.progressTicket(status, user.access_token);
-            const newStatus = await API.latestStatus(status.ticket.id);
-            setStatus(newStatus)
-        };
-
-    const handleOpenTicket= async (status) => {
-        await API.openTicket(status, user.access_token);
-        const newStatus = await API.latestStatus(status.tid.id);
-        setStatus(newStatus)
+    const handleProgressTicket = async (s) => {
+        const newStatus = {
+            tid: s.tid,
+            lastModifiedDate: new Date(),
+            status: "IN_PROGRESS",
+        }
+        await API.progressTicket(newStatus, user.access_token)
+            .then( () => {
+                    setStatus(newStatus);
+                }
+            )
+            .catch(error => {
+                setError(error);
+                setShow(true)
+            })
     };
-    const handleCloseTicket= async (status) => {
-        console.log(status);
-            await API.closeTicket(status, user.access_token);
-            const newStatus = await API.latestStatus(status.ticket.id);
-            setStatus(newStatus)
-        };
-    const handleReopenTicket = async (status) => {
-            await API.reopenTicket(status, user.access_token);
-            const newStatus = await API.latestStatus(status.ticket.id);
-            setStatus(newStatus)
-        };
+
+    const handleCloseTicket = async (s) => {
+        const newStatus = {
+            tid: s.tid,
+            lastModifiedDate: new Date(),
+            status: "CLOSED",
+        }
+       // console.log(newStatus);
+       // console.log(status)
+        try {
+            await API.closeTicket(newStatus, user.access_token);
+            setStatus(newStatus);
+            //console.log(newStatus);
+        } catch (error) {
+            setError(error);
+            setShow(true);
+        }
+    }
+    const handleReopenTicket = async (s) => {
+        const newStatus = {
+            tid: s.tid,
+            lastModifiedDate: new Date(),
+            status: "REOPENED",
+        }
+        //console.log("prima : ",newStatus);
+        API.reopenTicket(newStatus, user.access_token)
+            .then( () => {
+                setStatus(newStatus);
+               // console.log("dopo : ",newStatus);
+                }
+            )
+            .catch(error => {
+                setError(error);
+                setShow(true)
+            })
+    };
+    const handleResolveTicket = async (s) => {
+        const newStatus = {
+            tid: s.tid,
+            lastModifiedDate: new Date(),
+            status: "RESOLVED",
+        }
+        API.resolveTicket(newStatus, user.access_token)
+            .then( () => {
+                    setStatus(newStatus);
+                    //console.log("dopo : ",newStatus);
+                }
+            )
+            .catch(error => {
+                setError(error);
+                setShow(true)
+            })
+    };
 
     return (
         ticket &&
-            <Container fluid style = {{display: "flex", flexDirection: "column", alignItems : "center"}}>
-                <h1>Ticket details</h1>
-
+            <Container fluid style = {{display: "flex", flexDirection: "column", alignItems : "center", fontFamily : "system-ui", padding: "5%"}}>
+                <h1>TICKET DETAILS</h1>
                 <Table style={{
                     border: '2px solid grey',
                     borderRadius: "10px",
@@ -89,49 +154,54 @@ function TicketDetails(props) {
                 }}>
                     <tbody>
                     <tr>
-                        <th>Ticket id</th>
+                        <th className="text-success">Ticket id</th>
                         <td>{ticket.id}</td>
                     </tr>
                     <tr>
-                        <th>Customer </th>
+                        <th className="text-success">Customer </th>
                         <td>{ticket.customer && ticket.customer.username}</td>
                     </tr>
                     <tr>
-                        <th>Expert </th>
+                        <th className="text-success">Expert </th>
                         <td>{ticket.expert && ticket.expert.username}</td>
                     </tr>
                     <tr>
-                        <th>Product </th>
+                        <th className="text-success">Product </th>
                         <td>{ticket.product && ticket.product.name}</td>
                     </tr>
                     <tr>
-                        <th>Issue Type</th>
+                        <th className="text-success">Issue Type</th>
                         <td>{ticket.issueType}</td>
                     </tr>
                     <tr>
-                        <th>Description</th>
+                        <th className="text-success">Description</th>
                         <td>{ticket.description}</td>
                     </tr>
                     <tr>
-                        <th>Priority Level</th>
+                        <th className="text-success">Priority Level</th>
                         <td>{ticket.priorityLevel}</td>
                     </tr>
                     <tr>
-                        <th>Date Of Creation</th>
+                        <th className="text-success">Date Of Creation</th>
                         <td>{dayjs(ticket.dateOfCreation).format("YYYY-MM-DD")}</td>
                     </tr>
-                    <tr>
-                        <th>Status</th>
-                        <td>
-                            {status ? getStatusLabel(status.status) : "N/A"}
-                        </td>
-                    </tr>
+                        <tr>
+                            <th className="text-success">Status</th>
+                            <td>
+                                {waitingStatus ? (
+                                    "Loading..."
+                                ) : (
+                                    status ? getStatusLabel(status.status) : "N/A"
+                                )}
+                            </td>
+                        </tr>
                     </tbody>
                 </Table>
-                <Form>
+                <Container style = {{display : "flex", justifyContent: "space-evenly" }}>
+                    <Form >
                     <Form.Group controlId="status">
                         <Dropdown>
-                            <Dropdown.Toggle> Change Status <RxUpdate /> </Dropdown.Toggle>
+                            <Dropdown.Toggle style = {{backgroundColor: "#057F5F", border: "none"}}> Change Status <RxUpdate /> </Dropdown.Toggle>
                             <Dropdown.Menu>
                                 <Dropdown.Item onClick={() => {
                                     handleOpenTicket(status);
@@ -152,7 +222,10 @@ function TicketDetails(props) {
                         </Dropdown>
                     </Form.Group>
                 </Form>
-
+                    <Link to={`/viewChat/`}>
+                        <Button style = {{backgroundColor: "#057F5F", border: "none"}}>Customer Service <BiChat/></Button>
+                    </Link>
+            </Container>
             </Container>
 
             );

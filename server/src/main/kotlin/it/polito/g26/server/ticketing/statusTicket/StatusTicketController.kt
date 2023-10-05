@@ -7,6 +7,11 @@ import it.polito.g26.server.ticketing.tickets.toEntity
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
+// Definisci il logger nella classe
+val logger: Logger = LoggerFactory.getLogger(StatusTicketController::class.java)
 
 @RestController
 @RequestMapping("/ticket")
@@ -41,7 +46,7 @@ class StatusTicketController(
     @ResponseStatus(HttpStatus.CREATED)
     fun closeStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {
-            //println(statusTicketDTO);
+            println("my status"  + {statusTicketDTO});
             statusTicketService.closeStatusTicket(statusTicketDTO.toEntity())
         }
         else {
@@ -61,7 +66,7 @@ class StatusTicketController(
     @PostMapping("/status/reopen")
     @ResponseStatus(HttpStatus.CREATED)
     fun reopenStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
-        println(statusTicketDTO);
+        logger.info("my status: {}", statusTicketDTO)
         if (statusTicketDTO != null) {
             statusTicketService.reopenStatusTicket(statusTicketDTO.toEntity())
         }

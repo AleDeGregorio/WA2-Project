@@ -27,7 +27,6 @@ function ExpertTickets() {
                 setTickets(t);
                 for (let i = 0; i < tickets.length; i++) {
                     //console.log(tickets[i]);
-
                 }
             })
             .catch(error => {
@@ -51,37 +50,38 @@ function ExpertTickets() {
                 <h1 style={{ textAlign: "center" }}>Ticket List</h1>
         <CardGroup className="ticketList" style = {{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
             {tickets.map((t) => {
-
                     return (
-                    <Card key={t.id} style={{ width: "30%", margin: "10px" }}>
+                    <Card key={t.id} style={{ width: "30%", margin: "5%" }}>
                         <Card.Body>
                             <Card.Title style={{ fontWeight: "900" }}>{t.description}</Card.Title>
                             <Container
                                 style={{
                                     display: "flex",
                                     justifyContent: "space-between",
-                                    flexDirection:"row",
-                                    alignItems: "baseline",
+                                    flexDirection:"column",
                                     padding: "0px",
+                                    alignItems: "flex-start"
                                 }}
                             >
-                                <Card.Subtitle>
+                                <Card.Text>
                                     Device : {t.product && t.product.name}
-                                </Card.Subtitle>
+                                </Card.Text>
                                 <Card.Text style={{ display: "flex", justifyContent: "space-between" }}> Created By: {t.customer && t.customer.username}
                                 </Card.Text>
                                 <Card.Text> Served By: {t.expert && t.expert.username}
                                 </Card.Text>
                             </Container>
+
+                        </Card.Body>
+
+                        <Card.Footer style={{ display: "flex", justifyContent: "space-between", alignItems: "center"}}>
                             <Card.Subtitle style={{ display: "flex", justifyContent: "space-between" }}>
                                 <Card.Text>
                                     Creation Date: {dayjs(t.dateOfCreation).format('YYYY-MM-DD')}
                                 </Card.Text>
                             </Card.Subtitle>
-                        </Card.Body>
-                        <Card.Footer style={{ display: "flex", justifyContent: "space-between", flexDirection: "row-reverse" }}>
                             <Link to={`/viewTicket/${t.id}`}>
-                                <Button>Ticket Detail <GiTicket /> </Button>{" "}
+                                <Button style = {{backgroundColor: "#057F5F", border: "none"}}>Ticket Detail <GiTicket /> </Button>{" "}
                             </Link>
                         </Card.Footer>
                     </Card>

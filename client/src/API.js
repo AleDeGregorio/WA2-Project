@@ -189,7 +189,9 @@ function progressTicket(status, token) {
     });
 }
 function closeTicket(status, token) {
+
     return new Promise((resolve, reject) => {
+
         fetch('/API/ticket/status/close', {
             method: 'POST',
             headers: {
