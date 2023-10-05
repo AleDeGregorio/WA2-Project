@@ -169,5 +169,50 @@ function insertTicket(ticket, token) {
     });
 }
 
-const API = { products, productDetails, profileDetails: getCustomer, login, logout, insertProfile: signupCustomer, editProfile: updateCustomer, insertTicket };
+function getCustomerTickets(id, token) {
+    return new Promise((resolve, reject) => {
+        fetch('/API/customer/' + id + '/tickets', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        }).then((response) => {
+            if (response.ok) {
+                resolve(response.json());
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((message) => { reject(message); }) // error message in the response body
+                    .catch(() => { reject({ error: "Unable to elaborate server response" }) }); // something else
+            }
+        }).catch(() => { reject({ error: "Server communication error" }) }); // connection errors
+    });
+}
+
+function getLatestTicketStatus(id, token) {
+    return new Promise((resolve, reject) => {
+        fetch('/API/ticket/status/' + id + '/latest', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        }).then((response) => {
+            if (response.ok) {
+                resolve(response.json());
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((message) => { reject(message); }) // error message in the response body
+                    .catch(() => { reject({ error: "Unable to elaborate server response" }) }); // something else
+            }
+        }).catch(() => { reject({ error: "Server communication error" }) }); // connection errors
+    });
+}
+
+const API = {
+    products, productDetails,
+    profileDetails: getCustomer, login, logout, insertProfile: signupCustomer, editProfile: updateCustomer,
+    insertTicket, getCustomerTickets, getLatestTicketStatus };
 export default API;

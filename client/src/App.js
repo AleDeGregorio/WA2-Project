@@ -27,6 +27,8 @@ import WrongPrivileges from "./ErrorHandling/WrongPrivileges";
 import CreateTicket from "./CustomerTickets/CreateTicket";
 import ExpertTickets from "./ExpertTickets/ExpertTickets";
 import TicketDetails from "./ExpertTickets/TicketDetails"
+import ViewCustomerTickets from "./CustomerTickets/ViewCustomerTickets";
+import CustomerTicketDetails from "./CustomerTickets/CustomerTicketDetails";
 
 function Loading() {
     return (
@@ -170,6 +172,8 @@ function App2() {
                 <Route path='/insertProfile' element={<InsertProfile setError={setError} setShow={setShow}/>} />
                 <Route path='/editProfile/:email' element={<EditProfile setError={setError} setShow={setShow} logout={doLogout}/>}/>
                 <Route path='/customerTickets' element={<CustomerTickets />} />
+                <Route path='/viewCustomerTickets' element={<ViewCustomerTickets setError={setError} setShow={setShow}/>} />} />
+                <Route path='/customerTicketDetails' element={<CustomerTicketDetails setError={setError} setShow={setShow} />} />
                 <Route path='/expertTickets' element={<ExpertTickets />} />
                 <Route path='/createTicket' element={<CreateTicket products={products}/>} />
                 <Route path='/viewTicket' element={<TicketDetails />}/>
