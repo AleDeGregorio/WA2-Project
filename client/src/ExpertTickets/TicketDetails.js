@@ -6,7 +6,7 @@ import {useContext, useEffect, useState} from "react";
 import API from "../API";
 import dayjs from "dayjs"
 import LoginContext from "../Profiles/LoginContext";
-import {GiTicket} from "react-icons/gi";
+import {GoHistory} from "react-icons/go";
 
 function TicketDetails(props) {
     const {id} = useParams();
@@ -222,9 +222,15 @@ function TicketDetails(props) {
                         </Dropdown>
                     </Form.Group>
                 </Form>
+                    {user.role == "expert" ?
                     <Link to={`/viewChat/`}>
                         <Button style = {{backgroundColor: "#057F5F", border: "none"}}>Customer Service <BiChat/></Button>
                     </Link>
+                        :
+                        <Link to = {`/viewStatus/:tid`}>
+                            <Button style = {{backgroundColor: "#057F5F", border: "none"}}> Status History <GoHistory/></Button>
+                        </Link>
+                    }
             </Container>
             </Container>
 

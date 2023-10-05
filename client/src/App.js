@@ -27,6 +27,7 @@ import WrongPrivileges from "./ErrorHandling/WrongPrivileges";
 import CreateTicket from "./CustomerTickets/CreateTicket";
 import ExpertTickets from "./ExpertTickets/ExpertTickets";
 import TicketDetails from "./ExpertTickets/TicketDetails"
+import ManagerTickets from "./ManagerTickets/ManagerTickets";
 
 
 
@@ -157,6 +158,7 @@ function App2() {
                 <Route path='/editProfile/:email' element={<EditProfile setError={setError} setShow={setShow}/>} />
                 <Route path='/customerTickets' element={<CustomerTickets />} />
                 <Route path='/expertTickets' element={<ExpertTickets />} />
+                <Route path='/managerTickets' element={<ManagerTickets />} />
                 <Route path='/createTicket' element={<CreateTicket products={products}/>} />
                 <Route path='/viewTicket/:id' element={<TicketDetails />}/>
                 <Route path='/wrongPrivileges' element={<WrongPrivileges />} />

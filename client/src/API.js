@@ -106,6 +106,26 @@ function expertTickets(expertId, token) {
     });
 }
 
+function tickets(token) {
+    return new Promise((resolve, reject) => {
+        fetch('/API/ticket' , {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        }).then((response) => {
+            if (response.ok) {
+                resolve(response.json());
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((message) => { reject(message); }) // error message in the response body
+                    .catch(() => { reject({ error: "Unable to elaborate server response" }) }); // something else
+            }
+        }).catch(() => { reject({ error: "Server communication error" }) }); // connection errors
+    });
+}
 function ticketDetails(ticketId, token) {
     return new Promise((resolve, reject) => {
         fetch('/API/ticket/' + ticketId, {
@@ -339,6 +359,6 @@ function editProfile(profile) {
     });
 }
 
-const API = { products, productDetails, profileDetails, login, logout, insertProfile, editProfile, expert, expertTickets, ticketDetails, latestStatus,
+const API = { products, productDetails, profileDetails, login, logout, insertProfile, editProfile, expert, expertTickets, tickets, ticketDetails, latestStatus,
     openTicket, closeTicket, progressTicket, resolveTicket, reopenTicket};
 export default API;
