@@ -26,31 +26,31 @@ function ManagerHandlingTickets() {
     return(
         <Container className={"d-grid gap-3"}>
             <Row>
-                <Col>
+                <Col xs={1}>
                     Ticket ID
                 </Col>
-                <Col>
+                <Col xs={1}>
                     STATUS
                 </Col>
-                <Col>
+                <Col xs={1}>
                     CREATION
                 </Col>
-                <Col>
+                <Col xs={1}>
                     PRODUCT
                 </Col>
-                <Col>
+                <Col xs={1}>
                     ISSUE
                 </Col>
-                <Col>
+                <Col xs={1}>
                     DESCRIPTION
                 </Col>
-                <Col>
+                <Col xs={2}>
                     PRIORITY
                 </Col>
-                <Col>
+                <Col xs={2}>
                     EXPERT
                 </Col>
-                <Col>
+                <Col xs={1}>
                     CHANGE STATUS
                 </Col>
             </Row>
@@ -134,25 +134,25 @@ function ManagerViewSingleTicket({ticket}) {
 
     return (
         <Row>
-            <Col>
+            <Col xs={1}>
                 {ticket.id}
-            </Col>ManagerHandlingTickets.js
-            <Col>
+            </Col>
+            <Col xs={1}>
                 {ticket.status}
             </Col>
-            <Col>
+            <Col xs={1}>
                 {ticket.dateOfCreation}
             </Col>
-            <Col>
+            <Col xs={1}>
                 {ticket.product}
             </Col>
-            <Col>
+            <Col xs={1}>
                 {ticket.issueType}
             </Col>
-            <Col>
+            <Col xs={1}>
                 {ticket.description}
             </Col>
-            <Col>
+            <Col xs={2}>
                 <Form>
                     <Dropdown onSelect={(eventKey) => handlePriorityChange(eventKey)}>
                         <Dropdown.Toggle variant="primary" id="priority-dropdown">
@@ -171,12 +171,12 @@ function ManagerViewSingleTicket({ticket}) {
                 </Form>
                 <Button onClick={() => handleSubmitPriority(ticket.id)}>SET</Button>
             </Col>
-            <Col>
+            <Col xs={2}>
                 <Form>
                     <Dropdown onSelect={(eventKey) => handleExpertChange(eventKey)}>
                         <Dropdown.Toggle variant="primary" id="expert-dropdown">
                             {selectedExpert !== null
-                                ? `Assign Expert: ${
+                                ? `Exp.: ${
                                     experts.find((expert) => expert.id === Number(selectedExpert))
                                         ?.username || "Unknown Expert"
                                 }`
@@ -197,7 +197,7 @@ function ManagerViewSingleTicket({ticket}) {
                     Assign Expert
                 </Button>
             </Col>
-            <Col>
+            <Col xs={1}>
                 <Button>Change status</Button>
             </Col>
         </Row>
