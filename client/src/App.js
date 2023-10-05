@@ -29,6 +29,7 @@ import ExpertTickets from "./ExpertTickets/ExpertTickets";
 import TicketDetails from "./ExpertTickets/TicketDetails"
 import ViewCustomerTickets from "./CustomerTickets/ViewCustomerTickets";
 import CustomerTicketDetails from "./CustomerTickets/CustomerTicketDetails";
+import ManagerHandlingTickets from "./Manager/ManagerHandlingTickets";
 
 function Loading() {
     return (
@@ -178,6 +179,7 @@ function App2() {
                 <Route path='/expertTickets' element={<ExpertTickets />} />
                 <Route path='/createTicket' element={<CreateTicket products={products}/>} />
                 <Route path='/viewTicket' element={<TicketDetails />}/>
+                <Route path='/managerTickets' element={<ManagerHandlingTickets />} />
                 <Route path='/wrongPrivileges' element={<WrongPrivileges />} />
                 <Route path='*' element={<PageNotFound />} />
             </Routes>
