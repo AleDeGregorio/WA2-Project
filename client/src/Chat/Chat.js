@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import { Container, ListGroup, Badge, Form, Button } from 'react-bootstrap'; // Import Form
+import { Container, ListGroup, Badge, Form, Button } from 'react-bootstrap';
+import API from "../API"; // Import Form
 
 const ticketData = {
     ticket: {
@@ -116,7 +117,10 @@ function Chat() {
         //     .then(response => response.json())
         //     .then(data => setChats(data))
         //     .catch(error => console.error('Errore nella richiesta API:', error));
-        setChats(ticketData.ticket.chats)
+        API.getChats(7)
+            .then(data => setChats(data))
+            .catch(error => console.error('Errore nella richiesta API:', error));
+        //setChats(ticketData.ticket.chats)
     }, []);
 
 
