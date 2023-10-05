@@ -146,6 +146,148 @@ const ticketData = {
          "creationDate": "2023-05-06T09:00:00.000+00:00"
      }
  ]
+
+const messagesExample=[
+    {
+        "id": 1,
+        "chat": {
+            "id": 1,
+            "messages": [],
+            "ticket": {
+                "id": 7,
+                "customer": {
+                    "id": "056d235a-8eaa-41fc-8d2a-adaedcf317c7",
+                    "username": "mariorossi",
+                    "firstName": "Mario",
+                    "lastName": "Rossi",
+                    "password": null,
+                    "email": "mariorossi@polito.it",
+                    "city": "Torino",
+                    "address": "Via Roma, 22"
+                },
+                "expert": {
+                    "id": "a21c80cd-9c6c-4eed-b992-cd926a72ad4b",
+                    "username": "expert1",
+                    "firstName": "Expert",
+                    "lastName": "Uno",
+                    "password": null,
+                    "email": "exp@polito.it",
+                    "fields": "Smartphone"
+                },
+                "product": {
+                    "ean": 1,
+                    "name": "iPhone 11",
+                    "brand": "Apple",
+                    "category": "Smartphone",
+                    "price": 800.0
+                },
+                "issueType": "Problem",
+                "description": "Problem with smartphone",
+                "priorityLevel": 3,
+                "dateOfCreation": "2023-05-05T10:00:00.000+00:00"
+            },
+            "creationDate": "2023-05-06T09:00:00.000+00:00"
+        },
+        "attachments": [],
+        "sentBy": "CUSTOMER",
+        "content": "Hello, I have a problem with my smartphone",
+        "sendingDate": "2023-05-06T09:30:00.000+00:00"
+    },
+    {
+        "id": 2,
+        "chat": {
+            "id": 1,
+            "messages": [],
+            "ticket": {
+                "id": 7,
+                "customer": {
+                    "id": "056d235a-8eaa-41fc-8d2a-adaedcf317c7",
+                    "username": "mariorossi",
+                    "firstName": "Mario",
+                    "lastName": "Rossi",
+                    "password": null,
+                    "email": "mariorossi@polito.it",
+                    "city": "Torino",
+                    "address": "Via Roma, 22"
+                },
+                "expert": {
+                    "id": "a21c80cd-9c6c-4eed-b992-cd926a72ad4b",
+                    "username": "expert1",
+                    "firstName": "Expert",
+                    "lastName": "Uno",
+                    "password": null,
+                    "email": "exp@polito.it",
+                    "fields": "Smartphone"
+                },
+                "product": {
+                    "ean": 1,
+                    "name": "iPhone 11",
+                    "brand": "Apple",
+                    "category": "Smartphone",
+                    "price": 800.0
+                },
+                "issueType": "Problem",
+                "description": "Problem with smartphone",
+                "priorityLevel": 3,
+                "dateOfCreation": "2023-05-05T10:00:00.000+00:00"
+            },
+            "creationDate": "2023-05-06T09:00:00.000+00:00"
+        },
+        "attachments": [],
+        "sentBy": "EXPERT",
+        "content": "Hello, try to turn it of and on again",
+        "sendingDate": "2023-05-06T10:30:00.000+00:00"
+    },
+    {
+        "id": 3,
+        "chat": {
+            "id": 1,
+            "messages": [],
+            "ticket": {
+                "id": 7,
+                "customer": {
+                    "id": "056d235a-8eaa-41fc-8d2a-adaedcf317c7",
+                    "username": "mariorossi",
+                    "firstName": "Mario",
+                    "lastName": "Rossi",
+                    "password": null,
+                    "email": "mariorossi@polito.it",
+                    "city": "Torino",
+                    "address": "Via Roma, 22"
+                },
+                "expert": {
+                    "id": "a21c80cd-9c6c-4eed-b992-cd926a72ad4b",
+                    "username": "expert1",
+                    "firstName": "Expert",
+                    "lastName": "Uno",
+                    "password": null,
+                    "email": "exp@polito.it",
+                    "fields": "Smartphone"
+                },
+                "product": {
+                    "ean": 1,
+                    "name": "iPhone 11",
+                    "brand": "Apple",
+                    "category": "Smartphone",
+                    "price": 800.0
+                },
+                "issueType": "Problem",
+                "description": "Problem with smartphone",
+                "priorityLevel": 3,
+                "dateOfCreation": "2023-05-05T10:00:00.000+00:00"
+            },
+            "creationDate": "2023-05-06T09:00:00.000+00:00"
+        },
+        "attachments": [],
+        "sentBy": "CUSTOMER",
+        "content": "Thank you, it worked",
+        "sendingDate": "2023-05-06T13:30:00.000+00:00"
+    }
+]
+
+
+
+
 function Chat() {
     const [chats, setChats] = useState(chatExample);
 
@@ -193,7 +335,7 @@ function Chat() {
 }
 
 function ChatMessages({ chatId }) {
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState(messagesExample);
     const [newMessage, setNewMessage] = useState('');
 
     const sendMessage = () => {
@@ -221,10 +363,10 @@ function ChatMessages({ chatId }) {
         //     .then(response => response.json())
         //     .then(data => setMessages(data))
         //     .catch(error => console.error('Errore nella richiesta API:', error));
-       /* API.getChatMessages(chatId)
+        API.getChatMessages(chatId)
             .then(data => setMessages(data))
-            .catch(error => console.error('Errore nella richiesta API:', error));*/
-        setMessages(ticketData.ticket.chats.find(chat => chat.id === chatId).messages)
+            .catch(error => console.error('Errore nella richiesta API:', error));
+        //setMessages(ticketData.ticket.chats.find(chat => chat.id === chatId).messages)
     };
 
     // Esegui la prima richiesta API al mount del componente
@@ -252,12 +394,12 @@ function ChatMessages({ chatId }) {
                     <li key={message.id}>
                         <Badge variant="primary">
                             <FontAwesomeIcon icon={faUser} />{' '}
-                            <span>{message.sender.username}</span>
+                            <span>{message.sentBy}</span>
                         </Badge>
                         <span>: {message.content}</span>
                         <br />
                         <small className="text-muted">
-                            <em>{message.timestamp}</em>
+                            <em>{message.sendingDate}</em>
                         </small>
                     </li>
                 ))}
