@@ -377,6 +377,29 @@ function getChatMessages(chatId) {
     });
 }
 
+function insertMessage(message) {
+    return new Promise((resolve, reject) => {
+        fetch('API/ticket/chat/message', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(message),
+        }).then((response) => {
+            if (response.ok) {
+                const ok = true;
+                resolve(ok);
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((message) => { reject(message); }) // error message in the response body
+                    .catch(() => { reject({ error: "Unable to elaborate server response" }) }); // something else
+            }
+        }).catch(() => { reject({ error: "Server communication error" }) }); // connection errors
+    });
+}
+
+
 const API = { products, productDetails, profileDetails, login, logout, insertProfile, editProfile, expert, expertTickets, ticketDetails, latestStatus,
-    openTicket, closeTicket, progressTicket, resolveTicket, reopenTicket, getChats, getChatMessages};
+    openTicket, closeTicket, progressTicket, resolveTicket, reopenTicket, getChats, getChatMessages, insertMessage};
 export default API;

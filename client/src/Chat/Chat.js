@@ -291,7 +291,7 @@ const messagesExample=[
 function Chat() {
     const [chats, setChats] = useState(chatExample);
 
-    const [selectedChatId, setSelectedChatId] = useState(null);
+    const [selectedChat, setSelectedChat] = useState(null);
 
     useEffect(() => {
         // Esegui la richiesta API iniziale quando il componente viene montato
@@ -306,9 +306,9 @@ function Chat() {
     }, []);
 
 
-    const openChat = (chatId) => {
+    const openChat = (chat) => {
         // Imposta l'ID della chat selezionata quando si fa clic su "Apri Chat"
-        setSelectedChatId(chatId);
+        setSelectedChat(chat);
     };
 
     return (
@@ -323,38 +323,48 @@ function Chat() {
                         <div>
                             <strong>Data Chat:</strong> {chat.date}
                         </div>
-                        <Button variant="primary" onClick={() => openChat(chat.id)}>
+                        <Button variant="primary" onClick={() => openChat(chat)}>
                             Apri Chat
                         </Button>
                     </ListGroup.Item>
                 ))}
             </ListGroup>
-            {selectedChatId && <ChatMessages chatId={selectedChatId} />}
+            {selectedChat && <ChatMessages chat={selectedChat} />}
         </Container>
     );
 }
 
-function ChatMessages({ chatId }) {
+function ChatMessages({ chat }) {
     const [messages, setMessages] = useState(messagesExample);
     const [newMessage, setNewMessage] = useState('');
 
-    const sendMessage = () => {
+    const sendMessage = (chat) => {
         if (newMessage.trim() === '') {
             return; // Don't send empty messages
         }
 
         // Simulate sending a message to the API
         // Replace this with your actual API call
-        const simulatedMessage = {
+        /*const simulatedMessage = {
             id: messages.length + 1,
             sender: {
                 username: 'customer1', // Replace with the actual sender's username
             },
             content: newMessage,
             timestamp: new Date().toISOString(),
-        };
+        };*/
 
-        setMessages([...messages, simulatedMessage]);
+        const sendMessage={
+            id: null,
+            chat : chat,
+            attachments: [],
+            sentBy: 'CUSTOMER', //todo da cambiare quando entri con il ruolo
+            content: newMessage,
+            sendingDate: new Date().toISOString()
+        }
+        API.insertMessage(sendMessage)
+            .catch(error => console.error('Errore nella richiesta API:', error, sendMessage));
+        //setMessages([...messages, simulatedMessage]);
         setNewMessage('');
     };
     const fetchMessages = () => {
@@ -363,7 +373,7 @@ function ChatMessages({ chatId }) {
         //     .then(response => response.json())
         //     .then(data => setMessages(data))
         //     .catch(error => console.error('Errore nella richiesta API:', error));
-        API.getChatMessages(chatId)
+        API.getChatMessages(chat.id)
             .then(data => setMessages(data))
             .catch(error => console.error('Errore nella richiesta API:', error));
         //setMessages(ticketData.ticket.chats.find(chat => chat.id === chatId).messages)
@@ -372,7 +382,7 @@ function ChatMessages({ chatId }) {
     // Esegui la prima richiesta API al mount del componente
     useEffect(() => {
         fetchMessages();
-    }, [chatId]);
+    }, [chat.id]);
 
     // Esegui il polling ogni tot millisecondi per aggiornare i messaggi
     useEffect(() => {
@@ -384,11 +394,11 @@ function ChatMessages({ chatId }) {
             // Pulisci l'interval quando il componente viene smontato
             clearInterval(pollingInterval);
         };
-    }, [chatId]);
+    }, [chat.id]);
 
     return (
         <div className="chat-messages">
-            <h2>Chat Messages for Chat ID: {chatId}</h2>
+            <h2>Chat Messages for Chat ID: {chat.id}</h2>
             <ul>
                 {messages.map(message => (
                     <li key={message.id}>
@@ -414,7 +424,7 @@ function ChatMessages({ chatId }) {
                             onChange={e => setNewMessage(e.target.value)}
                         />
                     </Form.Group>
-                    <Button variant="primary" onClick={sendMessage}>
+                    <Button variant="primary" onClick={()=>sendMessage(chat)}>
                         Send
                     </Button>
                 </Form>

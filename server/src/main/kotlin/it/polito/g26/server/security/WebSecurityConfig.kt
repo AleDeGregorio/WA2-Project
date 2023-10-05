@@ -37,6 +37,8 @@ class WebSecurityConfig(
             //.requestMatchers(HttpMethod.POST, "/customer").anonymous()
             .requestMatchers(HttpMethod.GET,"/chat/**").permitAll()
             .requestMatchers(HttpMethod.GET,"/chat/ticket/**").permitAll()
+            .requestMatchers(HttpMethod.POST,"/ticket/chat/message").permitAll()
+            //fine da cancellare
             .requestMatchers(HttpMethod.POST, "/customer/signup").permitAll()
             .requestMatchers(HttpMethod.GET,"/ticket/**").permitAll()
             .requestMatchers(HttpMethod.POST,"/auth/**").permitAll()
