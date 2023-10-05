@@ -5,15 +5,31 @@ import it.polito.g26.server.products.ProductDTO
 import it.polito.g26.server.ticketing.attachment.AttachmentDTO
 import it.polito.g26.server.ticketing.tickets.TicketDTO
 import it.polito.g26.server.ticketing.tickets.toDTO
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
+import org.springframework.messaging.handler.annotation.MessageMapping
+import org.springframework.messaging.handler.annotation.Payload
+import org.springframework.messaging.simp.SimpMessagingTemplate
+import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 
-@RestController
+@Controller
 @RequestMapping("/ticket/chat")
 class MessageController(
-    private val messageService: MessageService
+    private val messageService: MessageService,
+
+    @Autowired
+    private val messageTemplate: SimpMessagingTemplate
+
 ) {
-    @GetMapping("/message/{id}")
+
+    @MessageMapping("/private-msg")
+    fun sendPrivateMessage(@Payload msg: StompMsg): StompMsg {
+        messageTemplate.convertAndSendToUser(msg.chatId, "/private", msg) // /user/CHATID/private
+        return msg;
+    }
+
+    /*@GetMapping("/message/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getMessage(@PathVariable id: Long): MessageDTO? {
         return messageService.getMessage(id) ?: throw MessageNotFoundException("Message with id $id not found!")
@@ -41,5 +57,5 @@ class MessageController(
         } else {
             messageService.insertMessage(messageDTO.toEntity())
         }
-    }
+    }*/
 }

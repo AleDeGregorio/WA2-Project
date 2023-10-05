@@ -69,7 +69,7 @@ class WebSecurityConfig(
             .requestMatchers("/chat**").hasAnyRole(ADMIN,MANAGER,EXPERT,CUSTOMER)
             .anyRequest().authenticated()
 
-
+        http.cors().disable()
 
         http.oauth2ResourceServer()
             .jwt()

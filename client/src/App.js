@@ -25,6 +25,8 @@ import SuccessLogout from "./Profiles/SuccessLogout";
 import CustomerTickets from "./CustomerTickets/CustomerTickets";
 import WrongPrivileges from "./ErrorHandling/WrongPrivileges";
 import CreateTicket from "./CustomerTickets/CreateTicket";
+import Chat from "./Chat/Chat";
+import ChatStomp from "./Chat/ChatStomp";
 
 
 
@@ -157,6 +159,7 @@ function App2() {
                 <Route path='/customerTickets' element={<CustomerTickets />} />
                 <Route path='/createTicket' element={<CreateTicket products={products}/>} />
                 <Route path='/wrongPrivileges' element={<WrongPrivileges />} />
+                <Route path='/chat/1' element={<ChatStomp />} />
                 <Route path='*' element={<PageNotFound />} />
             </Routes>
         </LoginContext.Provider>
