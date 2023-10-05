@@ -17,6 +17,9 @@ class ChatServiceImpl(
     }
 
     override fun getChatByTicket(ticketId: Long): List<ChatDTO>? {
+        println("questo ritorno prima del dto")
+        println(chatRepository.findByTicket(ticketId))
+        println("lol")
         return chatRepository.findByTicket(ticketId)?.map { it.toDTO() }
     }
 
