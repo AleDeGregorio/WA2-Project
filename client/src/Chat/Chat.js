@@ -354,18 +354,23 @@ function ChatMessages({ chat }) {
             timestamp: new Date().toISOString(),
         };*/
 
-        const sendMessage={
-            id: null,
+        var idlast=messages[messages.length-1].id
+        var sendMessage={
+            id: idlast+1,
             chat : chat,
             attachments: [],
             sentBy: 'CUSTOMER', //todo da cambiare quando entri con il ruolo
             content: newMessage,
             sendingDate: new Date().toISOString()
         }
-        API.insertMessage(sendMessage)
-            .catch(error => console.error('Errore nella richiesta API:', error, sendMessage));
-        //setMessages([...messages, simulatedMessage]);
+        //salvo con id per differenziarli nella pagina
+        setMessages([...messages, sendMessage]);
         setNewMessage('');
+        //rimetto null per evitare problemi nell'inserimento, copio poichè altrimenti mi cambia anche in array
+        var copySendMessage={...sendMessage}
+        copySendMessage.id=null;
+        API.insertMessage(copySendMessage)
+            .catch(error => console.error('Errore nella richiesta API:', error, copySendMessage));
     };
     const fetchMessages = () => {
         // Esegui la richiesta API per caricare i messaggi

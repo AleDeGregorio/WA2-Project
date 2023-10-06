@@ -35,16 +35,10 @@ class MessageController(
     @ResponseStatus(HttpStatus.CREATED)
     fun insertMessage(@RequestBody messageDTO: MessageDTO?) {
         if (messageDTO == null) {
-            println("sono nel if")
-            println(messageDTO)
             throw EmptyPostBodyException("Empty message body")
         } else if (messageDTO.id !=null && messageService.getMessage(messageDTO.id) != null) {
-            println("sono nell'else if")
-            println(messageDTO)
             throw MessageAlreadySentException("${messageDTO.id} already in use!")
         } else {
-            println("sono nell'else")
-            println(messageDTO)
             messageService.insertMessage(messageDTO.toEntity())
         }
     }

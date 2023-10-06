@@ -34,8 +34,6 @@ class MessageServiceImpl(
             throw MessageAlreadySentException("Message with id ${message.id} already inserted!")
         }
         else {
-            println("sono nel service prima di salvare")
-            println(message)
             messageRepository.save(message)
         }
     }

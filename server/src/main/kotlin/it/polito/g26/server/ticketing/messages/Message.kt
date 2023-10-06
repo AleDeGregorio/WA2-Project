@@ -9,7 +9,8 @@ import java.util.*
 @Entity
 data class Message(
     @Id
-    @GeneratedValue
+    //@GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
     @ManyToOne
