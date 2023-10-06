@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, {useContext, useState} from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
+import API from "../API";
+import LoginContext from "../Profiles/LoginContext";
 
 function InsertExpert()  {
+    const user = useContext(LoginContext)
+
     const [formData, setFormData] = useState({
         username: '',
         firstName: '',
@@ -23,24 +27,19 @@ function InsertExpert()  {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const response = await fetch('http://localhost:8080/API/experts', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
+        API.insertExpert(formData, user.access_token)
+            .then((response) => {
+                if (response.status === 202) {
+                    // Handle success
+                    console.log("Expert created successfully!");
+                } else {
+                    // Handle error
+                    console.error("Error during expert creation.");
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
             });
-
-            if (response.ok) {
-                console.log('Registration successful');
-            } else {
-                const errorData = await response.json();
-                setErrorMessage(errorData.message || 'An error occurred during registration.');
-            }
-        } catch (error) {
-            setErrorMessage('An error occurred during registration.');
-        }
     };
 
     return (

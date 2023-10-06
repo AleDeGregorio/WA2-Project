@@ -1,10 +1,11 @@
 import {useNavigate, Link} from "react-router-dom";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import LoginContext from "../Profiles/LoginContext";
 import {Button, Container, CardGroup, Card, Form, FormGroup, Dropdown, Col, Row} from "react-bootstrap";
 import DropdownItem from "react-bootstrap/DropdownItem";
+import API from "../API";
 
-const tickets = [
+/*const tickets = [
     {id : 1, customer: 1, expert: null, product: 1, status:"opened", issueType: "field1", description: "bad phone", priorityLevel: null, dateOfCreation: "11-07-2023"  },
     {id : 2, customer: 2, expert: null, product: 2, status:"opened", issueType: "field2", description: "bad laptop", priorityLevel: null, dateOfCreation: "11-07-2023"  },
     {id : 3, customer: 1, expert: null, product: 3, status:"opened", issueType: "field2", description: "bad dishwasher", priorityLevel: null, dateOfCreation: "11-07-2023"  }
@@ -15,13 +16,59 @@ const experts = [
     { id: 2, username: "username2", fields: ["field2", "field3"] },
     { id: 3, username: "username3", fields: ["field1", "field2"] },
     // ... other experts
-];
-function ManagerHandlingTickets() {
+];*/
+function ManagerHandlingTickets(props) {
     const navigate = useNavigate()
     const user = useContext(LoginContext)
+    const [loadContext, setLoadContext] = useState(true)
+    const [loading, setLoading] = useState(true)
+    const { setError, setShow } = props;
+
+    const [experts, setExperts] = useState([])
+    const [tickets, setTickets] = useState([])
 
     if (user.role !== "manager")
         navigate('/wrongPrivileges')
+
+    useEffect(() => {
+        if(loadContext && user) {
+            setLoadContext(false)
+        }
+        else if(user.role === "manager") {
+            API.getAllExperts(user.id, user.access_token)
+                .then(experts => {
+                    setExperts(experts)
+
+                    setLoading(false)
+                })
+                .catch(error => {
+                    setError(error)
+                    setShow(true)
+
+                    setTimeout(() => {
+                        setShow(false)
+                    }, 3000)
+                });
+
+            API.getAllTickets(user.access_token)
+                .then(tickets => {
+                    setTickets(tickets)
+
+                    setLoading(false)
+                })
+                .catch(error => {
+                    setError(error)
+                    setShow(true)
+
+                    setTimeout(() => {
+                        setShow(false)
+                    }, 3000)
+                });
+        }
+        else {
+            navigate('/wrongPrivileges')
+        }
+    }, [loadContext])
 
     return(
         <Container className={"d-grid gap-3"}>
@@ -55,15 +102,19 @@ function ManagerHandlingTickets() {
                 </Col>
             </Row>
             {tickets.map((ticket) => (
-                <ManagerViewSingleTicket key={ticket.id} ticket={ticket} />
+                <ManagerViewSingleTicket key={ticket.id} ticket={ticket} props={user} />
             ))}
         </Container>
     )
 }
 
-function ManagerViewSingleTicket({ticket}) {
+function ManagerViewSingleTicket({ticket}, props) {
     const [selectedPriority, setSelectedPriority] = useState(null);
 
+    //const { setError, setShow } = props
+    const [success, setSuccess] = useState(false);
+
+    const {experts} = props
     const handlePriorityChange = (priority) => {
         setSelectedPriority(priority);
     };
@@ -74,25 +125,19 @@ function ManagerViewSingleTicket({ticket}) {
             const payload = { priorityLevel: selectedPriority };
 
             // Send the payload
-            fetch(`http://localhost:8080/API/ticket/${ticketId}/priority`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(payload),
-            })
-                .then((response) => {
-                    if (response.status === 202) {
-                        // Handle success
-                        console.log("Priority level set successfully!");
-                    } else {
-                        // Handle error
-                        console.error("Error setting priority level.");
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
+           API.setPriority(ticketId, payload, props.user.access_token)
+               .then((response) => {
+                   if (response.status === 202) {
+                       // Handle success
+                       console.log("Priority assigned successfully!");
+                   } else {
+                       // Handle error
+                       console.error("Error assigning priority.");
+                   }
+               })
+               .catch((error) => {
+                   console.error("Error:", error);
+               });
         }
     };
 
@@ -108,13 +153,7 @@ function ManagerViewSingleTicket({ticket}) {
             const payload = { expertId: Number(selectedExpert) };
 
             // Send the payload
-            fetch(`http://localhost:8080/API/ticket/${ticketId}/expert`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(payload),
-            })
+            API.setExpertTicket(ticketId, payload, props.user.access_token)
                 .then((response) => {
                     if (response.status === 202) {
                         // Handle success
