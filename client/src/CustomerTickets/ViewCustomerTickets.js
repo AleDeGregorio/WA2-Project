@@ -4,6 +4,7 @@ import LoginContext from "../Profiles/LoginContext";
 import {Button, Container, CardGroup, Card } from "react-bootstrap";
 import {useEffect} from "react";
 import API from "../API";
+import {GiTicket} from "react-icons/gi";
 
 function ViewCustomerTickets(props) {
     const navigate = useNavigate()
@@ -43,10 +44,9 @@ function ViewCustomerTickets(props) {
     }, [loadContext])
 
     return (
-        <CardGroup className="ticketList" style = {{display: "flex", flexDirection: "column", alignContent: "space-around", alignItems: "center" }}>
-            <h1 >
-                Ticket List
-            </h1>
+        <>
+            <h1 style={{ textAlign: "center" }}>Ticket List</h1>
+
             {
                 loading ?
                     <div>
@@ -54,48 +54,61 @@ function ViewCustomerTickets(props) {
                         <div className="spinner-border" role="status"></div>
                     </div> :
 
-                    tickets.map((t) => {
-                            return (
-                                <Card key={t.id} style = {{width: "70%", margin: "20px"}}>
-                                    <Card.Body>
-                                        <Card.Title style={{ fontWeight: "900" }}>{t.description}</Card.Title>
-                                        <Container
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "space-between",
-                                                alignItems: "baseline",
-                                                padding: "0px",
-                                            }}
-                                        >
+                    <CardGroup className="ticketList" style = {{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
+                        {
+                            loading ?
+                                <div>
+                                    <br />
+                                    <div className="spinner-border" role="status"></div>
+                                </div> :
 
-                                            <Card.Text style={{ display: "flex", justifyContent: "space-between" }}> Created By: {t.customer.firstName} {t.customer.lastName}
-                                            </Card.Text>
-                                            {
-                                                t.expert ?
+                                tickets.map((t) => {
+                                    return (
+                                        <Card key={t.id} style={{ width: "30%", margin: "5%" }}>
+                                            <Card.Body>
+                                                <Card.Title style={{ fontWeight: "900" }}>{t.description}</Card.Title>
+                                                <Container
+                                                    style={{
+                                                        display: "flex",
+                                                        justifyContent: "space-between",
+                                                        flexDirection:"column",
+                                                        padding: "0px",
+                                                        alignItems: "flex-start"
+                                                    }}
+                                                >
                                                     <Card.Text>
-                                                        Served By: {t.expert?.firstName} {t.expert?.lastName}
-                                                    </Card.Text> :
-                                                    <Card.Text>
-                                                        Served By: not served yet
+                                                        Device : {t.product && t.product.name}
                                                     </Card.Text>
-                                            }
-                                        </Container>
-                                        <Card.Subtitle style={{ display: "flex", justifyContent: "space-between" }}>
-                                            <Card.Text>
-                                                Creation Date: {new Date(t.dateOfCreation).toLocaleString()}
-                                            </Card.Text>
-                                        </Card.Subtitle>
-                                    </Card.Body>
-                                    <Card.Footer style={{ display: "flex", justifyContent: "space-between" }}>
-                                        <Link to='/customerTicketDetails' state={{ ticket: t }}>
-                                            <Button>Ticket Detail</Button>{" "}
-                                        </Link>
-                                    </Card.Footer>
-                                </Card>
+                                                    <Card.Text style={{ display: "flex", justifyContent: "space-between" }}> Created By: {t.customer.firstName} {t.customer.lastName}
+                                                    </Card.Text>
+                                                    {
+                                                        t.expert ?
+                                                            <Card.Text>
+                                                                Served By: {t.expert?.firstName} {t.expert?.lastName}
+                                                            </Card.Text> :
+                                                            <Card.Text>
+                                                                Served By: not served yet
+                                                            </Card.Text>
+                                                    }
+                                                </Container>
+                                            </Card.Body>
+                                            <Card.Footer style={{ display: "flex", justifyContent: "space-between" }}>
+                                                <Card.Subtitle style={{ display: "flex", justifyContent: "space-between" }}>
+                                                    <Card.Text>
+                                                        Creation Date: {new Date(t.dateOfCreation).toLocaleString()}
+                                                    </Card.Text>
+                                                </Card.Subtitle>
+                                                <Link to='/customerTicketDetails' state={{ ticket: t }}>
+                                                    <Button style = {{backgroundColor: "#057F5F", border: "none"}}>Ticket Detail <GiTicket /> </Button>{" "}
+                                                </Link>
+                                            </Card.Footer>
+                                        </Card>
 
-                            );
-                        })}
-        </CardGroup>
+                                    );
+                                })}
+                    </CardGroup>
+            }
+        </>
     )
 }
 
