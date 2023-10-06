@@ -5,6 +5,7 @@ import it.polito.g26.server.ticketing.chat.ChatDTO
 import it.polito.g26.server.ticketing.chat.toDTO
 import it.polito.g26.server.profiles.expert.Expert
 import it.polito.g26.server.ticketing.statusTicket.*
+import it.polito.g26.server.ticketing.utility.Status
 import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -14,7 +15,8 @@ import java.util.*
 
 @Service
 class TicketServiceImpl(
-    private val ticketRepository: TicketRepository
+    private val ticketRepository: TicketRepository,
+    private val statusTicketRepository: StatusTicketRepository
 ) : TicketService {
     override fun getAll(): List<TicketDTO> {
         return ticketRepository.findAll().map { it.toDTO() }
@@ -75,7 +77,10 @@ class TicketServiceImpl(
         }else if(ticket.product == null){
             throw MissingProductException("No Product was provided!")
         }else{
-            ticketRepository.save(ticket)
+            val savedTicket = ticketRepository.save(ticket)
+            val ticketDate = TicketDate(savedTicket, savedTicket.dateOfCreation)
+            val statusTicket = StatusTicket(ticketDate, Status.OPEN)
+            statusTicketRepository.save(statusTicket)
         }
     }
 
