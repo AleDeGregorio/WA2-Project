@@ -177,10 +177,10 @@ function App2() {
                 <Route path='/customerTickets' element={<CustomerTickets />} />
                 <Route path='/viewCustomerTickets' element={<ViewCustomerTickets setError={setError} setShow={setShow}/>} />} />
                 <Route path='/customerTicketDetails' element={<CustomerTicketDetails setError={setError} setShow={setShow} />} />
-                <Route path='/expertTickets' element={<ExpertTickets />} />
+                <Route path='/expertTickets' element={<ExpertTickets setError={setError} setShow={setShow} />} />
                 <Route path='/managerTickets' element={<ManagerTickets />} />
                 <Route path='/createTicket' element={<CreateTicket products={products}/>} />
-                <Route path='/viewTicket/:id' element={<TicketDetails />}/>
+                <Route path='/viewTicket/:id' element={<TicketDetails setError={setError} setShow={setShow} />}/>
                 <Route path='/wrongPrivileges' element={<WrongPrivileges />} />
                 <Route path='*' element={<PageNotFound />} />
             </Routes>

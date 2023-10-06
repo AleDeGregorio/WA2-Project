@@ -11,28 +11,46 @@ import {GoHistory} from "react-icons/go";
 function TicketDetails(props) {
     const {id} = useParams();
     const user = useContext(LoginContext)
+
+    const { setError, setShow } = props;
+
+    const [loading, setLoading] = useState(true)
+    const [loadContext, setLoadContext] = useState(true)
+
     const [ticket, setTicket] = useState([]);
     const [waitingTicket, setWaitingTicket] = useState(true);
     const [waitingStatus, setWaitingStatus] = useState(true);
     const [status, setStatus] = useState([]);
-     const [error, setError] =useState();
-     const [show, setShow] = useState(false);
 
     useEffect(() => {
-        API.ticketDetails(id,  user.access_token).then((resultTicket) => {
-           // console.log(resultTicket)
-            setTicket(resultTicket);
-            setWaitingTicket(false);
-            setError(error);
-            setShow(true);
-        });
-    }, [id]);
+        API.ticketDetails(id, user.access_token)
+            .then((resultTicket) => {
+                setTicket(resultTicket)
+                setWaitingTicket(false)
+            })
+            .catch(error => {
+                setError(error);
+                setShow(true)
+
+                setTimeout(() => {
+                    setShow(false)
+                }, 3000)
+            })
+    }, [id])
 
     useEffect(() => {
         API.latestStatus(id,  user.access_token)
             .then(s => {
                 setStatus(s)
-            });
+            })
+            .catch(error => {
+                setError(error);
+                setShow(true)
+
+                setTimeout(() => {
+                    setShow(false)
+                }, 3000)
+            })
     }, [id, status]);
 
     useEffect(()=>{
@@ -70,6 +88,10 @@ function TicketDetails(props) {
             .catch(error => {
                 setError(error);
                 setShow(true)
+
+                setTimeout(() => {
+                    setShow(false)
+                }, 3000)
             })
     };
     const handleProgressTicket = async (s) => {
@@ -86,6 +108,10 @@ function TicketDetails(props) {
             .catch(error => {
                 setError(error);
                 setShow(true)
+
+                setTimeout(() => {
+                    setShow(false)
+                }, 3000)
             })
     };
 
@@ -104,6 +130,10 @@ function TicketDetails(props) {
         } catch (error) {
             setError(error);
             setShow(true);
+
+            setTimeout(() => {
+                setShow(false)
+            }, 3000)
         }
     }
     const handleReopenTicket = async (s) => {
@@ -122,6 +152,10 @@ function TicketDetails(props) {
             .catch(error => {
                 setError(error);
                 setShow(true)
+
+                setTimeout(() => {
+                    setShow(false)
+                }, 3000)
             })
     };
     const handleResolveTicket = async (s) => {
@@ -139,6 +173,10 @@ function TicketDetails(props) {
             .catch(error => {
                 setError(error);
                 setShow(true)
+
+                setTimeout(() => {
+                    setShow(false)
+                }, 3000)
             })
     };
 
