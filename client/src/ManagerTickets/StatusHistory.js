@@ -4,7 +4,7 @@ import {useContext, useEffect, useState} from "react";
 import LoginContext from "../Profiles/LoginContext";
 import API from "../API";
 import dayjs from "dayjs"
-import {GiTicket} from "react-icons/gi";
+
 
 
 function StatusHistory(props){
@@ -28,6 +28,21 @@ function StatusHistory(props){
             });
     }, [id, status])
 
+    function getStatusLabel(status) {
+        switch (status) {
+            case "OPEN":
+                return "OPEN";
+            case "RESOLVED":
+                return "RESOLVED";
+            case "CLOSED":
+                return "CLOSED";
+            case "REOPENED":
+                return "REOPENED";
+            case "IN_PROGRESS":
+                return "IN PROGRESS";
+
+        }
+    }
     return (
         status  && <ontainer fluid style = {{display: "flex", flexDirection: "column", alignItems: "center", fontFamily : "system-ui", padding: "5%" }}>
             <h1 style={{fontWeight: "700"}}>STATUS HISTORY</h1>
@@ -43,7 +58,8 @@ function StatusHistory(props){
                 {status.map((s, index) => (
                     <tr key={index + 1}>
                         <td>{s.tid.id}</td>
-                        <td>{dayjs(s.lastModifiedDate).format("YYYY-MM-DD HH:mm:ss")}</td><td>{s.status}</td>
+                        <td>{dayjs(s.lastModifiedDate).format("YYYY-MM-DD HH:mm:ss")}</td>
+                        <td>{getStatusLabel(s.status)}</td>
                     </tr>
                 ))}
                 </tbody>
