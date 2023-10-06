@@ -28,6 +28,7 @@ import CreateTicket from "./CustomerTickets/CreateTicket";
 import ExpertTickets from "./ExpertTickets/ExpertTickets";
 import TicketDetails from "./ExpertTickets/TicketDetails"
 import ManagerTickets from "./ManagerTickets/ManagerTickets";
+import StatusHistory from "./ManagerTickets/StatusHistory";
 
 
 
@@ -161,6 +162,7 @@ function App2() {
                 <Route path='/managerTickets' element={<ManagerTickets />} />
                 <Route path='/createTicket' element={<CreateTicket products={products}/>} />
                 <Route path='/viewTicket/:id' element={<TicketDetails />}/>
+                <Route path='/viewStatus/:id' element={<StatusHistory />} />
                 <Route path='/wrongPrivileges' element={<WrongPrivileges />} />
                 <Route path='*' element={<PageNotFound />} />
             </Routes>

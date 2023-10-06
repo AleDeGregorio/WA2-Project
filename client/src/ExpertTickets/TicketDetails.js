@@ -145,7 +145,7 @@ function TicketDetails(props) {
     return (
         ticket &&
             <Container fluid style = {{display: "flex", flexDirection: "column", alignItems : "center", fontFamily : "system-ui", padding: "5%"}}>
-                <h1>TICKET DETAILS</h1>
+                <h1 style={{fontWeight: "700"}}>TICKET DETAILS</h1>
                 <Table style={{
                     border: '2px solid grey',
                     borderRadius: "10px",
@@ -226,10 +226,12 @@ function TicketDetails(props) {
                     <Link to={`/viewChat/`}>
                         <Button style = {{backgroundColor: "#057F5F", border: "none"}}>Customer Service <BiChat/></Button>
                     </Link>
-                        :
-                        <Link to = {`/viewStatus/:tid`}>
-                            <Button style = {{backgroundColor: "#057F5F", border: "none"}}> Status History <GoHistory/></Button>
-                        </Link>
+                        : user.role == "manager" ?
+                            <Link to={`/viewStatus/${ticket.id}`}>
+                                <Button style={{ backgroundColor: "#057F5F", border: "none" }}>
+                                    Status History <GoHistory />
+                                </Button>
+                            </Link> : ''
                     }
             </Container>
             </Container>
