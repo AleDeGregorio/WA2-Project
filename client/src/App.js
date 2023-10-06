@@ -30,6 +30,7 @@ import TicketDetails from "./ExpertTickets/TicketDetails"
 import ViewCustomerTickets from "./CustomerTickets/ViewCustomerTickets";
 import CustomerTicketDetails from "./CustomerTickets/CustomerTicketDetails";
 import ManagerHandlingTickets from "./Manager/ManagerHandlingTickets";
+import InsertExpert from "./Manager/InsertExpert";
 
 function Loading() {
     return (
@@ -179,6 +180,7 @@ function App2() {
                 <Route path='/expertTickets' element={<ExpertTickets />} />
                 <Route path='/createTicket' element={<CreateTicket products={products}/>} />
                 <Route path='/viewTicket' element={<TicketDetails />}/>
+                <Route path='/insertExpert' element={<InsertExpert setError={setError} setShow={setShow}/>} />
                 <Route path='/managerTickets' element={<ManagerHandlingTickets />} />
                 <Route path='/wrongPrivileges' element={<WrongPrivileges />} />
                 <Route path='*' element={<PageNotFound />} />

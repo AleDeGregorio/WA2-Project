@@ -11,6 +11,17 @@ class ExpertController(
     private val expertService: ExpertService
 ) {
 
+    @GetMapping("")
+    @ResponseStatus(HttpStatus.OK)
+    fun getAll() : List<ExpertDTO>? {
+        val experts =  expertService.getAll()
+        if(experts.isNotEmpty())
+            return experts
+        else{
+            throw ExpertNotFoundException("Product List is Empty")
+        }
+    }
+
     @GetMapping("/{email}")
     @ResponseStatus(HttpStatus.OK)
     fun getExpert(@PathVariable email: String) : ExpertDTO? {

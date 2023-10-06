@@ -3,6 +3,8 @@ package it.polito.g26.server.profiles.expert
 import it.polito.g26.server.ticketing.tickets.TicketDTO
 
 interface ExpertService {
+
+    fun getAll() : List<ExpertDTO>
     fun getExpert(email: String) : ExpertDTO?
 
     fun getExpertsByField(field: String) : List<ExpertDTO>

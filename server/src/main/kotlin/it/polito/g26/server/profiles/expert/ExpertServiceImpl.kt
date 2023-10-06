@@ -17,6 +17,10 @@ import org.springframework.transaction.annotation.Transactional
 class ExpertServiceImpl(
     private val expertRepository: ExpertRepository
 ) : ExpertService {
+    override fun getAll(): List<ExpertDTO> {
+        return expertRepository.findAll().map { it.toDTO() }
+    }
+
     override fun getExpert(email: String): ExpertDTO? {
         return expertRepository.getByEmail(email)?.toDTO()
     }

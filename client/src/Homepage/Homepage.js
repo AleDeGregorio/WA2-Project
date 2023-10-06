@@ -41,6 +41,11 @@ function Homepage() {
                         Tickets
                     </Button> : false
                 }
+                {loggedUser && user.role === "manager" ?
+                    <Button variant="primary" size="lg" onClick={() => navigate('/insertExpert')}>
+                        Insert new Expert
+                    </Button> : false
+                }
             </div>
         </Container>
     )
