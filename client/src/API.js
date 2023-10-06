@@ -59,6 +59,222 @@ function getCustomer(email, token) {
     });
 }
 
+function expert(email, token) {
+    return new Promise((resolve, reject) => {
+        fetch('/API/expert' + email, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        }).then((response) => {
+            if (response.ok) {
+                const ok = true;
+                resolve(ok);
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((message) => {
+                        reject(message);
+                    }) // error message in the response body
+                    .catch(() => {
+                        reject({error: "Unable to elaborate server response"})
+                    }); // something else
+            }
+        }).catch(() => {
+            reject({error: "Server communication error"})
+        }); // connection errors
+    });
+}
+function expertTickets(expertId, token) {
+    return new Promise((resolve, reject) => {
+        fetch('/API/ticket/expert/' + expertId, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        }).then((response) => {
+            if (response.ok) {
+                resolve(response.json());
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((message) => { reject(message); }) // error message in the response body
+                    .catch(() => { reject({ error: "Unable to elaborate server response" }) }); // something else
+            }
+        }).catch(() => { reject({ error: "Server communication error" }) }); // connection errors
+    });
+}
+
+function tickets(token) {
+    return new Promise((resolve, reject) => {
+        fetch('/API/ticket' , {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        }).then((response) => {
+            if (response.ok) {
+                resolve(response.json());
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((message) => { reject(message); }) // error message in the response body
+                    .catch(() => { reject({ error: "Unable to elaborate server response" }) }); // something else
+            }
+        }).catch(() => { reject({ error: "Server communication error" }) }); // connection errors
+    });
+}
+function ticketDetails(ticketId, token) {
+    return new Promise((resolve, reject) => {
+        fetch('/API/ticket/' + ticketId, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+        }).then((response) => {
+            if (response.ok) {
+                resolve(response.json());
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((message) => { reject(message); }) // error message in the response body
+                    .catch(() => { reject({ error: "Unable to elaborate server response" }) }); // something else
+            }
+        }).catch(() => { reject({ error: "Server communication error" }) }); // connection errors
+    });
+}
+function latestStatus(ticketId, token) {
+    return new Promise((resolve, reject) => {
+        fetch('/API/ticket/status/' + ticketId + '/latest', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+        }).then((response) => {
+            if (response.ok) {
+                resolve(response.json());
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((message) => { reject(message); }) // error message in the response body
+                    .catch(() => { reject({ error: "Unable to elaborate server response" }) }); // something else
+            }
+        }).catch(() => { reject({ error: "Server communication error" }) }); // connection errors
+    });
+}
+function openTicket(status, token) {
+    return new Promise((resolve, reject) => {
+        fetch('/API/ticket/status/open', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(status)
+        }).then((response) => {
+            if (response.ok) {
+                resolve(response.json());
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((message) => { reject(message); }) // error message in the response body
+                    .catch(() => { reject({ error: "Unable to elaborate server response" }) }); // something else
+            }
+        }).catch(() => { reject({ error: "Server communication error" }) }); // connection errors
+    });
+}
+function progressTicket(status, token) {
+    return new Promise((resolve, reject) => {
+        fetch('/API/ticket/status/progress', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(status)
+        }).then((response) => {
+            if (response.ok) {
+                resolve(response.json());
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((message) => { reject(message); }) // error message in the response body
+                    .catch(() => { reject({ error: "Unable to elaborate server response" }) }); // something else
+            }
+        }).catch(() => { reject({ error: "Server communication error" }) }); // connection errors
+    });
+}
+function closeTicket(status, token) {
+
+    return new Promise((resolve, reject) => {
+
+        fetch('/API/ticket/status/close', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(status)
+        }).then((response) => {
+            if (response.ok) {
+                resolve(response.json());
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((message) => { reject(message); }) // error message in the response body
+                    .catch(() => { reject({ error: "Unable to elaborate server response" }) }); // something else
+            }
+        }).catch(() => { reject({ error: "Server communication error" }) }); // connection errors
+    });
+}
+function reopenTicket(status, token) {
+    return new Promise((resolve, reject) => {
+        fetch('/API/ticket/status/reopen', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(status)
+        }).then((response) => {
+            if (response.ok) {
+                resolve(response.json());
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((message) => { reject(message); }) // error message in the response body
+                    .catch(() => { reject({ error: "Unable to elaborate server response" }) }); // something else
+            }
+        }).catch(() => { reject({ error: "Server communication error" }) }); // connection errors
+    });
+}
+function resolveTicket(status, token) {
+    return new Promise((resolve, reject) => {
+        fetch('/API/ticket/status/resolve', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(status)
+        }).then((response) => {
+            if (response.ok) {
+                resolve(response.json());
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((message) => { reject(message); }) // error message in the response body
+                    .catch(() => { reject({ error: "Unable to elaborate server response" }) }); // something else
+            }
+        }).catch(() => { reject({ error: "Server communication error" }) }); // connection errors
+    });
+}
+
 function login(credentials) {
     return new Promise((resolve, reject) => {
         fetch('/API/auth/login', {
@@ -214,5 +430,7 @@ function getLatestTicketStatus(id, token) {
 const API = {
     products, productDetails,
     profileDetails: getCustomer, login, logout, insertProfile: signupCustomer, editProfile: updateCustomer,
-    insertTicket, getCustomerTickets, getLatestTicketStatus };
+    insertTicket, getCustomerTickets, getLatestTicketStatus,
+    expert, expertTickets, tickets, ticketDetails, latestStatus,
+    openTicket, closeTicket, progressTicket, resolveTicket, reopenTicket};
 export default API;

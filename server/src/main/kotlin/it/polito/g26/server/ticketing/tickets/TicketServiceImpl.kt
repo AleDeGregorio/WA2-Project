@@ -32,7 +32,7 @@ class TicketServiceImpl(
         return list
     }
 
-    override fun getTicketByExpert(expertId: Long): List<TicketDTO>? {
+    override fun getTicketByExpert(expertId: String): List<TicketDTO>? {
         return ticketRepository.findByExpert(expertId)?.map { it.toDTO() }
     }
 

@@ -1,6 +1,7 @@
 package it.polito.g26.server.profiles.expert
 
 import it.polito.g26.server.profiles.customer.Customer
+import it.polito.g26.server.profiles.customer.CustomerDTO
 import it.polito.g26.server.ticketing.tickets.Ticket
 
 data class ExpertDTO(

@@ -18,7 +18,8 @@ class ExpertServiceImpl(
     private val expertRepository: ExpertRepository
 ) : ExpertService {
     override fun getExpert(email: String): ExpertDTO? {
-        return expertRepository.getByEmail(email)?.toDTO()
+        return expertRepository.findByEmail(email)?.toDTO()
+
     }
 
     override fun getExpertsByField(field: String): List<ExpertDTO> {

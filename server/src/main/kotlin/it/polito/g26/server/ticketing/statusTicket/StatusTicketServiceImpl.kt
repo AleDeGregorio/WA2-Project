@@ -74,13 +74,16 @@ class StatusTicketServiceImpl(
     }
 
     override fun closeStatusTicket(statusTicket: StatusTicket) {
+        println("status" + {statusTicket})
         if (statusTicket.ticketDate != null && statusTicketRepository.existsById(statusTicket.ticketDate!!)) {
             throw StatusTicketAlreadyInsertedException("Status Ticket with id ${statusTicket.ticketDate} already exists")
         }
         val ticket = statusTicket.ticketDate?.ticket!!
+        println("ticket" + { ticket })
         if (statusTicketRepository.existsByTicket(ticket.id!!)) {
             if (statusTicketRepository.existsByTicketId(ticket.id!!)) {
                 val status = getLatestStatus(ticket.id!!)?.status
+                println("status" + { status })
                 if(status == Status.CLOSED) {
                     throw StatusTicketAlreadyClosedException("Status ticket with id ${statusTicket.ticketDate} already opened or in progress.")
                 }else {
@@ -144,9 +147,11 @@ class StatusTicketServiceImpl(
     }
 
     override fun progressStatusTicket(statusTicket: StatusTicket) {
+        println("status$statusTicket");
         if (statusTicket.ticketDate != null && statusTicketRepository.existsById(statusTicket.ticketDate!!)) {
             throw StatusTicketAlreadyInsertedException("Status Ticket with id ${statusTicket.ticketDate} already exists")
         }
+
         val ticket = statusTicket.ticketDate?.ticket!!
         if (statusTicketRepository.existsByTicket(ticket.id!!)) {
             if (statusTicketRepository.existsByTicketId(ticket.id!!)) {

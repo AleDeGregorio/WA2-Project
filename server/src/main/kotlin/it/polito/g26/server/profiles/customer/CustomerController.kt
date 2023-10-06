@@ -1,6 +1,7 @@
 package it.polito.g26.server.profiles.customer
 
 import it.polito.g26.server.*
+import it.polito.g26.server.profiles.expert.ExpertDTO
 import it.polito.g26.server.ticketing.tickets.TicketDTO
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*

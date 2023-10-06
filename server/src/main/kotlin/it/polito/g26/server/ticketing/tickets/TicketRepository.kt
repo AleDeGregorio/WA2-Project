@@ -16,7 +16,7 @@ interface TicketRepository : JpaRepository<Ticket, Long> {
     fun findByCustomer(@Param("id") id: Long) : List<Ticket>?
 
     @Query("SELECT t FROM Ticket t LEFT JOIN FETCH t.expert WHERE t.expert.id = :id")
-    fun findByExpert(@Param("id") id: Long) : List<Ticket>?
+    fun findByExpert(@Param("id") id: String) : List<Ticket>?
 
     @Query("SELECT t FROM Ticket t LEFT JOIN FETCH t.product WHERE t.product.ean = :id")
     fun findByProduct(@Param("id") id: Long) : List<Ticket>?
