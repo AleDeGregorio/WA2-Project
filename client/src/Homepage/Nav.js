@@ -11,6 +11,7 @@ function Nav(props) {
     const navigate = useNavigate()
 
     const user = useContext(LoginContext)
+    const loggedUser = Object.keys(user).length > 0
 
     const doLogout = () => {
         const token = {
@@ -29,17 +30,20 @@ function Nav(props) {
                     </span>
                 </div>
                 {
-                    Object.keys(user).length > 0 ?
+                    loggedUser && user.role === "customer" ?
                         <div className='p-2 bd-highlight'>
                             <span className='head-text' id='icon-profile' onClick={() => navigate('/profiles/' + user.email)}>
                                 <PersonCircle className='nav-icon' /> Your profile
                             </span>
-                        </div> :
+                        </div> : false
+                }
+                {
+                    !loggedUser ?
                         <div className='p-2 bd-highlight'>
                             <span className='head-text' id='icon-profile' onClick={() => navigate('/insertProfile')}>
                                 <PersonCircle className='nav-icon' /> Sign up
                             </span>
-                        </div>
+                        </div> : false
                 }
                 <div className='p-2 bd-highlight'>
                     {Object.keys(user).length > 0 ?
