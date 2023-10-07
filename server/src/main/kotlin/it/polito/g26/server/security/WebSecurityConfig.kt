@@ -38,6 +38,8 @@ class WebSecurityConfig(
             .requestMatchers(HttpMethod.GET,"/chat/**").permitAll()
             .requestMatchers(HttpMethod.GET,"/chat/ticket/**").permitAll()
             .requestMatchers(HttpMethod.POST,"/ticket/chat/message").permitAll()
+            .requestMatchers(HttpMethod.POST,"/attachment").permitAll()
+            .requestMatchers(HttpMethod.GET,"/attachment/message/**").permitAll()
             //fine da cancellare
             .requestMatchers(HttpMethod.POST, "/customer/signup").permitAll()
             .requestMatchers(HttpMethod.GET,"/ticket/**").permitAll()

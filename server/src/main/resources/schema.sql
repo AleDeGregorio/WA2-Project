@@ -65,7 +65,7 @@ INSERT INTO public.message (id, content, sending_date, sent_by, chat_id) VALUES 
 INSERT INTO public.message (id, content, sending_date, sent_by, chat_id) VALUES (5, 'Hello, I''ll come to your house to help you', '2023-05-16 09:00:00.000000', 'EXPERT', 2);
 INSERT INTO public.message (id, content, sending_date, sent_by, chat_id) VALUES (6, 'Hello, I broke my smartphone', '2023-05-27 11:30:00.000000', 'CUSTOMER', 3);
 
-INSERT INTO public.attachment (id, content, name, size, message_id) VALUES (1, 'path/to/a/photo/file', 'photo1', 10, 1);
-INSERT INTO public.attachment (id, content, name, size, message_id) VALUES (2, 'path/to/another/photo', 'photo2', 8, 1);
+/*INSERT INTO public.attachment (id, content, name, size, message_id) VALUES (1, 'path/to/a/photo/file', 'photo1', 10, 1);
+INSERT INTO public.attachment (id, content, name, size, message_id) VALUES (2, 'path/to/another/photo', 'photo2', 8, 1);*/
 
 
