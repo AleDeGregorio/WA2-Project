@@ -399,7 +399,27 @@ function insertMessage(message) {
     });
 }
 
+function getAttachments(messageId) {
+    return new Promise((resolve, reject) => {
+        fetch('API/ticket/chat/message/attachments/'+messageId, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then((response) => {
+            if (response.ok) {
+                resolve(response.json());
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((message) => { reject(message); }) // error message in the response body
+                    .catch(() => { reject({ error: "Unable to elaborate server response" }) }); // something else
+            }
+        }).catch(() => { reject({ error: "Server communication error" }) }); // connection errors
+    });
+}
+
 
 const API = { products, productDetails, profileDetails, login, logout, insertProfile, editProfile, expert, expertTickets, ticketDetails, latestStatus,
-    openTicket, closeTicket, progressTicket, resolveTicket, reopenTicket, getChats, getChatMessages, insertMessage};
+    openTicket, closeTicket, progressTicket, resolveTicket, reopenTicket, getChats, getChatMessages, insertMessage, getAttachments};
 export default API;
