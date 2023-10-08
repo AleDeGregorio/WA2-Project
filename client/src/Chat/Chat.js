@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
 import {Badge, Button, Container, Form, ListGroup} from 'react-bootstrap';
-import API from "../API"; // Import Form
+import API from "../API";
+import './Chat.css'
 
 const ticketData = {
     ticket: {
@@ -490,7 +491,9 @@ function ChatMessages({ chat }) {
                             <ul>
                                 {message.attachments.map((att, index) => (
                                     <li key={index}>
-                                        <img src={`data:image/${att.type};base64,${att.imageData}`} alt="Attached Image" />
+                                        <img src={`data:image/${att.type};base64,${att.imageData}`}
+                                             alt="Attached Image"
+                                        className="chat-image"/>
                                     </li>
                                 ))}
                             </ul>
