@@ -9,5 +9,5 @@ interface MessageService {
 
     fun getAttachments(id: Long) : Set<AttachmentDTO>?
 
-    fun insertMessage(message: Message)
+    fun insertMessage(message: Message) : Long?
 }

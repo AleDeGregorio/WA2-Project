@@ -16,11 +16,11 @@ data class AttachmentDTO (
 )
 
 fun Attachment.toDTO() : AttachmentDTO {
-    return AttachmentDTO(id, message!!.toDTO(), name, type, decompressImage(imageData))
+    return AttachmentDTO(id, message!!.toDTO(), name, type, decompressImage(imageData))//decompressImage(imageData)
 }
 
 fun AttachmentDTO.toEntity() : Attachment {
-    return Attachment(id, message!!.toEntity(), name,  type, compressImage(imageData))
+    return Attachment(id, message!!.toEntity(), name,  type, compressImage(imageData))//compressImage(imageData)
 }
 
 
