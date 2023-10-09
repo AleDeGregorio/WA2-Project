@@ -422,12 +422,25 @@ function ChatMessages({ chat }) {
                             <ul>
                                 {message.attachments.map((att, index) => (
                                     <li key={index}>
-                                        <a
-                                            href={"data:" + att.type + ";base64," + att.imageData}
-                                            download={att.name}
-                                        >
-                                            {att.name}
-                                        </a>
+                                        {att.type.startsWith("image/") ? (
+                                            <a
+                                                href={"data:" + att.type + ";base64," + att.imageData}
+                                                download={att.name}
+                                            >
+                                                <img
+                                                    src={"data:" + att.type + ";base64," + att.imageData}
+                                                    alt={att.name}
+                                                    className="chat-image"
+                                                />
+                                            </a>
+                                        ) : (
+                                            <a
+                                                href={"data:" + att.type + ";base64," + att.imageData}
+                                                download={att.name}
+                                            >
+                                                {att.name}
+                                            </a>
+                                        )}
                                     </li>
                                 ))}
                             </ul>
