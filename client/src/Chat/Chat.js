@@ -5,7 +5,7 @@ import {Badge, Button, Container, Form, ListGroup} from 'react-bootstrap';
 import API from "../API";
 import './Chat.css'
 
- const chatExample=[
+const chatExample=[
      {
          "id": 1,
          "messages": [],
@@ -284,34 +284,33 @@ function ChatMessages({ chat }) {
     const [messages, setMessages] = useState(messagesExample);
     const [newMessage, setNewMessage] = useState('');
 
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [imagePreview, setImagePreview] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(null);
 
     const sendMessage = async(chat) => {
-        if (newMessage.trim() === '' && imagePreview== null && document.getElementById('fileInput')==null) {
+        if (newMessage.trim() === '' && document.getElementById('fileInput')==null) {
             return; // Don't send empty messages
         }
-        setImagePreview(null);//preview not needed anymore
         const fileInput = document.getElementById('fileInput');
         if (fileInput) {
-            fileInput.value = '';
+            fileInput.files = new DataTransfer().files;
         }
 
-        let attach;
+        let attach=[]
         let copyAttachment=null
-        if(selectedImage!=null){
-            attach={
-                id: null,
-                message :null,
-                name: selectedImage.name,
-                type: selectedImage.type,
-                imageData: selectedImage.data
+        if(selectedFile!=null){
+            for (let i = 0; i < selectedFile.length; i++) {
+                attach.push({
+                    id: null,
+                    message :null,
+                    name: selectedFile[i].name,
+                    type: selectedFile[i].type,
+                    imageData: selectedFile[i].data
+                })
             }
         }else{
-            attach=[]
             copyAttachment=[]
         }
-        setSelectedImage(null)
+        setSelectedFile(null)
 
         let sendMessage={
             id: null,
@@ -328,10 +327,12 @@ function ChatMessages({ chat }) {
 
         //invio attachment conl'id generato ritornato
         if(copyAttachment==null){
-            attach.message=sendMessage
-            attach.message.id=idGenerated
-            await API.insertAttachment(attach)
-                .catch(error => console.error('Errore nella richiesta API:', error, attach));
+            for (let i = 0; i < attach.length; i++){
+                attach[i].message=sendMessage
+                attach[i].message.id=idGenerated
+                await API.insertAttachment(attach[i])
+                    .catch(error => console.error('Errore nella richiesta API:', error, attach));
+            }
         }
 
 
@@ -339,12 +340,8 @@ function ChatMessages({ chat }) {
         let copySendMessage={...sendMessage}
         copySendMessage.id=idGenerated;
         if(copyAttachment==null){
-            copySendMessage.attachments=[attach]
+            copySendMessage.attachments=attach
         }
-        console.log("copysendmessage", copySendMessage)
-        console.log("messages",messages)
-        /*sendMessage.id=idGenerated
-        sendMessage.attachments=[attach]*/
         setMessages([...messages, copySendMessage]);
         console.log("messages",messages)
         setNewMessage('');
@@ -391,31 +388,32 @@ function ChatMessages({ chat }) {
         };
     }, [chat.id]);
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
+    const handleFileSelection = (e) => {
+        const files = e.target.files;
 
-        if (file) {
-            const reader = new FileReader();
+        if (files && files.length > 0) {
+            const newSelectedFile = [];
 
-            reader.onload = (event) => {
-                const base64File = event.target.result;
-                const fileType = file.type; // Get the image type from the selected file
-                const fileName = file.name; // Get the image name from the selected file
-                const base64DataOnly = base64File.split(',')[1];
-                setSelectedImage({ data: base64DataOnly, type: fileType, name: fileName });
-                if(fileType.startsWith("image")){
-                    setImagePreview(base64File);
-                }
-                console.log("vari campi now, type,name", fileType,fileName)
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
 
-            };
-            // Read the file as a data URL, which will result in a base64-encoded string
-            reader.readAsDataURL(file);
-            /*<img src={"data:"+ att.type+";base64,"+att.imageData}
-                 alt="Attached Image"
-                 className="chat-image"/>*/
+                const reader = new FileReader();
+
+                reader.onload = (event) => {
+                    const base64File = event.target.result;
+                    const fileType = file.type;
+                    const fileName = file.name;
+                    const base64DataOnly = base64File.split(',')[1];
+
+                    newSelectedFile.push({ data: base64DataOnly, type: fileType, name: fileName });
+                    setSelectedFile(newSelectedFile);
+                };
+
+                reader.readAsDataURL(file);
+            }
         }
     };
+
 
 
     return (
@@ -475,16 +473,10 @@ function ChatMessages({ chat }) {
                         <input
                             type="file"
                             accept="*"
-                            onChange={handleImageChange}
+                            onChange={handleFileSelection}
                             id="fileInput"
+                            multiple
                         />
-                        {imagePreview && (
-                            <img
-                                src={imagePreview}
-                                alt="Selected Image Preview"
-                                className="chat-image"
-                            />
-                        )}
                     </Form.Group>
                     <Button variant="primary" onClick={()=>sendMessage(chat)}>
                         Send
