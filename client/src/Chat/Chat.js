@@ -298,6 +298,7 @@ function ChatMessages({ chat }) {
         }
 
         let attach;
+        let copyAttachment=null
         if(selectedImage!=null){
             attach={
                 id: null,
@@ -308,6 +309,7 @@ function ChatMessages({ chat }) {
             }
         }else{
             attach=[]
+            copyAttachment=[]
         }
         setSelectedImage(null)
 
@@ -323,19 +325,28 @@ function ChatMessages({ chat }) {
         //Invio messaggio e aspetto che abbia finito
         let idGenerated= await API.insertMessage(sendMessage)
             .catch(error => console.error('Errore nella richiesta API:', error, sendMessage));
-        attach.message=sendMessage
-        attach.message.id=idGenerated
+
         //invio attachment conl'id generato ritornato
-        await API.insertAttachment(attach)
-            .catch(error => console.error('Errore nella richiesta API:', error, attach));
+        if(copyAttachment==null){
+            attach.message=sendMessage
+            attach.message.id=idGenerated
+            await API.insertAttachment(attach)
+                .catch(error => console.error('Errore nella richiesta API:', error, attach));
+        }
+
 
         //creo copia altrimenti loop ricorsivo
         let copySendMessage={...sendMessage}
         copySendMessage.id=idGenerated;
-        copySendMessage.attachments=[attach]
+        if(copyAttachment==null){
+            copySendMessage.attachments=[attach]
+        }
+        console.log("copysendmessage", copySendMessage)
+        console.log("messages",messages)
         /*sendMessage.id=idGenerated
         sendMessage.attachments=[attach]*/
         setMessages([...messages, copySendMessage]);
+        console.log("messages",messages)
         setNewMessage('');
     };
     const fetchMessages = async () => {
