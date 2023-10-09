@@ -19,12 +19,10 @@ function ManagerTickets() {
 
     useEffect(() => {
         API.tickets(user.access_token)
-            .then(t => {
-                setTickets(t);
-                for (let i = 0; i < tickets.length; i++) {
-                    console.log(tickets[i]);
-                }
-            })
+            .then(t =>
+                setTickets(t)
+
+            )
             .catch(error => {
                 setError(error);
                 setShow(true)
@@ -37,7 +35,7 @@ function ManagerTickets() {
             <CardGroup className="ticketList" style = {{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
                 {tickets.map((t) => {
                     return (
-                        <Card key={t.id} style={{ width: "30%", margin: "5%" }}>
+                        <Card key={t.id} style = {{margin: "5%", border: " solid 2px"}} >
                             <Card.Body>
                                 <Card.Title style={{ fontWeight: "900" }}>{t.description}</Card.Title>
                                 <Container

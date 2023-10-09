@@ -264,6 +264,27 @@ function resolveTicket(status, token) {
             body: JSON.stringify(status)
         }).then((response) => {
             if (response.ok) {
+                console.log(response.body)
+                resolve(response.json());
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((message) => { reject(message); }) // error message in the response body
+                    .catch(() => { reject({ error: "Unable to elaborate server response" }) }); // something else
+            }
+        }).catch(() => { reject({ error: "Server communication error" }) }); // connection errors
+    });
+}
+function status(ticketId, token) {
+    return new Promise((resolve, reject) => {
+        fetch('/API/ticket/status/' + ticketId, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+        }).then((response) => {
+            if (response.ok) {
                 resolve(response.json());
             } else {
                 // analyze the cause of error
@@ -432,5 +453,5 @@ const API = {
     profileDetails: getCustomer, login, logout, insertProfile: signupCustomer, editProfile: updateCustomer,
     insertTicket, getCustomerTickets, getLatestTicketStatus,
     expert, expertTickets, tickets, ticketDetails, latestStatus,
-    openTicket, closeTicket, progressTicket, resolveTicket, reopenTicket};
+    openTicket, closeTicket, progressTicket, resolveTicket, reopenTicket, status};
 export default API;
