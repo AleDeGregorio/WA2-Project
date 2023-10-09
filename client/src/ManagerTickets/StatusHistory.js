@@ -10,9 +10,13 @@ import dayjs from "dayjs"
 function StatusHistory(props){
     const {id} = useParams();
     const user = useContext(LoginContext)
+
+    const { setError, setShow } = props;
+
+    const [loading, setLoading] = useState(true)
+    const [loadContext, setLoadContext] = useState(true)
+
     const [status, setStatus] = useState([])
-    const [show, setShow] = useState(false);
-    const [error, setError] = useState(false);
 
     useEffect(() => {
         API.status(id, user.access_token)
@@ -25,6 +29,10 @@ function StatusHistory(props){
             .catch(error => {
                 setError(error);
                 setShow(true)
+
+                setTimeout(() => {
+                    setShow(false)
+                }, 3000)
             });
     }, [id, status])
 
