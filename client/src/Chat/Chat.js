@@ -242,12 +242,13 @@ const messagesExample=[
 
 function Chat() {
     const [chats, setChats] = useState(chatExample);
-
+    const user = useContext(LoginContext)
     const [selectedChat, setSelectedChat] = useState(null);
 
     useEffect(() => {
+
         // Esegui la richiesta API iniziale quando il componente viene montato
-        API.getChats(7)
+        API.getChats(7, user.access_token)
             .then(data => setChats(data))
             .catch(error => console.error('Errore nella richiesta API:', error));
     }, []);
@@ -326,7 +327,7 @@ function ChatMessages({ chat }) {
         }
 
         //Invio messaggio e aspetto che abbia finito
-        let idGenerated= await API.insertMessage(sendMessage)
+        let idGenerated= await API.insertMessage(sendMessage,user.access_token)
             .catch(error => console.error('Errore nella richiesta API:', error, sendMessage));
 
         //invio attachment conl'id generato ritornato
@@ -334,7 +335,7 @@ function ChatMessages({ chat }) {
             for (let i = 0; i < attach.length; i++){
                 attach[i].message=sendMessage
                 attach[i].message.id=idGenerated
-                await API.insertAttachment(attach[i])
+                await API.insertAttachment(attach[i],user.access_token)
                     .catch(error => console.error('Errore nella richiesta API:', error, attach));
             }
         }
@@ -353,12 +354,12 @@ function ChatMessages({ chat }) {
         // Esegui la richiesta API per caricare i messaggi
         try {
             // Fetch messages for the chat
-            const messagesData = await API.getChatMessages(chat.id);
+            const messagesData = await API.getChatMessages(chat.id, user.access_token);
 
             // Create an array of promises to fetch attachments for each message
             const attachmentPromises = messagesData.map(async (message) => {
                 try {
-                    message.attachments = await API.getAttachments(message.id);
+                    message.attachments = await API.getAttachments(message.id, user.access_token);
                 } catch (error) {
                     console.error('Error fetching attachments:', error);
                 }
@@ -383,7 +384,7 @@ function ChatMessages({ chat }) {
     useEffect(() => {
         const pollingInterval = setInterval(() => {
             fetchMessages();
-        }, 500000); // Esempio: effettua il polling ogni 5 secondi
+        }, 50000); // Esempio: effettua il polling ogni 5 secondi
 
         return () => {
             // Pulisci l'interval quando il componente viene smontato

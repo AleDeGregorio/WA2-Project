@@ -17,7 +17,6 @@ class AttachmentServiceImpl(
     }
 
     override fun insertAttachment(attachment: Attachment) {
-        println("entro nel servizio di inserzione")
         if (attachment.id != null && attachmentRepository.existsById(attachment.id!!)) {
             throw AttachmentAlreadyInsertedException("Attachment with id ${attachment.id} already exists")
         }

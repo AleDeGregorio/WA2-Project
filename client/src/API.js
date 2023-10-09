@@ -337,11 +337,12 @@ function editProfile(profile) {
     });
 }
 
-function getChats(ticketId) {
+function getChats(ticketId,token) {
     return new Promise((resolve, reject) => {
         fetch('API/chat/ticket/'+ticketId, {
             method: 'GET',
             headers: {
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
         }).then((response) => {
@@ -357,11 +358,12 @@ function getChats(ticketId) {
     });
 }
 
-function getChatMessages(chatId) {
+function getChatMessages(chatId, token) {
     return new Promise((resolve, reject) => {
         fetch('API/chat/messages/'+chatId, {
             method: 'GET',
             headers: {
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
         }).then((response) => {
@@ -377,11 +379,12 @@ function getChatMessages(chatId) {
     });
 }
 
-function insertMessage(message) {
+function insertMessage(message, token) {
     return new Promise((resolve, reject) => {
         fetch('API/ticket/chat/message', {
             method: 'POST',
             headers: {
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(message),
@@ -398,11 +401,12 @@ function insertMessage(message) {
     });
 }
 
-function getAttachments(messageId) {
+function getAttachments(messageId,token) {
     return new Promise((resolve, reject) => {
         fetch('API/ticket/chat/message/attachments/'+messageId, {
             method: 'GET',
             headers: {
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
         }).then((response) => {
@@ -418,11 +422,12 @@ function getAttachments(messageId) {
     });
 }
 
-function insertAttachment(attachment) {
+function insertAttachment(attachment,token) {
     return new Promise((resolve, reject) => {
         fetch('API/attachment', {
             method: 'POST',
             headers: {
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(attachment),

@@ -32,7 +32,6 @@ class AttachmentController(
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     fun insertAttachment(@RequestBody attachmentDTO: AttachmentDTO?) {
-        println("entro nella inserzione")
         if (attachmentDTO != null) {
             attachmentService.insertAttachment(attachmentDTO.toEntity())
         }
