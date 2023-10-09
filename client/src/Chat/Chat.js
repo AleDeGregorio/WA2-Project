@@ -288,7 +288,7 @@ function ChatMessages({ chat }) {
     const [imagePreview, setImagePreview] = useState(null);
 
     const sendMessage = async(chat) => {
-        if (newMessage.trim() === '' && imagePreview== null) {
+        if (newMessage.trim() === '' && imagePreview== null && document.getElementById('fileInput')==null) {
             return; // Don't send empty messages
         }
         setImagePreview(null);//preview not needed anymore
@@ -387,17 +387,22 @@ function ChatMessages({ chat }) {
             const reader = new FileReader();
 
             reader.onload = (event) => {
-                const base64Image = event.target.result;
-                const imageType = file.type; // Get the image type from the selected file
-                const imageName = file.name; // Get the image name from the selected file
-                const base64DataOnly = base64Image.split(',')[1];
-                setSelectedImage({ data: base64DataOnly, type: imageType, name: imageName });
-                setImagePreview(base64Image);
-                // You can also send the base64Image, imageType, and imageName to your API at this point if needed
-            };
+                const base64File = event.target.result;
+                const fileType = file.type; // Get the image type from the selected file
+                const fileName = file.name; // Get the image name from the selected file
+                const base64DataOnly = base64File.split(',')[1];
+                setSelectedImage({ data: base64DataOnly, type: fileType, name: fileName });
+                if(fileType.startsWith("image")){
+                    setImagePreview(base64File);
+                }
+                console.log("vari campi now, type,name", fileType,fileName)
 
+            };
             // Read the file as a data URL, which will result in a base64-encoded string
             reader.readAsDataURL(file);
+            /*<img src={"data:"+ att.type+";base64,"+att.imageData}
+                 alt="Attached Image"
+                 className="chat-image"/>*/
         }
     };
 
@@ -417,9 +422,12 @@ function ChatMessages({ chat }) {
                             <ul>
                                 {message.attachments.map((att, index) => (
                                     <li key={index}>
-                                        <img src={"data:"+ att.type+";base64,"+att.imageData}
-                                             alt="Attached Image"
-                                        className="chat-image"/>
+                                        <a
+                                            href={"data:" + att.type + ";base64," + att.imageData}
+                                            download={att.name}
+                                        >
+                                            {att.name}
+                                        </a>
                                     </li>
                                 ))}
                             </ul>
@@ -442,7 +450,7 @@ function ChatMessages({ chat }) {
                         />
                         <input
                             type="file"
-                            accept="image/*"
+                            accept="*"
                             onChange={handleImageChange}
                             id="fileInput"
                         />
