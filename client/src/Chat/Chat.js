@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
 import {Badge, Button, Container, Form, ListGroup} from 'react-bootstrap';
 import API from "../API";
 import './Chat.css'
+import LoginContext from "../Profiles/LoginContext";
 
 const chatExample=[
      {
@@ -281,6 +282,9 @@ function Chat() {
 }
 
 function ChatMessages({ chat }) {
+
+    const user = useContext(LoginContext)
+
     const [messages, setMessages] = useState(messagesExample);
     const [newMessage, setNewMessage] = useState('');
 
@@ -316,7 +320,7 @@ function ChatMessages({ chat }) {
             id: null,
             chat : chat,
             attachments: [],
-            sentBy: 'CUSTOMER', //todo da cambiare quando entri con il ruolo
+            sentBy: user.role.toUpperCase(),
             content: newMessage,
             sendingDate: new Date().toISOString()
         }
