@@ -292,6 +292,10 @@ function ChatMessages({ chat }) {
             return; // Don't send empty messages
         }
         setImagePreview(null);//preview not needed anymore
+        const fileInput = document.getElementById('fileInput');
+        if (fileInput) {
+            fileInput.value = '';
+        }
 
         let attach;
         if(selectedImage!=null){
@@ -440,6 +444,7 @@ function ChatMessages({ chat }) {
                             type="file"
                             accept="image/*"
                             onChange={handleImageChange}
+                            id="fileInput"
                         />
                         {imagePreview && (
                             <img
