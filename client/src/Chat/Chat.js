@@ -343,7 +343,6 @@ function ChatMessages({ chat }) {
             copySendMessage.attachments=attach
         }
         setMessages([...messages, copySendMessage]);
-        console.log("messages",messages)
         setNewMessage('');
     };
     const fetchMessages = async () => {
