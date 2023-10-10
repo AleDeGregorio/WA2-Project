@@ -19,8 +19,8 @@ data class Message(
     @OneToMany(mappedBy = "message")
     var attachments: MutableSet<Attachment> = mutableSetOf(),
 
-    @Enumerated(value = EnumType.STRING)
-    var sentBy: Role? = null,
+    //@Enumerated(value = EnumType.STRING)
+    var sentBy: String = "",
 
     @Column(length = 10000)
     var content: String = "",

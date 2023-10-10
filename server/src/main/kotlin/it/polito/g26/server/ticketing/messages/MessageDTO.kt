@@ -16,7 +16,7 @@ data class MessageDTO(
     val id: Long?,
     val chat: ChatDTO,
     val attachments: MutableSet<AttachmentDTO>,
-    val sentBy: Role?,
+    val sentBy: String,
     val content: String,
     val sendingDate: Date?
 )

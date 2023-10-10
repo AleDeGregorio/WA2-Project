@@ -60,9 +60,7 @@ function Chat() {
         let idGenerated=await API.insertChat(chat,user.access_token)
             .catch(error => console.error('Errore nella richiesta API:', error, chat));
         chat.id=idGenerated
-        console.log(idGenerated)
         setChats([...chats,chat])
-        console.log(chats)
     };
 
     return (
@@ -143,7 +141,7 @@ function ChatMessages({ chat , setSelectedChat}) {
             id: null,
             chat : chat,
             attachments: [],
-            sentBy: user.role.toUpperCase(),
+            sentBy: user.username,
             content: newMessage,
             sendingDate: new Date().toISOString()
         }
