@@ -52,7 +52,7 @@ class WebSecurityConfig(
             .requestMatchers(HttpMethod.GET,"/expert/**").hasAnyRole(ADMIN, MANAGER,EXPERT)
             .requestMatchers("/ticket/status/**").hasAnyRole(ADMIN,MANAGER, EXPERT)
             .requestMatchers("/ticket/product/**").hasAnyRole(ADMIN, MANAGER, EXPERT)
-            .requestMatchers("/ticket/customer/**").hasAnyRole(ADMIN, MANAGER, EXPERT)
+            .requestMatchers("/ticket/customer/**").hasAnyRole(ADMIN, MANAGER, EXPERT, CUSTOMER)
             .requestMatchers("/ticket/product/**").hasAnyRole(ADMIN, MANAGER, EXPERT)
             .requestMatchers("/customer/**").permitAll()//hasAnyRole(ADMIN,MANAGER,EXPERT,CUSTOMER)
             .and()

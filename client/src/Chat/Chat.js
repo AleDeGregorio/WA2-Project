@@ -241,18 +241,43 @@ const messagesExample=[
 
 
 function Chat() {
-    const [chats, setChats] = useState(chatExample);
+    const [chats, setChats] = useState(null);
     const user = useContext(LoginContext)
     const [selectedChat, setSelectedChat] = useState(null);
+    const [userTickets, setUserTickets] = useState(null);
 
-    useEffect(() => {
 
+    const fetchChats = async () => {
         // Esegui la richiesta API iniziale quando il componente viene montato
-        API.getChats(7, user.access_token)
-            .then(data => setChats(data))
-            .catch(error => console.error('Errore nella richiesta API:', error));
-    }, []);
+        let ticketsTemp=null
+        if (user.role === "customer") {
+            await API.getTicketsByCustomer(user.id, user.access_token)
+                .then(data=>{ticketsTemp=data})
+        } else {
+            //manager e admin?
+            await API.expertTickets(user.id, user.access_token)
+                .then(data=> {ticketsTemp=data})
+        }
 
+        let partialChats=[]
+        if (ticketsTemp != null && ticketsTemp.length > 0) {
+            for (let i = 0; i < ticketsTemp.length; i++) {
+                await API.getChats(ticketsTemp[i].id, user.access_token)
+                    .then(data => {
+                        partialChats=[...partialChats, ...data]
+                    })
+                    .catch(error => console.error('Errore nella richiesta API:', error))
+            }
+        }
+        setChats(partialChats)
+        setUserTickets(ticketsTemp)
+    }
+
+    useEffect( () => {
+        if(chats==null){
+            fetchChats()
+        }
+    }, []);
 
     const openChat = (chat) => {
         // Imposta l'ID della chat selezionata quando si fa clic su "Apri Chat"
@@ -261,23 +286,36 @@ function Chat() {
 
     return (
         <Container>
-            <h1>Chat for ticket {chats[0].ticket.id}</h1>
-            <ListGroup>
-                {chats.map(chat => (
-                    <ListGroup.Item key={chat.id}>
-                        <div>
-                            <strong>ID Chat:</strong> {chat.id}
-                        </div>
-                        <div>
-                            <strong>Data Chat:</strong> {chat.date}
-                        </div>
-                        <Button variant="primary" onClick={() => openChat(chat)}>
-                            Apri Chat
-                        </Button>
-                    </ListGroup.Item>
-                ))}
-            </ListGroup>
-            {selectedChat && <ChatMessages chat={selectedChat} />}
+            {chats!=null ? (
+                <>
+                        {userTickets.map(ticket=> (
+                            <>
+                            <h1>Chat for ticket {ticket.id}</h1>
+                            <ListGroup>
+                                {chats.filter(chat => chat.ticket.id === ticket.id)
+                                    .map(chatFiltered => (
+                                <ListGroup.Item key={chatFiltered.id}>
+                                    <div>
+                                        <strong>ID Chat:</strong> {chatFiltered.id}
+                                    </div>
+                                    <div>
+                                        <strong>Data Chat:</strong> {chatFiltered.date}
+                                    </div>
+                                    <Button variant="primary" onClick={() => openChat(chatFiltered)}>
+                                        Apri Chat
+                                    </Button>
+                                </ListGroup.Item>
+                                ))}
+                            </ListGroup>
+                            {chats.filter((chat) => chat.ticket.id === ticket.id).length === 0 && (
+                                <p>No chat for this ticket.</p>
+                            )}
+                            {selectedChat && selectedChat.ticket.id== ticket.id && <ChatMessages chat={selectedChat} />}
+                            </>)
+                        )}
+                </> ) : (
+                <p>No chats available for any ticket.</p>
+                )}
         </Container>
     );
 }

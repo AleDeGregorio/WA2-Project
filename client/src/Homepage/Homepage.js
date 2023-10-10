@@ -35,7 +35,7 @@ function Homepage() {
                         Tickets
                     </Button> : false
                 }
-                {loggedUser && user.role === "customer" ?
+                {loggedUser && (user.role === "customer" || user.role==="expert") ?
                     <Button variant="primary" size="lg" onClick={() => navigate('/chat')}>
                         Chat
                     </Button> : false

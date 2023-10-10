@@ -445,6 +445,27 @@ function insertAttachment(attachment,token) {
     });
 }
 
+function getTicketsByCustomer(customerId, token) {
+    return new Promise((resolve, reject) => {
+        fetch('API/ticket/customer/' + customerId, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        }).then((response) => {
+            if (response.ok) {
+                resolve(response.json());
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((message) => { reject(message); }) // error message in the response body
+                    .catch(() => { reject({ error: "Unable to elaborate server response" }) }); // something else
+            }
+        }).catch(() => { reject({ error: "Server communication error" }) }); // connection errors
+    });
+}
+
 const API = { products, productDetails, profileDetails, login, logout, insertProfile, editProfile, expert, expertTickets, ticketDetails, latestStatus,
-    openTicket, closeTicket, progressTicket, resolveTicket, reopenTicket, getChats, getChatMessages, insertMessage, getAttachments, insertAttachment};
+    openTicket, closeTicket, progressTicket, resolveTicket, reopenTicket, getChats, getChatMessages, insertMessage, getAttachments, insertAttachment, getTicketsByCustomer};
 export default API;
