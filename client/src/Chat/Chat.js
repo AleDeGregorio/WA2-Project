@@ -77,7 +77,7 @@ function Chat() {
                             {chats.filter((chat) => chat.ticket.id === ticket.id).length === 0 && (
                                 <p>No chat for this ticket.</p>
                             )}
-                            {selectedChat && selectedChat.ticket.id== ticket.id && <ChatMessages chat={selectedChat} />}
+                            {selectedChat && selectedChat.ticket.id== ticket.id && <ChatMessages chat={selectedChat} setSelectedChat={setSelectedChat} />}
                             </>)
                         )}
                 </> ) : (
@@ -87,7 +87,7 @@ function Chat() {
     );
 }
 
-function ChatMessages({ chat }) {
+function ChatMessages({ chat , setSelectedChat}) {
 
     const user = useContext(LoginContext)
 
@@ -221,6 +221,10 @@ function ChatMessages({ chat }) {
         }
     };
 
+    const closeChat=() => {
+        setSelectedChat(null);
+    };
+
 
 
     return (
@@ -288,6 +292,9 @@ function ChatMessages({ chat }) {
                     </Form.Group>
                     <Button variant="primary" onClick={()=>sendMessage(chat)}>
                         Send
+                    </Button>
+                    <Button variant="primary" onClick={()=>closeChat()}>
+                        Close Chat
                     </Button>
                 </Form>
             </div>
