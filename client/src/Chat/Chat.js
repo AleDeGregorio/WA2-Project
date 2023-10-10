@@ -66,9 +66,9 @@ function Chat() {
     return (
         <Container>
             {chats!=null ? (
-                <>
+                <ul>
                         {userTickets.map(ticket=> (
-                            <>
+                            <li key={ticket.id}>
                             <h1>Chat for ticket {ticket.id}</h1>
                             <ListGroup>
                                 {chats.filter(chat => chat.ticket.id === ticket.id)
@@ -95,9 +95,9 @@ function Chat() {
                                 </>
                             )}
                             {selectedChat && selectedChat.ticket.id== ticket.id && <ChatMessages chat={selectedChat} setSelectedChat={setSelectedChat} />}
-                            </>)
+                            </li>)
                         )}
-                </> ) : (
+                </ul> ) : (
                 <p>No chats available for any ticket.</p>
                 )}
         </Container>

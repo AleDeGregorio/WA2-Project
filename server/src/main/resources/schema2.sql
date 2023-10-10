@@ -1,4 +1,5 @@
-CREATE OR REPLACE FUNCTION increment_id()
+-- Trigger for the "message" table
+CREATE OR REPLACE FUNCTION increment_message_id()
     RETURNS TRIGGER AS $$
 BEGIN
     NEW.id = NEW.id + 6; -- Increment the ID by 6
@@ -6,8 +7,21 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER increment_id_trigger
+CREATE TRIGGER increment_message_id_trigger
     BEFORE INSERT ON message
     FOR EACH ROW
-EXECUTE FUNCTION increment_id();
--- this trigger is neede to be executed on the database to start from ID 7 to avoid problem with inserting by jpa
+EXECUTE FUNCTION increment_message_id();
+
+-- Trigger for the "chat" table
+CREATE OR REPLACE FUNCTION increment_chat_id()
+    RETURNS TRIGGER AS $$
+BEGIN
+    NEW.id = NEW.id + 6; -- Increment the ID by 6
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER increment_chat_id_trigger
+    BEFORE INSERT ON chat
+    FOR EACH ROW
+EXECUTE FUNCTION increment_chat_id();
