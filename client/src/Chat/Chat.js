@@ -89,9 +89,10 @@ function Chat() {
                             {chats.filter((chat) => chat.ticket.id === ticket.id).length === 0 && (
                                 <>
                                 <p>No chat for this ticket.</p>
-                                <Button variant="primary" onClick={() => startChat(ticket)}>
-                                    Start Chat
-                                </Button>
+                                    {user.role=="customer" && <Button variant="primary" onClick={() => startChat(ticket)}>
+                                        Start Chat
+                                    </Button>
+                                    }
                                 </>
                             )}
                             {selectedChat && selectedChat.ticket.id== ticket.id && <ChatMessages chat={selectedChat} setSelectedChat={setSelectedChat} />}
