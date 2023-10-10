@@ -10,7 +10,8 @@ import java.util.*
 data class Message(
     @Id
     //@GeneratedValue
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "message_seq")
+    @SequenceGenerator(name = "message_seq", initialValue = 7)
     var id: Long? = null,
 
     @ManyToOne

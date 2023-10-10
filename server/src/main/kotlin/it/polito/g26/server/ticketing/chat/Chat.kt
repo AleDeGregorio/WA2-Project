@@ -8,7 +8,8 @@ import java.util.*
 @Entity
 data class Chat (
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "chat_seq")
+    @SequenceGenerator(name = "chat_seq", initialValue = 4)
     var id: Long? = null,
 
     @OneToMany(mappedBy = "chat")
