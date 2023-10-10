@@ -330,13 +330,11 @@ function ChatMessages({ chat }) {
     const [selectedFile, setSelectedFile] = useState(null);
 
     const sendMessage = async(chat) => {
-        if (newMessage.trim() === '' && document.getElementById('fileInput')==null) {
-            return; // Don't send empty messages
-        }
+        let input=document.getElementById('fileInput')
+        if (newMessage.trim() === '' && input.files.length==0) return; // Don't send empty messages
+
         const fileInput = document.getElementById('fileInput');
-        if (fileInput) {
-            fileInput.files = new DataTransfer().files;
-        }
+        if (fileInput) fileInput.files = new DataTransfer().files;
 
         let attach=[]
         let copyAttachment=null
