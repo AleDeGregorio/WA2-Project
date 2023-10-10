@@ -8,26 +8,27 @@ import LoginContext from "../Profiles/LoginContext";
 
 
 function Chat() {
-    const [chats, setChats] = useState(null);
+    const [chats, setChats] = useState([]);
     const user = useContext(LoginContext)
     const [selectedChat, setSelectedChat] = useState(null);
-    const [userTickets, setUserTickets] = useState(null);
+    const [userTickets, setUserTickets] = useState([]);
 
 
     const fetchChats = async () => {
         // Esegui la richiesta API iniziale quando il componente viene montato
-        let ticketsTemp=null
+        let ticketsTemp=[]
         if (user.role === "customer") {
             await API.getTicketsByCustomer(user.id, user.access_token)
                 .then(data=>{ticketsTemp=data})
         } else {
             //manager e admin?
             await API.expertTickets(user.id, user.access_token)
-                .then(data=> {ticketsTemp=data})
+                .then(data=> {ticketsTemp=[...data]})
         }
 
         let partialChats=[]
-        if (ticketsTemp != null && ticketsTemp.length > 0) {
+        console.log(ticketsTemp)
+        if (ticketsTemp.length > 0) {
             for (let i = 0; i < ticketsTemp.length; i++) {
                 await API.getChats(ticketsTemp[i].id, user.access_token)
                     .then(data => {
@@ -41,7 +42,7 @@ function Chat() {
     }
 
     useEffect( () => {
-        if(chats==null){
+        if(chats.length==0){
             fetchChats()
         }
     }, []);
@@ -65,7 +66,7 @@ function Chat() {
 
     return (
         <Container>
-            {chats!=null ? (
+            {userTickets.length !== 0 ? (
                 <ul>
                         {userTickets.map(ticket=> (
                             <li key={ticket.id}>
@@ -99,7 +100,7 @@ function Chat() {
                             </li>)
                         )}
                 </ul> ) : (
-                <p>No chats available for any ticket.</p>
+                <p>There are no tickets</p>
                 )}
         </Container>
     );
