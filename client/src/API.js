@@ -466,6 +466,28 @@ function getTicketsByCustomer(customerId, token) {
     });
 }
 
+function insertChat(chat,token) {
+    return new Promise((resolve, reject) => {
+        fetch('API/chat', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(chat),
+        }).then((response) => {
+            if (response.ok) {
+                resolve(response.json());
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((message) => { reject(message); }) // error message in the response body
+                    .catch(() => { reject({ error: "Unable to elaborate server response" }) }); // something else
+            }
+        }).catch(() => { reject({ error: "Server communication error" }) }); // connection errors
+    });
+}
+
 const API = { products, productDetails, profileDetails, login, logout, insertProfile, editProfile, expert, expertTickets, ticketDetails, latestStatus,
-    openTicket, closeTicket, progressTicket, resolveTicket, reopenTicket, getChats, getChatMessages, insertMessage, getAttachments, insertAttachment, getTicketsByCustomer};
+    openTicket, closeTicket, progressTicket, resolveTicket, reopenTicket, getChats, getChatMessages, insertMessage, getAttachments, insertAttachment, getTicketsByCustomer,insertChat};
 export default API;

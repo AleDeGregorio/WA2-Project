@@ -50,6 +50,20 @@ function Chat() {
         // Imposta l'ID della chat selezionata quando si fa clic su "Apri Chat"
         setSelectedChat(chat);
     };
+    const startChat = async(ticket) => {
+        let chat={
+            id: null,
+            messages: [],
+            ticket: ticket,
+            creationDate: new Date().toISOString()
+        }
+        let idGenerated=await API.insertChat(chat,user.access_token)
+            .catch(error => console.error('Errore nella richiesta API:', error, chat));
+        chat.id=idGenerated
+        console.log(idGenerated)
+        setChats([...chats,chat])
+        console.log(chats)
+    };
 
     return (
         <Container>
@@ -75,7 +89,12 @@ function Chat() {
                                 ))}
                             </ListGroup>
                             {chats.filter((chat) => chat.ticket.id === ticket.id).length === 0 && (
+                                <>
                                 <p>No chat for this ticket.</p>
+                                <Button variant="primary" onClick={() => startChat(ticket)}>
+                                    Start Chat
+                                </Button>
+                                </>
                             )}
                             {selectedChat && selectedChat.ticket.id== ticket.id && <ChatMessages chat={selectedChat} setSelectedChat={setSelectedChat} />}
                             </>)
@@ -144,7 +163,7 @@ function ChatMessages({ chat , setSelectedChat}) {
         }
 
 
-        //creo copia altrimenti loop ricorsivo
+        //creo copia altrimenti loop ricorsivo con attachment
         let copySendMessage={...sendMessage}
         copySendMessage.id=idGenerated;
         if(copyAttachment==null){

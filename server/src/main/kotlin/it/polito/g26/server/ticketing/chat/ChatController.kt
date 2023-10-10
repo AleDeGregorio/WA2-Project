@@ -18,12 +18,6 @@ import java.text.SimpleDateFormat
 class ChatController(
     private val chatService: ChatService
 ) {
-    private fun chatDTOToEntity(chatDTO: ChatDTO) : Chat {
-        val chat = Chat()
-        chat.ticket = chatDTO.ticket.toEntity()
-        chat.creationDate = chatDTO.creationDate
-        return chat
-    }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -52,14 +46,14 @@ class ChatController(
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    fun insertChat(@RequestBody chatDTO: ChatDTO?) {
+    fun insertChat(@RequestBody chatDTO: ChatDTO?): Long? {
         if (chatDTO == null) {
             throw EmptyPostBodyException("Empty chat body")
-        }else if(chatService.getChat(chatDTO.id!!)!=null) {
+        }else if(chatDTO.id !=null && chatService.getChat(chatDTO.id)!=null) {
             throw ChatAlreadyExistsException("${chatDTO.id} already exists!")
         }else{
-            val insertChat = chatDTOToEntity(chatDTO)
-            chatService.insertChat(insertChat)
+            val idGenerated=chatService.insertChat(chatDTO.toEntity())
+            return idGenerated
         }
     }
 }
