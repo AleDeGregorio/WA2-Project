@@ -35,9 +35,20 @@ function Homepage() {
                         Tickets
                     </Button> : false
                 }
+
                 {loggedUser && user.role === "manager" ?
                     <Button variant="primary" size="lg" onClick={() => navigate('/managerTickets')}>
-                        Tickets
+                        Tickets-Desi
+                    </Button> : false
+                }
+                {loggedUser && user.role === "manager" ?
+                    <Button variant="primary" size="lg" onClick={() => navigate('/ticketsManager')}>
+                        Tickets-Mario
+                    </Button> : false
+                }
+                {loggedUser && user.role === "manager" ?
+                    <Button variant="primary" size="lg" onClick={() => navigate('/insertExpert')}>
+                        Insert new Expert
                     </Button> : false
                 }
             </div>
