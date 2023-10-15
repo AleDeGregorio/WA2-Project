@@ -477,9 +477,9 @@ function setPriority(ticketID, payload, token) {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: JSON.stringify(payload)
+            body: payload
         }).then((response) => {
             if (response.ok) {
                 resolve(response.json());

@@ -4,6 +4,7 @@ import LoginContext from "../Profiles/LoginContext";
 import {Button, Container, CardGroup, Card, Form, FormGroup, Dropdown, Col, Row} from "react-bootstrap";
 import DropdownItem from "react-bootstrap/DropdownItem";
 import API from "../API";
+import Badge from 'react-bootstrap/Badge';
 
 /*const tickets = [
     {id : 1, customer: 1, expert: null, product: 1, status:"opened", issueType: "field1", description: "bad phone", priorityLevel: null, dateOfCreation: "11-07-2023"  },
@@ -88,7 +89,7 @@ function ManagerHandlingTickets(props) {
                 <Col xs={1}>
                     ISSUE
                 </Col>
-                <Col xs={1}>
+                <Col xs={2}>
                     DESCRIPTION
                 </Col>
                 <Col xs={2}>
@@ -97,9 +98,7 @@ function ManagerHandlingTickets(props) {
                 <Col xs={2}>
                     EXPERT
                 </Col>
-                <Col xs={1}>
-                    CHANGE STATUS
-                </Col>
+
             </Row>
             {tickets.map((ticket) => (
                 <ManagerViewSingleTicket key={ticket.id} ticket={ticket} user ={user} experts={experts} />
@@ -134,8 +133,9 @@ function ManagerViewSingleTicket(props) {
 
     const handleSubmitPriority = (ticketId) => {
         if (selectedPriority !== null) {
-            // Construct JSON payload
-            const payload = Number(selectedPriority);
+            const params = new URLSearchParams()
+            params.append("priorityLevel",  Number(selectedPriority))
+            const payload = params.toString();
 
             // Send the payload
            API.setPriority(ticketId, payload, user.access_token)
@@ -163,7 +163,8 @@ function ManagerViewSingleTicket(props) {
     const handleAssignExpert = (ticketId) => {
         if (selectedExpert !== null) {
             // Construct JSON payload with expertId
-            const payload = { expertId: Number(selectedExpert) };
+            const expert = experts.find((e) => e.id === selectedExpert)
+            const payload = expert;
 
             // Send the payload
             API.setExpertTicket(ticketId, payload, props.user.access_token)
@@ -182,7 +183,9 @@ function ManagerViewSingleTicket(props) {
         }
     };
 
-
+    const date = new Date(ticket.dateOfCreation);
+    const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+    const formattedDate = new Intl.DateTimeFormat('it-IT', options).format(date);
 
     return (
         <Row>
@@ -193,7 +196,7 @@ function ManagerViewSingleTicket(props) {
                 {status}
             </Col>
             <Col xs={1}>
-                {ticket.dateOfCreation}
+                {formattedDate}
             </Col>
             <Col xs={1}>
                 {ticket.product.ean}
@@ -201,56 +204,59 @@ function ManagerViewSingleTicket(props) {
             <Col xs={1}>
                 {ticket.issueType}
             </Col>
-            <Col xs={1}>
+            <Col xs={2}>
                 {ticket.description}
             </Col>
             <Col xs={2}>
-                <Form>
-                    <Dropdown onSelect={(eventKey) => handlePriorityChange(eventKey)}>
-                        <Dropdown.Toggle variant="primary" id="priority-dropdown">
-                            {selectedPriority !== null
-                                ? `Priority: ${selectedPriority}`
-                                : "Select Priority"}
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            {[1, 2, 3, 4, 5].map((priority) => (
-                                <Dropdown.Item key={priority} eventKey={priority}>
-                                    {priority}
-                                </Dropdown.Item>
-                            ))}
-                        </Dropdown.Menu>
-                    </Dropdown>
-                </Form>
-                <Button onClick={() => handleSubmitPriority(ticket.id)}>SET</Button>
-            </Col>
-            <Col xs={2}>
-                <Form>
-                    <Dropdown onSelect={(eventKey) => handleExpertChange(eventKey)}>
-                        <Dropdown.Toggle variant="primary" id="expert-dropdown">
-                            {selectedExpert !== null
-                                ? `Exp.: ${
-                                    experts.find((expert) => expert.id === Number(selectedExpert))
-                                        ?.username || "Unknown Expert"
-                                }`
-                                : "Select Expert"}
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            {experts
-                                .filter((expert) => expert.fields.includes(ticket.product.category))
-                                .map((expert) => (
-                                    <Dropdown.Item key={expert.id} eventKey={expert.id}>
-                                        {expert.username}
+                {ticket.priorityLevel
+                    ? <Badge bg="danger">{ticket.priorityLevel}</Badge>
+                    :<Form>
+                        <Dropdown onSelect={(eventKey) => handlePriorityChange(eventKey)}>
+                            <Dropdown.Toggle variant="primary" id="priority-dropdown">
+                                {selectedPriority !== null
+                                    ? `Priority: ${selectedPriority}`
+                                    : "Select Priority"}
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                {[1, 2, 3, 4, 5].map((priority) => (
+                                    <Dropdown.Item key={priority} eventKey={priority}>
+                                        {priority}
                                     </Dropdown.Item>
                                 ))}
-                        </Dropdown.Menu>
-                    </Dropdown>
-                </Form>
-                <Button onClick={() => handleAssignExpert(ticket.id)}>
-                    Assign Expert
-                </Button>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                        <Button onClick={() => handleSubmitPriority(ticket.id)}>SET</Button>
+                    </Form>}
+
             </Col>
-            <Col xs={1}>
-                <Button>Change status</Button>
+            <Col xs={2}>
+                {ticket.expert !== null
+                    ? <Badge bg="success">{ticket.expert.username}</Badge>
+                    : <Form>
+                        <Dropdown onSelect={(eventKey) => handleExpertChange(eventKey)}>
+                            <Dropdown.Toggle variant="primary" id="expert-dropdown">
+                                {selectedExpert !== null
+                                    ? `Exp.: ${
+                                        
+                                        experts.find((expert) => expert.id === selectedExpert)
+                                            ?.username || "Unknown Expert"
+                                    }`
+                                    : "Select Expert"}
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                {experts
+                                    .filter((expert) => expert.fields.includes(ticket.product.category))
+                                    .map((expert) => (
+                                        <Dropdown.Item key={expert.id} eventKey={expert.id}>
+                                            {expert.username}
+                                        </Dropdown.Item>
+                                    ))}
+                            </Dropdown.Menu>
+                        </Dropdown>
+                        <Button onClick={() => handleAssignExpert(ticket.id)}>
+                            Assign Expert
+                        </Button>
+                    </Form>}
             </Col>
         </Row>
     )
