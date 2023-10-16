@@ -25,6 +25,16 @@ import SuccessLogout from "./Profiles/SuccessLogout";
 import CustomerTickets from "./CustomerTickets/CustomerTickets";
 import WrongPrivileges from "./ErrorHandling/WrongPrivileges";
 import CreateTicket from "./CustomerTickets/CreateTicket";
+import ExpertTickets from "./ExpertTickets/ExpertTickets";
+import TicketDetails from "./ExpertTickets/TicketDetails"
+import ViewCustomerTickets from "./CustomerTickets/ViewCustomerTickets";
+import CustomerTicketDetails from "./CustomerTickets/CustomerTicketDetails";
+import ManagerTickets from "./ManagerTickets/ManagerTickets";
+import StatusHistory from "./ManagerTickets/StatusHistory";
+import ManagerHandlingTickets from "./Manager/ManagerHandlingTickets";
+import InsertExpert from "./Manager/InsertExpert";
+import Chat from "./Chat/Chat";
+import ViewChat from "./Chat/ViewChat";
 
 
 
@@ -48,6 +58,7 @@ function App2() {
     const navigate = useNavigate()
 
     const [initialLoading, setInitialLoading] = useState(true);
+    const [loginLoading, setLoginLoading] = useState(false)
 
     const [user, setUser] = useState({});
 
@@ -81,8 +92,8 @@ function App2() {
                 user.email = email
                 user.id = id
                 user.username = username
-                user.firstName = firstName
-                user.lastName = lastName
+                user.firstName = lastName
+                user.lastName = firstName
                 user.password = password
                 user.city = city
                 user.address = address
@@ -92,11 +103,17 @@ function App2() {
 
                 setShow(false);
                 setError('');
+                setLoginLoading(false)
                 navigate('/');
             })
             .catch(err => {
+                    setLoginLoading(false)
                     setShow(true);
-                    setError(err.error);
+                    setError("Incorrect username or password, please try again");
+
+                    setTimeout(() => {
+                        setShow(false)
+                    }, 3000)
                 }
             )
     }
@@ -110,6 +127,11 @@ function App2() {
                 setShow(false);
                 setError('');
                 setShowLogout(true)
+
+                setTimeout(() => {
+                    setShowLogout(false)
+                }, 3000)
+
                 navigate('/')
             /*})
             .catch(err => {
@@ -126,6 +148,10 @@ function App2() {
             .catch(error => {
                 setError(error);
                 setShow(true)
+
+                setTimeout(() => {
+                    setShow(false)
+                }, 3000)
             });
 
         const user = JSON.parse(localStorage.getItem("user"))
@@ -146,17 +172,26 @@ function App2() {
             {initialLoading ? <Loading /> : false}
             <Routes>
                 <Route path='/' element={<Homepage />} />
-                <Route path='login' element={<Login login={doLogin} setShow={setShow} setError={setError} />}/>
+                <Route path='login' element={<Login login={doLogin} setShow={setShow} setError={setError} loginLoading={loginLoading} setLoginLoading={setLoginLoading}/>}/>
                 <Route path='/mainProducts' element={<MainProducts products={products} setError={setError} setShow={setShow}/>}/>} />
                 <Route path='/products' element={<Products products={products} setError={setError} setShow={setShow}/>} />
                 <Route path='/products/:productId' element={<ProductDetails setError={setError} setShow={setShow}/>} />
                 <Route path='/mainProfiles' element={<MainProfiles />} />
                 <Route path='/profiles/:email' element={<ProfileDetails setError={setError} setShow={setShow}/>} />
                 <Route path='/insertProfile' element={<InsertProfile setError={setError} setShow={setShow}/>} />
-                <Route path='/editProfile/:email' element={<EditProfile setError={setError} setShow={setShow}/>} />
+                <Route path='/editProfile/:email' element={<EditProfile setError={setError} setShow={setShow} logout={doLogout}/>}/>
                 <Route path='/customerTickets' element={<CustomerTickets />} />
+                <Route path='/viewCustomerTickets' element={<ViewCustomerTickets setError={setError} setShow={setShow}/>} />} />
+                <Route path='/customerTicketDetails' element={<CustomerTicketDetails setError={setError} setShow={setShow} />} />
+                <Route path='/expertTickets' element={<ExpertTickets setError={setError} setShow={setShow} />} />
+                <Route path='/managerTickets' element={<ManagerTickets setError={setError} setShow={setShow} />} />
+                <Route path='/ticketsManager' element={<ManagerHandlingTickets setError={setError} setShow={setShow} />} />
+                <Route path='/insertExpert' element={<InsertExpert setError={setError} setShow={setShow} />} />
                 <Route path='/createTicket' element={<CreateTicket products={products}/>} />
+                <Route path='/viewTicket/:id' element={<TicketDetails setError={setError} setShow={setShow} />}/>
+                <Route path='/viewStatus/:id' element={<StatusHistory setError={setError} setShow={setShow} />} />
                 <Route path='/wrongPrivileges' element={<WrongPrivileges />} />
+                <Route path='/viewChat' element={<ViewChat setError={setError} setShow={setShow} />} />
                 <Route path='*' element={<PageNotFound />} />
             </Routes>
         </LoginContext.Provider>

@@ -61,7 +61,7 @@ class TicketController(
 
     @GetMapping("/customer/{customerId}")
     @ResponseStatus(HttpStatus.OK)
-    fun getTicketByCustomer(@PathVariable customerId: Long) : List<TicketDTO>? {
+    fun getTicketByCustomer(@PathVariable customerId: String) : List<TicketDTO>? {
         val tickets = ticketService.getTicketByCustomer(customerId)
 
         if (tickets != null) {
@@ -76,7 +76,7 @@ class TicketController(
 
     @GetMapping("/expert/{expertId}")
     @ResponseStatus(HttpStatus.OK)
-    fun getTicketByExpert(@PathVariable expertId: Long) : List<TicketDTO>? {
+    fun getTicketByExpert(@PathVariable expertId: String) : List<TicketDTO>? {
         val tickets = ticketService.getTicketByExpert(expertId)
 
         if (tickets != null) {

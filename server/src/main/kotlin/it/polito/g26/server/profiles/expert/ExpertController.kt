@@ -17,6 +17,16 @@ class ExpertController(
     private val expertService: ExpertService
 ) {
     private val log = LoggerFactory.getLogger(ExpertController::class.java)
+    @GetMapping("")
+    @ResponseStatus(HttpStatus.OK)
+    fun getAll() : List<ExpertDTO>? {
+        val experts =  expertService.getAll()
+        if(experts.isNotEmpty())
+            return experts
+        else{
+            throw ExpertNotFoundException("Product List is Empty")
+        }
+    }
 
     @GetMapping("/{email}")
     @ResponseStatus(HttpStatus.OK)

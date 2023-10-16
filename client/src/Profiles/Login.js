@@ -2,7 +2,7 @@ import {Button, Col, Container, Form, Row} from "react-bootstrap";
 import {useState} from "react";
 
 function Login(props) {
-    const { login, setShow, setError } = props;
+    const { login, setShow, setError, loginLoading, setLoginLoading } = props;
 
     const [username, setUsername] = useState("mariorossi")
     const [password, setPassword] = useState("password")
@@ -17,11 +17,16 @@ function Login(props) {
             valid = false;
 
         if (valid) {
+            setLoginLoading(true)
             login(credentials);
         }
         else {
             setShow(true);
             setError('Wrong data format. Please try again');
+
+            setTimeout(() => {
+                setShow(false)
+            }, 3000)
         }
     }
 
@@ -31,6 +36,13 @@ function Login(props) {
                 <Col>
                     <br />
                     <h2>Login</h2>
+                    {
+                        loginLoading ?
+                            <div>
+                                <br />
+                                <div className="spinner-border" role="status"></div>
+                            </div> : false
+                    }
                     <Form onSubmit={handleSubmit}>
                         <br />
                         <br />

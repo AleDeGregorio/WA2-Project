@@ -7,6 +7,7 @@ import it.polito.g26.server.ticketing.messages.MessageDTO
 import it.polito.g26.server.ticketing.tickets.TicketDTO
 import lombok.extern.slf4j.Slf4j
 import org.slf4j.LoggerFactory
+import it.polito.g26.server.ticketing.tickets.toEntity
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -97,19 +98,19 @@ class ChatController(
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    fun insertChat(@RequestBody chatDTO: ChatDTO?) {
+    fun insertChat(@RequestBody chatDTO: ChatDTO?): Long? {
         if (chatDTO == null) {
             log.info("Inserting new chat failed: empty body")
             throw EmptyPostBodyException("Empty chat body")
         }
-        else if (chatService.getChat(chatDTO.id!!) != null) {
+        else if (chatDTO.id !=null && chatService.getChat(chatDTO.id)!=null) {
             log.info("Inserting new chat failed: chat already exists")
             throw ChatAlreadyExistsException("${chatDTO.id} already exists!")
         }
         else {
             log.info("Inserting new chat")
-            val insertChat = chatDTOToEntity(chatDTO)
-            chatService.insertChat(insertChat)
+            val idGenerated=chatService.insertChat(chatDTO.toEntity())
+            return idGenerated
         }
     }
 }

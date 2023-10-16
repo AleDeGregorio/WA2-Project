@@ -29,12 +29,14 @@ class MessageServiceImpl(
         }
     }
 
-    override fun insertMessage(message: Message) {
+    override fun insertMessage(message: Message):Long? {
         if (message.id != null && messageRepository.existsById(message.id!!)) {
             throw MessageAlreadySentException("Message with id ${message.id} already inserted!")
         }
         else {
-            messageRepository.save(message)
+            //messageRepository.save(message)
+            val savedMessage = messageRepository.save(message)
+            return savedMessage.id // This will return the ID assigned by the repository
         }
     }
 }

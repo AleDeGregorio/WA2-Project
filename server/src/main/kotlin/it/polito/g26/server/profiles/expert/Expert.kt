@@ -11,7 +11,7 @@ data class Expert (
     override var id: String?,
     var fields: String = "",
     @Transient
-    override var password: String = "",
+    override var password: String? = "",
     override var username: String,
     override var firstName: String,
     override var lastName: String,

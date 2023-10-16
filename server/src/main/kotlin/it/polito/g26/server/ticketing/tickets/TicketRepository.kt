@@ -13,10 +13,10 @@ import java.util.Date
 @Repository
 interface TicketRepository : JpaRepository<Ticket, Long> {
     @Query("SELECT t FROM Ticket t LEFT JOIN FETCH t.customer WHERE t.customer.id = :id")
-    fun findByCustomer(@Param("id") id: Long) : List<Ticket>?
+    fun findByCustomer(@Param("id") id: String) : List<Ticket>?
 
     @Query("SELECT t FROM Ticket t LEFT JOIN FETCH t.expert WHERE t.expert.id = :id")
-    fun findByExpert(@Param("id") id: Long) : List<Ticket>?
+    fun findByExpert(@Param("id") id: String) : List<Ticket>?
 
     @Query("SELECT t FROM Ticket t LEFT JOIN FETCH t.product WHERE t.product.ean = :id")
     fun findByProduct(@Param("id") id: Long) : List<Ticket>?

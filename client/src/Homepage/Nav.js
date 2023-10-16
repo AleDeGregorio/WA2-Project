@@ -1,6 +1,6 @@
 import {Container, Navbar} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
-import {HouseDoorFill, BoxSeamFill, PersonLinesFill} from "react-bootstrap-icons";
+import {HouseDoorFill, BoxSeamFill, PersonLinesFill, PersonCircle} from "react-bootstrap-icons";
 import './Nav.css'
 import {useContext} from "react";
 import LoginContext from "../Profiles/LoginContext";
@@ -11,6 +11,7 @@ function Nav(props) {
     const navigate = useNavigate()
 
     const user = useContext(LoginContext)
+    const loggedUser = Object.keys(user).length > 0
 
     const doLogout = () => {
         const token = {
@@ -28,13 +29,29 @@ function Nav(props) {
                         <HouseDoorFill className='nav-icon' /> Home-page
                     </span>
                 </div>
+                {
+                    loggedUser && user.role === "customer" ?
+                        <div className='p-2 bd-highlight'>
+                            <span className='head-text' id='icon-profile' onClick={() => navigate('/profiles/' + user.email)}>
+                                <PersonCircle className='nav-icon' /> Your profile
+                            </span>
+                        </div> : false
+                }
+                {
+                    !loggedUser ?
+                        <div className='p-2 bd-highlight'>
+                            <span className='head-text' id='icon-profile' onClick={() => navigate('/insertProfile')}>
+                                <PersonCircle className='nav-icon' /> Sign up
+                            </span>
+                        </div> : false
+                }
                 <div className='p-2 bd-highlight'>
                     {Object.keys(user).length > 0 ?
-                        <span className='head-text' id='icon-profiles' onClick={() => doLogout()}>
+                        <span className='head-text' id='icon-login' onClick={() => doLogout()}>
                             <PersonLinesFill className='nav-icon' /> Logout
                         </span> :
 
-                        <span className='head-text' id='icon-profiles' onClick={() => navigate('/login')}>
+                        <span className='head-text' id='icon-login' onClick={() => navigate('/login')}>
                             <PersonLinesFill className='nav-icon' /> Login
                         </span>
                     }

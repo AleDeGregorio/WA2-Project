@@ -30,6 +30,27 @@ function Homepage() {
                         Tickets
                     </Button> : false
                 }
+                {loggedUser && user.role === "expert" ?
+                    <Button variant="primary" size="lg" onClick={() => navigate('/expertTickets')}>
+                        Tickets
+                    </Button> : false
+                }
+
+                {loggedUser && user.role === "manager" ?
+                    <Button variant="primary" size="lg" style={{marginBottom: '30px'}} onClick={() => navigate('/managerTickets')}>
+                        View ticket details
+                    </Button> : false
+                }
+                {loggedUser && user.role === "manager" ?
+                    <Button variant="primary" size="lg" style={{marginBottom: '30px'}} onClick={() => navigate('/ticketsManager')}>
+                        Assign priority and expert
+                    </Button> : false
+                }
+                {loggedUser && user.role === "manager" ?
+                    <Button variant="danger" size="lg" onClick={() => navigate('/insertExpert')}>
+                        Insert new Expert
+                    </Button> : false
+                }
             </div>
         </Container>
     )

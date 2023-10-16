@@ -3,6 +3,7 @@ package it.polito.g26.server.profiles.customer
 import io.micrometer.observation.annotation.Observed
 import it.polito.g26.server.*
 import it.polito.g26.server.security.login.LoginController
+import it.polito.g26.server.profiles.expert.ExpertDTO
 import it.polito.g26.server.ticketing.tickets.TicketDTO
 import lombok.extern.slf4j.Slf4j
 import org.slf4j.LoggerFactory

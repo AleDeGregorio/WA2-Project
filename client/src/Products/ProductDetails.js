@@ -15,6 +15,10 @@ function ProductDetails(props) {
             .catch(error => {
                 setError(error);
                 setShow(true)
+
+                setTimeout(() => {
+                    setShow(false)
+                }, 3000)
             });
     }, [productDetails.size])
 

@@ -1,16 +1,18 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {Alert, Button, Card, Container, Form} from "react-bootstrap";
 import './InsertProfile.css'
 import API from "../API";
 import {useNavigate} from "react-router-dom";
+import LoginContext from "./LoginContext";
 
 function InsertProfile(props) {
     const navigate = useNavigate()
 
-    const { setError, setShow } = props;
+    const { setError, setShow } = props
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("");
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
     const [city, setCity] = useState("");
@@ -21,11 +23,13 @@ function InsertProfile(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const profile = {
+        const customer = {
+            id: null,
+            username: username,
             email: email,
             password: password,
-            name: name,
-            surname: surname,
+            firstName: name,
+            lastName: surname,
             city: city,
             address: address
         }
@@ -43,16 +47,20 @@ function InsertProfile(props) {
         }
 
         else {
-            API.insertProfile(profile)
+            API.insertProfile(customer)
                 .then(() => {
                     setSuccess(true);
                     window.scrollTo(0, 0);
 
                     setTimeout(() => {
-                        navigate('/profiles/' + email);
-                    }, 2000);
+                        setSuccess(false)
+                        navigate('/login');
+                    }, 3000);
                 })
-                .catch(err => { setError(err.detail); setShow(true); });
+                .catch(err => {
+                    setError(err);
+                    setShow(true);
+                });
         }
     }
 
@@ -72,6 +80,11 @@ function InsertProfile(props) {
                           <Form.Group className="mb-3" controlId="password">
                               <Form.Label>Password</Form.Label>
                               <Form.Control type="password" placeholder="Enter password" onChange={(e) => setPassword(e.target.value)}/>
+                          </Form.Group>
+
+                          <Form.Group className="mb-3" controlId="username">
+                              <Form.Label>Username</Form.Label>
+                              <Form.Control type="text" placeholder="Enter username" onChange={(e) => setUsername(e.target.value)}/>
                           </Form.Group>
 
                           <Form.Group className="mb-3" controlId="name">

@@ -43,6 +43,10 @@ function CreateTicket(props) {
             setError("Please, complete all the fields before submitting")
             setShowError(true)
 
+            setTimeout(() => {
+                setShowError(false)
+            }, 3000)
+
             return
         }
 
@@ -72,12 +76,20 @@ function CreateTicket(props) {
                 window.scrollTo(0, 0)
 
                 setShow(true)
+
+                setTimeout(() => {
+                    setShow(false)
+                }, 3000)
             })
             .catch(err => {
                 window.scrollTo(0, 0)
 
                 setError(err)
                 setShowError(true)
+
+                setTimeout(() => {
+                    setShowError(false)
+                }, 3000)
             })
     }
 
