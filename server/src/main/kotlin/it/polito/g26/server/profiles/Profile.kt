@@ -17,7 +17,7 @@ open class Profile (
     open var firstName: String,
     open var lastName: String,
     @Transient
-    open var password: String,
+    open var password: String?,
     open var email: String,
 
 )

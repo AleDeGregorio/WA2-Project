@@ -1,0 +1,5 @@
+/* Define a CSS class to set a maximum width OR maximum height for images */
+.chat-image {
+    max-width: 200px; /* Set the maximum width as needed */
+    max-height: 200px; /* Set the maximum height as needed */
+}

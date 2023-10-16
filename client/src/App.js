@@ -33,6 +33,8 @@ import ManagerTickets from "./ManagerTickets/ManagerTickets";
 import StatusHistory from "./ManagerTickets/StatusHistory";
 import ManagerHandlingTickets from "./Manager/ManagerHandlingTickets";
 import InsertExpert from "./Manager/InsertExpert";
+import Chat from "./Chat/Chat";
+
 
 
 function Loading() {
@@ -188,6 +190,7 @@ function App2() {
                 <Route path='/viewTicket/:id' element={<TicketDetails setError={setError} setShow={setShow} />}/>
                 <Route path='/viewStatus/:id' element={<StatusHistory setError={setError} setShow={setShow} />} />
                 <Route path='/wrongPrivileges' element={<WrongPrivileges />} />
+                <Route path='/chat' element={<Chat />} />
                 <Route path='*' element={<PageNotFound />} />
             </Routes>
         </LoginContext.Provider>

@@ -23,10 +23,13 @@ class TicketServiceImpl(
     }
 
     override fun getTicket(id: Long): TicketDTO? {
+        println("trova questo")
+        println(ticketRepository.findByIdOrNull(id))
+        println("finito")
         return ticketRepository.findByIdOrNull(id)?.toDTO()
     }
 
-    override fun getTicketByCustomer(customerId: Long): List<TicketDTO>? {
+    override fun getTicketByCustomer(customerId: String): List<TicketDTO>? {
         val list = ticketRepository.findByCustomer(customerId)?.map { it.toDTO() }
         if (list?.isEmpty()!!) {
             throw UserNotFoundException("Customer with id {$customerId} not found.")

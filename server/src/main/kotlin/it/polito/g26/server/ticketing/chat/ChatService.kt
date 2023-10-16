@@ -12,5 +12,5 @@ interface ChatService {
 
     fun getMessages(id: Long) : Set<MessageDTO>?
 
-    fun insertChat(chat: Chat)
+    fun insertChat(chat: Chat) : Long?
 }

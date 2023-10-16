@@ -34,12 +34,14 @@ class ChatServiceImpl(
         }
     }
 
-    override fun insertChat(chat: Chat) {
+    override fun insertChat(chat: Chat) : Long? {
         if (chat.id != null && chatRepository.existsById(chat.id!!)) {
             throw ChatAlreadyExistsException("${chat.id} already exists!")
         }
         else {
-            chatRepository.save(chat)
+            val savedChat=chatRepository.save(chat)
+            return savedChat.id
+
         }
     }
 }

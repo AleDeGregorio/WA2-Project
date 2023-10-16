@@ -51,6 +51,11 @@ function Homepage() {
                         Insert new Expert
                     </Button> : false
                 }
+                {loggedUser && (user.role === "customer" || user.role==="expert") ?
+                    <Button variant="primary" size="lg" onClick={() => navigate('/chat')}>
+                        Chat
+                    </Button> : false
+                }
             </div>
         </Container>
     )

@@ -33,13 +33,14 @@ class MessageController(
 
     @PostMapping("/message")
     @ResponseStatus(HttpStatus.CREATED)
-    fun insertMessage(@RequestBody messageDTO: MessageDTO?) {
+    fun insertMessage(@RequestBody messageDTO: MessageDTO?) : Long? {
         if (messageDTO == null) {
             throw EmptyPostBodyException("Empty message body")
-        } else if (messageService.getMessage(messageDTO.id!!) != null) {
+        } else if (messageDTO.id !=null && messageService.getMessage(messageDTO.id) != null) {
             throw MessageAlreadySentException("${messageDTO.id} already in use!")
         } else {
-            messageService.insertMessage(messageDTO.toEntity())
+            val idGenerated=messageService.insertMessage(messageDTO.toEntity())
+            return idGenerated
         }
     }
 }

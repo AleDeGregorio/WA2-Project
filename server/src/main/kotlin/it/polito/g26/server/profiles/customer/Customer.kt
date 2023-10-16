@@ -17,7 +17,7 @@ data class Customer(
     @Column(unique = true)
     override var email: String = "",
     @Transient
-    override var password: String = "",
+    override var password: String? = "",
 
     var city: String = "",
     var address: String = "",

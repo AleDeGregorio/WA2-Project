@@ -41,7 +41,7 @@ class TicketController(
 
     @GetMapping("/customer/{customerId}")
     @ResponseStatus(HttpStatus.OK)
-    fun getTicketByCustomer(@PathVariable customerId: Long) : List<TicketDTO>? {
+    fun getTicketByCustomer(@PathVariable customerId: String) : List<TicketDTO>? {
         return ticketService.getTicketByCustomer(customerId) ?: throw UserNotFoundException("Customer with id $customerId not found!")
     }
 
