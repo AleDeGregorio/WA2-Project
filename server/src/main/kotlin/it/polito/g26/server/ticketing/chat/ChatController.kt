@@ -27,13 +27,6 @@ class ChatController(
 ) {
     private val log = LoggerFactory.getLogger(ChatController::class.java)
 
-    private fun chatDTOToEntity(chatDTO: ChatDTO) : Chat {
-        val chat = Chat()
-        chat.ticket = chatDTO.ticket
-        chat.creationDate = chatDTO.creationDate
-        return chat
-    }
-
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getChat(@PathVariable id: Long) : ChatDTO? {

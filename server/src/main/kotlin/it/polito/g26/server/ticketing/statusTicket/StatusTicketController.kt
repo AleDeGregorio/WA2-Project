@@ -56,7 +56,7 @@ class StatusTicketController(
     @ResponseStatus(HttpStatus.CREATED)
     fun openStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {
-            log.info("Opening ticket ${statusTicketDTO.tId?.id}")
+            log.info("Opening ticket ${statusTicketDTO.tid?.id}")
             statusTicketService.openStatusTicket(statusTicketDTO.toEntity())
         }
         else {
@@ -68,7 +68,7 @@ class StatusTicketController(
     @ResponseStatus(HttpStatus.CREATED)
     fun closeStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {
-            log.info("Closing ticket ${statusTicketDTO.tId?.id}")
+            log.info("Closing ticket ${statusTicketDTO.tid?.id}")
             statusTicketService.closeStatusTicket(statusTicketDTO.toEntity())
         }
         else {
@@ -80,7 +80,7 @@ class StatusTicketController(
     @ResponseStatus(HttpStatus.CREATED)
     fun progressStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {
-            log.info("Progressing ticket ${statusTicketDTO.tId?.id}")
+            log.info("Progressing ticket ${statusTicketDTO.tid?.id}")
             statusTicketService.progressStatusTicket(statusTicketDTO.toEntity())
         }
         else {
@@ -92,7 +92,7 @@ class StatusTicketController(
     @ResponseStatus(HttpStatus.CREATED)
     fun reopenStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {
-            log.info("Reopening ticket ${statusTicketDTO.tId?.id}")
+            log.info("Reopening ticket ${statusTicketDTO.tid?.id}")
             statusTicketService.reopenStatusTicket(statusTicketDTO.toEntity())
         }
         else {
@@ -104,7 +104,7 @@ class StatusTicketController(
     @ResponseStatus(HttpStatus.CREATED)
     fun resolveStatusTicket(@RequestBody statusTicketDTO: StatusTicketDTO?) {
         if (statusTicketDTO != null) {
-            log.info("Resolving ticket ${statusTicketDTO.tId?.id}")
+            log.info("Resolving ticket ${statusTicketDTO.tid?.id}")
             statusTicketService.resolveStatusTicket(statusTicketDTO.toEntity())
         }
         else {
