@@ -29,7 +29,7 @@ function ViewChat(props) {
         if(loadContext && user) {
             setLoadContext(false)
         }
-        if(user.role === "customer") {
+        if(user.role === "customer" || user.role === "expert") {
             API.getChats(ticket.id, user.access_token)
                 .then(c => {
                     setChat(c[0])

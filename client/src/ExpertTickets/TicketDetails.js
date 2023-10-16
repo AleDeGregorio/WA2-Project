@@ -261,7 +261,7 @@ function TicketDetails(props) {
                     </Form.Group>
                 </Form>
                     {user.role == "expert" ?
-                    <Link to={`/viewChat/`}>
+                    <Link to='/viewChat' state={{ ticket: ticket }}>
                         <Button style = {{backgroundColor: "#057F5F", border: "none"}}>Customer Service <BiChat/></Button>
                     </Link>
                         : user.role == "manager" ?
