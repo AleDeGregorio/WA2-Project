@@ -112,7 +112,7 @@ function CustomerTicketDetails(props) {
                             </tbody>
                         </Table>
                         <Container style = {{display : "flex", justifyContent: "space-evenly" }}>
-                            <Link to={`/viewChat/`}>
+                            <Link to='/viewChat' state={{ ticket: ticketDetails.tid }}>
                                 <Button style = {{backgroundColor: "#057F5F", border: "none"}}>Customer Service <BiChat/></Button>
                             </Link>
                         </Container>
