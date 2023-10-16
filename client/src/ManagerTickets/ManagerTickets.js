@@ -73,7 +73,7 @@ function ManagerTickets(props) {
                                             </Card.Text>
                                             <Card.Text style={{ display: "flex", justifyContent: "space-between" }}> Created By: {t.customer && t.customer.username}
                                             </Card.Text>
-                                            <Card.Text> Served By: {t.expert && t.expert.username}
+                                            <Card.Text> Served By: {t.expert ? t.expert.username : "not assigned yet"}
                                             </Card.Text>
                                         </Container>
 

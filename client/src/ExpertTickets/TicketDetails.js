@@ -201,7 +201,7 @@ function TicketDetails(props) {
                     </tr>
                     <tr>
                         <th className="text-success">Expert </th>
-                        <td>{ticket.expert && ticket.expert.username}</td>
+                        <td>{ticket.expert ? ticket.expert.username : "not assigned yet"}</td>
                     </tr>
                     <tr>
                         <th className="text-success">Product </th>
