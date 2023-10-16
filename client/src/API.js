@@ -482,7 +482,8 @@ function setPriority(ticketID, payload, token) {
             body: payload
         }).then((response) => {
             if (response.ok) {
-                resolve(response.json());
+                const ok = true;
+                resolve(ok);
             } else {
                 // analyze the cause of error
                 response.json()
@@ -504,7 +505,8 @@ function setExpertTicket(ticketID, payload, token) {
             body: JSON.stringify(payload)
         }).then((response) => {
             if (response.ok) {
-                resolve(response.json());
+                const ok = true;
+                resolve(ok);
             } else {
                 // analyze the cause of error
                 response.json()

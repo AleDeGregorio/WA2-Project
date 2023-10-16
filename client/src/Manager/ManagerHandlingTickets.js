@@ -20,10 +20,13 @@ const experts = [
 ];*/
 function ManagerHandlingTickets(props) {
     const navigate = useNavigate()
+
     const user = useContext(LoginContext)
+
+    const { setError, setShow } = props;
+
     const [loadContext, setLoadContext] = useState(true)
     const [loading, setLoading] = useState(true)
-    const { setError, setShow } = props;
 
     const [experts, setExperts] = useState([])
     const [tickets, setTickets] = useState([])
@@ -40,7 +43,6 @@ function ManagerHandlingTickets(props) {
                 .then(experts => {
                     setExperts(experts)
 
-                    setLoading(false)
                 })
                 .catch(error => {
                     setError(error)
@@ -73,36 +75,45 @@ function ManagerHandlingTickets(props) {
 
     return(
         <Container className={"d-grid gap-3"}>
-            <Row>
-                <Col xs={1}>
-                    Ticket ID
-                </Col>
-                <Col xs={1}>
-                    STATUS
-                </Col>
-                <Col xs={1}>
-                    CREATION
-                </Col>
-                <Col xs={1}>
-                    PRODUCT
-                </Col>
-                <Col xs={1}>
-                    ISSUE
-                </Col>
-                <Col xs={2}>
-                    DESCRIPTION
-                </Col>
-                <Col xs={2}>
-                    PRIORITY
-                </Col>
-                <Col xs={2}>
-                    EXPERT
-                </Col>
+            {
+                loading ?
+                    <div>
+                        <br />
+                        <div className="spinner-border" role="status"></div>
+                    </div> :
+                    <>
+                        <Row>
+                            <Col xs={1}>
+                                Ticket ID
+                            </Col>
+                            <Col xs={1}>
+                                STATUS
+                            </Col>
+                            <Col xs={1}>
+                                CREATION
+                            </Col>
+                            <Col xs={1}>
+                                PRODUCT
+                            </Col>
+                            <Col xs={1}>
+                                ISSUE
+                            </Col>
+                            <Col xs={2}>
+                                DESCRIPTION
+                            </Col>
+                            <Col xs={2}>
+                                PRIORITY
+                            </Col>
+                            <Col xs={2}>
+                                EXPERT
+                            </Col>
 
-            </Row>
-            {tickets.map((ticket) => (
-                <ManagerViewSingleTicket key={ticket.id} ticket={ticket} user ={user} experts={experts} />
-            ))}
+                        </Row>
+                        {tickets.map((ticket) => (
+                            <ManagerViewSingleTicket key={ticket.id} ticket={ticket} user ={user} experts={experts} />
+                        ))}
+                    </>
+            }
         </Container>
     )
 }
@@ -140,13 +151,9 @@ function ManagerViewSingleTicket(props) {
             // Send the payload
            API.setPriority(ticketId, payload, user.access_token)
                .then((response) => {
-                   if (response.status === 202) {
-                       // Handle success
-                       console.log("Priority assigned successfully!");
-                   } else {
-                       // Handle error
-                       console.error("Error assigning priority.");
-                   }
+                   // Handle success
+                   console.log("Priority assigned successfully!");
+                   window.location.reload()
                })
                .catch((error) => {
                    console.error("Error:", error);
@@ -169,13 +176,8 @@ function ManagerViewSingleTicket(props) {
             // Send the payload
             API.setExpertTicket(ticketId, payload, props.user.access_token)
                 .then((response) => {
-                    if (response.status === 202) {
-                        // Handle success
-                        console.log("Expert assigned successfully!");
-                    } else {
-                        // Handle error
-                        console.error("Error assigning expert.");
-                    }
+                    console.log("Expert assigned successfully!");
+                    window.location.reload()
                 })
                 .catch((error) => {
                     console.error("Error:", error);
