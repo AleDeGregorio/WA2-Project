@@ -12,6 +12,7 @@ function InsertProfile(props) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("");
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
     const [city, setCity] = useState("");
@@ -24,7 +25,7 @@ function InsertProfile(props) {
 
         const customer = {
             id: null,
-            username: name+surname,
+            username: username,
             email: email,
             password: password,
             firstName: name,
@@ -79,6 +80,11 @@ function InsertProfile(props) {
                           <Form.Group className="mb-3" controlId="password">
                               <Form.Label>Password</Form.Label>
                               <Form.Control type="password" placeholder="Enter password" onChange={(e) => setPassword(e.target.value)}/>
+                          </Form.Group>
+
+                          <Form.Group className="mb-3" controlId="username">
+                              <Form.Label>Username</Form.Label>
+                              <Form.Control type="text" placeholder="Enter username" onChange={(e) => setUsername(e.target.value)}/>
                           </Form.Group>
 
                           <Form.Group className="mb-3" controlId="name">
