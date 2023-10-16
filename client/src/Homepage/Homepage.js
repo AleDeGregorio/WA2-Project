@@ -37,17 +37,17 @@ function Homepage() {
                 }
 
                 {loggedUser && user.role === "manager" ?
-                    <Button variant="primary" size="lg" onClick={() => navigate('/managerTickets')}>
-                        Tickets-Desi
+                    <Button variant="primary" size="lg" style={{marginBottom: '30px'}} onClick={() => navigate('/managerTickets')}>
+                        View ticket details
                     </Button> : false
                 }
                 {loggedUser && user.role === "manager" ?
-                    <Button variant="primary" size="lg" onClick={() => navigate('/ticketsManager')}>
-                        Tickets-Mario
+                    <Button variant="primary" size="lg" style={{marginBottom: '30px'}} onClick={() => navigate('/ticketsManager')}>
+                        Assign priority and expert
                     </Button> : false
                 }
                 {loggedUser && user.role === "manager" ?
-                    <Button variant="primary" size="lg" onClick={() => navigate('/insertExpert')}>
+                    <Button variant="danger" size="lg" onClick={() => navigate('/insertExpert')}>
                         Insert new Expert
                     </Button> : false
                 }
