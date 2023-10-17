@@ -245,7 +245,7 @@ function ChatMessages({ chat , setSelectedChat}) {
     useEffect(() => {
         const pollingInterval = setInterval(() => {
             fetchMessages();
-        }, 50000); // Esempio: effettua il polling ogni 5 secondi
+        }, 2000); // Esempio: effettua il polling ogni 2 secondi
 
         return () => {
             // Pulisci l'interval quando il componente viene smontato
