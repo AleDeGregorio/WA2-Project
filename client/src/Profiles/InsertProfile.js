@@ -35,6 +35,7 @@ function InsertProfile(props) {
         }
 
         if (
+            username.length < 1 ||
             email.length < 1 ||
             password.length < 1 ||
             name.length < 1 ||
