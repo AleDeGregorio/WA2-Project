@@ -178,7 +178,8 @@ function openTicket(status, token) {
             body: JSON.stringify(status)
         }).then((response) => {
             if (response.ok) {
-                resolve(response.json());
+                const ok = true;
+                resolve(ok);
             } else {
                 // analyze the cause of error
                 response.json()
@@ -199,7 +200,8 @@ function progressTicket(status, token) {
             body: JSON.stringify(status)
         }).then((response) => {
             if (response.ok) {
-                resolve(response.json());
+                const ok = true;
+                resolve(ok);
             } else {
                 // analyze the cause of error
                 response.json()
@@ -222,7 +224,8 @@ function closeTicket(status, token) {
             body: JSON.stringify(status)
         }).then((response) => {
             if (response.ok) {
-                resolve(response.json());
+                const ok = true;
+                resolve(ok);
             } else {
                 // analyze the cause of error
                 response.json()
@@ -243,7 +246,8 @@ function reopenTicket(status, token) {
             body: JSON.stringify(status)
         }).then((response) => {
             if (response.ok) {
-                resolve(response.json());
+                const ok = true;
+                resolve(ok);
             } else {
                 // analyze the cause of error
                 response.json()
@@ -264,8 +268,8 @@ function resolveTicket(status, token) {
             body: JSON.stringify(status)
         }).then((response) => {
             if (response.ok) {
-                console.log(response.body)
-                resolve(response.json());
+                const ok = true;
+                resolve(ok);
             } else {
                 // analyze the cause of error
                 response.json()

@@ -20,7 +20,9 @@ INSERT INTO public.manager (id, username, first_name, last_name, email, departme
 
 INSERT INTO public.ticket (id, date_of_creation, description, issue_type, priority_level, customer_id, expert_id, product_ean) VALUES (1, '2023-05-05 12:00:00.000000', 'Problem with smartphone', 'Problem', 3, '056d235a-8eaa-41fc-8d2a-adaedcf317c7', '5ecf9484-eb6d-4470-afaf-f7d935c77ccd', 1);
 INSERT INTO public.ticket (id, date_of_creation, description, issue_type, priority_level, customer_id, expert_id, product_ean) VALUES (2, '2023-05-15 16:00:00.000000', 'Configure PC', 'Configuration', 2, '452d3eb7-7952-48ac-9ab0-e5bdbecf333a', '526fdd4a-788a-4b3b-9444-0844620beb93', 3);
+/*
 INSERT INTO public.ticket (id, date_of_creation, description, issue_type, priority_level, customer_id, expert_id, product_ean) VALUES (3, '2023-05-26 17:00:00.000000', 'Broken fridge', 'Fault', null, '2bd77583-af4e-4680-a666-59c3b785c8b8', null, 4);
+ */
 INSERT INTO public.ticket (id, date_of_creation, description, issue_type, priority_level, customer_id, expert_id, product_ean) VALUES (4, '2023-05-26 18:00:00.000000', 'Problem with console', 'Problem', null, '056d235a-8eaa-41fc-8d2a-adaedcf317c7', null, 2);
 INSERT INTO public.ticket (id, date_of_creation, description, issue_type, priority_level, customer_id, expert_id, product_ean) VALUES (5, '2023-05-26 18:30:00.000000', 'Broken smartphone', 'Fault', 1, '6719b943-cf2e-4f8d-a2ed-8cd2be30737b', 'b326e786-7f41-40a1-a398-e77088635097', 1);
 
@@ -34,7 +36,10 @@ INSERT INTO public.status_ticket (last_modified_date, status, ticket_id) VALUES 
 INSERT INTO public.status_ticket (last_modified_date, status, ticket_id) VALUES ('2023-05-16 15:00:00.000000', 'REOPENED', 2);
 INSERT INTO public.status_ticket (last_modified_date, status, ticket_id) VALUES ('2023-05-16 18:00:00.000000', 'RESOLVED', 2);
 INSERT INTO public.status_ticket (last_modified_date, status, ticket_id) VALUES ('2023-05-16 18:30:00.000000', 'CLOSED', 2);
+/*
 INSERT INTO public.status_ticket (last_modified_date, status, ticket_id) VALUES ('2023-05-26 17:00:00.000000', 'OPEN', 3);
+
+ */
 INSERT INTO public.status_ticket (last_modified_date, status, ticket_id) VALUES ('2023-05-26 18:00:00.000000', 'OPEN', 4);
 INSERT INTO public.status_ticket (last_modified_date, status, ticket_id) VALUES ('2023-05-26 18:30:00.000000', 'OPEN', 5);
 INSERT INTO public.status_ticket (last_modified_date, status, ticket_id) VALUES ('2023-05-27 11:00:00.000000', 'IN_PROGRESS', 5);
@@ -49,7 +54,10 @@ INSERT INTO public.ticket_status (ticket_id, status_ticket_id, status_last_modif
 INSERT INTO public.ticket_status (ticket_id, status_ticket_id, status_last_modified_date) VALUES (2, 2, '2023-05-16 15:00:00.000000');
 INSERT INTO public.ticket_status (ticket_id, status_ticket_id, status_last_modified_date) VALUES (2, 2, '2023-05-16 18:00:00.000000');
 INSERT INTO public.ticket_status (ticket_id, status_ticket_id, status_last_modified_date) VALUES (2, 2, '2023-05-16 18:30:00.000000');
+/*
 INSERT INTO public.ticket_status (ticket_id, status_ticket_id, status_last_modified_date) VALUES (3, 3, '2023-05-26 17:00:00.000000');
+
+ */
 INSERT INTO public.ticket_status (ticket_id, status_ticket_id, status_last_modified_date) VALUES (4, 4, '2023-05-26 18:00:00.000000');
 INSERT INTO public.ticket_status (ticket_id, status_ticket_id, status_last_modified_date) VALUES (5, 5, '2023-05-26 18:30:00.000000');
 INSERT INTO public.ticket_status (ticket_id, status_ticket_id, status_last_modified_date) VALUES (5, 5, '2023-05-27 11:00:00.000000');
