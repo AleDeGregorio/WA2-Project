@@ -1,11 +1,12 @@
 import {Container, Table} from "react-bootstrap";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import API from "../API";
 
 function ProductDetails(props) {
     const { productId } = useParams()
     const { setError, setShow } = props
+    const navigate = useNavigate()
 
     const [productDetails, setProductDetails] = useState([])
 
@@ -19,6 +20,8 @@ function ProductDetails(props) {
                 setTimeout(() => {
                     setShow(false)
                 }, 3000)
+
+                navigate('/mainProducts')
             });
     }, [productDetails.size])
 
