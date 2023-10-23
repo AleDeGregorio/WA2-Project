@@ -45,7 +45,7 @@ function ViewCustomerTickets(props) {
 
     return (
         <>
-            <h1 style={{ textAlign: "center" }}>Ticket List</h1>
+            <h1 style={{ textAlign: "center", marginTop: "20px", marginBottom: "-20px" }}>Ticket List</h1>
 
             {
                 loading ?
@@ -54,7 +54,7 @@ function ViewCustomerTickets(props) {
                         <div className="spinner-border" role="status"></div>
                     </div> :
 
-                    <CardGroup className="ticketList" style = {{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
+                    <Container className="ticketList" style = {{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
                         {
                             loading ?
                                 <div>
@@ -64,7 +64,7 @@ function ViewCustomerTickets(props) {
 
                                 tickets.map((t) => {
                                     return (
-                                        <Card key={t.id} style={{ width: "30%", margin: "5%" }}>
+                                        <Card key={t.id} style={{ width: "40%", margin: "5%" }}>
                                             <Card.Body>
                                                 <Card.Title style={{ fontWeight: "900" }}>{t.description}</Card.Title>
                                                 <Container
@@ -106,7 +106,7 @@ function ViewCustomerTickets(props) {
 
                                     );
                                 })}
-                    </CardGroup>
+                    </Container>
             }
         </>
     )
